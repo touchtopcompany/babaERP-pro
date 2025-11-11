@@ -1,0 +1,27 @@
+{
+  "name": "Smart Meter",
+  "short_name": "Smart Meter",
+  "description": "Welcome to Smart Meter",
+  "theme_color": "#52a420",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icons/GAS JANJA/PNG/Artboard 17- GAS JANJA.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/GAS JANJA/PNG/Artboard 17- GAS JANJA.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/GAS JANJA/PNG/Artboard 17- GAS JANJA.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
