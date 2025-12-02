@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { logger } from "@/utils/functions";
 
 // Use a 256-bit key derived from a passphrase
-const SECRET_KEY = (import.meta as any).env?.REACT_APP_STORAGE_KEY || "super-secret-key";
+const SECRET_KEY = (import.meta as any).env?.VITE_APP_STORAGE_KEY || "super-secret-key";
 
 const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder();
@@ -57,6 +57,7 @@ function base64ToArrayBuffer(base64: string) {
 }
 
 const useSerialize = () => {
+
   const encrypt = useCallback(async (data: unknown): Promise<string> => {
     const key = await deriveKey();
     const iv = crypto.getRandomValues(new Uint8Array(12)); // AES-GCM IV

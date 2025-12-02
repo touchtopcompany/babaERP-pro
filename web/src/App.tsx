@@ -1,5 +1,9 @@
+import { logger } from "./utils/functions";
 
 function App() {
+
+  logger.debug("oyaaaaa weee")
+  
   return (
     <div className="bg-whiite dark:bg-gray-800 flex justify-center items-center h-dvh w-full ">
       <p className="text-green-600 uppercase text-3xl animate-bounce">

@@ -8,6 +8,7 @@
 src
 ├── App.tsx
 ├── assets
+│   ├── images
 │   └── styles
 │       └── index.css
 ├── components
@@ -22,6 +23,13 @@ src
 ├── data
 │   └── users.ts
 ├── features
+│   └── auth
+│       ├── api
+│       │   └── auth.api.ts
+│       ├── components
+│       ├── pages
+│       │   └── Login.tsx
+│       └── types
 ├── hooks
 │   ├── useAudioNotification.ts
 │   ├── useBrowserNotifications.ts
@@ -29,12 +37,17 @@ src
 │   ├── useLocalstorage.ts
 │   ├── useModal.ts
 │   └── useSerialize.ts
+├── lib
+│   └── queryCLient.ts
 ├── main.tsx
 ├── pages
+│   ├── landing
+│   │   └── Home.tsx
 │   ├── Loading.tsx
 │   ├── NotFound.tsx
 │   └── Unauthorized.tsx
 ├── routes
+│   ├── AdminRoutes.tsx
 │   ├── AppRoutes.tsx
 │   ├── LazyWrapper.tsx
 │   ├── PrivateRoutes.tsx
@@ -47,6 +60,7 @@ src
 ├── stores
 │   └── useAuthStore.ts
 ├── theme
+│   ├── colors.ts
 │   ├── ThemeBtn.tsx
 │   ├── ThemeProvider.tsx
 │   ├── ThemeWrapper.tsx

@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('sheet_spreadsheets', function (Blueprint $table) {
+            $table->id();
+            $table->text('cc')->nullable();
+            $table->foreignId('business_id')->nullable()->constrained('business')->nullOnDelete();
+            $table->text('bcc')->nullable();
+            $table->string('name', 191)->nullable();
+            $table->bigInteger('schedule_id')->nullable();
+            $table->integer('created_by')->nullable();
+            $table->longText('sheet_data')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->timestamps();
+            $table->integer('folder_id')->nullable();
+            $table->integer('role_id')->nullable();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('sheet_spreadsheets');
+    }
+};
