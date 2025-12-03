@@ -87,8 +87,10 @@ const ResetPassword = () => {
       return;
     }
 
-    setIsSubmitting(true);
+    // Clear all errors before submission
     setError('');
+    setValidationErrors({});
+    setIsSubmitting(true);
 
     try {
       // Here you would typically send the new password to your backend
@@ -99,7 +101,8 @@ const ResetPassword = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Set success state
+      // Clear any validation errors and set success state
+      setValidationErrors({});
       setIsSuccess(true);
       
       // Auto-redirect to login after 3 seconds
@@ -166,8 +169,8 @@ const ResetPassword = () => {
           </p>
         </div>
 
-        {/* Combined error messages */}
-        {Object.keys(validationErrors).length > 0 && (
+        {/* Combined error messages - only show if not submitting and there are errors */}
+        {!isSubmitting && Object.keys(validationErrors).length > 0 && (
           <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded">
             <div className="flex">
               <div className="flex-shrink-0">
@@ -187,7 +190,7 @@ const ResetPassword = () => {
           </div>
         )}
 
-        {error && (
+        {!isSubmitting && error && (
           <div className="mb-6 p-4 rounded-md bg-red-50 text-red-800">
             {error}
           </div>
