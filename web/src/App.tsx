@@ -1,15 +1,16 @@
+import { BrowserRouter as Router } from 'react-router-dom';
+import { AppRoutes } from './routes/AppRoutes';
 import { logger } from "./utils/functions";
 
 function App() {
-
-  logger.debug("oyaaaaa weee")
+  logger.debug("App component rendered");
   
   return (
-    <div className="bg-whiite dark:bg-gray-800 flex justify-center items-center h-dvh w-full ">
-      <p className="text-green-600 uppercase text-3xl animate-bounce">
-        Baba ERP configured successfully
-      </p>
-    </div>
+    <Router>
+      <div className="app">
+        <AppRoutes />
+      </div>
+    </Router>
   );
 }
 
