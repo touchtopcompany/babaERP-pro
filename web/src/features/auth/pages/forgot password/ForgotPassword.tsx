@@ -9,14 +9,13 @@ const ForgotPassword = () => {
   const forgotPasswordMutation = useForgotPassword();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+const handleSendLinkClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    try {
-      await forgotPasswordMutation.mutateAsync({ email });
-      setIsSuccess(true);
-      setMessage('If an account exists with this email, you will receive a password reset link.');
-    } catch (error) {
-      setMessage('An error occurred. Please try again.');
+    if (email) {
+      navigate('/two-factor-auth', { state: { email } });
+    } else {
+      setMessage('Please enter your email address first.');
+      setIsSuccess(false);
     }
   };
 
@@ -34,8 +33,8 @@ const ForgotPassword = () => {
           </div>
         )}
 
-        {!isSuccess ? (
-          <form onSubmit={handleSubmit} className="space-y-6">
+        {!isSuccess && (
+          <div className="space-y-6">
             <div className="space-y-4">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
@@ -58,9 +57,10 @@ const ForgotPassword = () => {
 
             <div className="space-y-4">
               <button
-                type="submit"
+                type="button"
+                onClick={handleSendLinkClick}
                 disabled={forgotPasswordMutation.isPending}
-                className="w-full flex justify-center py-3 px-4 bg-black text-white text-sm font-medium rounded-full hover:bg-black/90 focus:outline-none  transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full flex justify-center py-3 px-4 bg-black text-white text-sm font-medium rounded-full hover:bg-black/90 focus:outline-none transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {forgotPasswordMutation.isPending ? 'Sending...' : 'Send Reset Link'}
               </button>
@@ -72,15 +72,6 @@ const ForgotPassword = () => {
                 Back to Sign In
               </Link>
             </div>
-          </form>
-        ) : (
-          <div className="text-center">
-            <button
-              onClick={() => navigate('/login')}
-              className="mt-6 px-6 py-2 bg-black text-white rounded-full hover:bg-black/90 transition-colors duration-200"
-            >
-              Return to Login
-            </button>
           </div>
         )}
       </div>

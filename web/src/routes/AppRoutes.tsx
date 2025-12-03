@@ -7,8 +7,9 @@ import PublicRoutes from "./PublicRoutes";
 import Loading from "../pages/Loading";
 import ForgotPassword from "@/features/auth/pages/forgot password/ForgotPassword";
 
-// Lazy load the Login component
+// Lazy load components
 const Login = lazy(() => import("@/features/auth/pages/signin/Login"));
+const TwoFactorAuth = lazy(() => import("@/features/auth/pages/two-factor-auth/TwoFactorAuth"));
 
 /**
  * This is Root Route initializer for the application
@@ -23,6 +24,7 @@ export const AppRoutes: FC = () => {
         <Route element={<PublicRoutes />}>
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/two-factor-auth" element={<TwoFactorAuth />} />
           <Route path="/signin" element={<Navigate to="/login" />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
         </Route>
