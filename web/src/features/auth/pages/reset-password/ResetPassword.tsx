@@ -13,6 +13,7 @@ const ResetPassword = () => {
   const [error, setError] = useState('');
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<{[key: string]: string}>({});
   const location = useLocation();
   const navigate = useNavigate();
   const { email, code } = (location.state || {}) as LocationState;
@@ -29,11 +30,54 @@ const ResetPassword = () => {
     setPasswordStrength(strength);
   }, [password]);
 
+  const validatePassword = (): boolean => {
+    const errors: {[key: string]: string} = {};
+    const errorMessages: string[] = [];
+    
+    if (!password) {
+      errors.password = 'Password is required';
+      errorMessages.push('Password is required');
+    } else {
+      if (password.length < 8) {
+        errors.length = 'Password must be at least 8 characters';
+        errorMessages.push('• Password must be at least 8 characters');
+      }
+      if (!password.match(/[a-z]/)) {
+        errors.lowercase = 'Must include at least one lowercase letter';
+        errorMessages.push('• Must include at least one lowercase letter');
+      }
+      if (!password.match(/[A-Z]/)) {
+        errors.uppercase = 'Must include at least one uppercase letter';
+        errorMessages.push('• Must include at least one uppercase letter');
+      }
+      if (!password.match(/[0-9]/)) {
+        errors.number = 'Must include at least one number';
+        errorMessages.push('• Must include at least one number');
+      }
+      if (!password.match(/[!@#$%^&*(),.?\":{}|<>]/)) {
+        errors.special = 'Must include at least one special character';
+        errorMessages.push('• Must include at least one special character');
+      }
+    }
+
+    if (password && confirmPassword && password !== confirmPassword) {
+      errors.match = 'Passwords do not match';
+      errorMessages.push('• Passwords do not match');
+    }
+
+    setValidationErrors({
+      ...errors,
+      combined: errorMessages.join('\n')
+    });
+    
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
+    if (!validatePassword()) {
       return;
     }
 
@@ -90,6 +134,27 @@ const ResetPassword = () => {
             Create a new password for <span className="font-medium">{email}</span>
           </p>
         </div>
+
+        {/* Combined error messages */}
+        {Object.keys(validationErrors).length > 0 && (
+          <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-red-800">Please fix the following errors:</h3>
+                <div className="mt-2 text-sm text-red-700">
+                  {validationErrors.combined?.split('\n').map((error, index) => (
+                    <p key={index} className="whitespace-pre-line">{error}</p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {error && (
           <div className="mb-6 p-4 rounded-md bg-red-50 text-red-800">
@@ -189,23 +254,38 @@ const ResetPassword = () => {
           </div>
         </form>
 
-        <div className="mt-8 p-4 bg-gray-50 rounded-md text-sm text-gray-600">
+        <div className="mt-8 p-4 bg-gray-50 rounded-md text-sm">
           <h3 className="font-medium text-gray-800 mb-2">Password Requirements</h3>
-          <ul className="list-disc pl-5 space-y-1">
-            <li className={password.length >= 8 ? 'text-green-600' : ''}>
-              At least 8 characters long
+          <ul className="space-y-1">
+            <li className={`flex items-start ${password.length >= 8 ? 'text-green-600' : 'text-gray-600'}`}>
+              <span className="mr-2">
+                {password.length >= 8 ? '✓' : '•'}
+              </span>
+              <span>At least 8 characters long</span>
             </li>
-            <li className={password.match(/[a-z]/) ? 'text-green-600' : ''}>
-              At least one lowercase letter
+            <li className={`flex items-start ${password.match(/[a-z]/) ? 'text-green-600' : 'text-gray-600'}`}>
+              <span className="mr-2">
+                {password.match(/[a-z]/) ? '✓' : '•'}
+              </span>
+              <span>At least one lowercase letter</span>
             </li>
-            <li className={password.match(/[A-Z]/) ? 'text-green-600' : ''}>
-              At least one uppercase letter
+            <li className={`flex items-start ${password.match(/[A-Z]/) ? 'text-green-600' : 'text-gray-600'}`}>
+              <span className="mr-2">
+                {password.match(/[A-Z]/) ? '✓' : '•'}
+              </span>
+              <span>At least one uppercase letter</span>
             </li>
-            <li className={password.match(/[0-9]/) ? 'text-green-600' : ''}>
-              At least one number
+            <li className={`flex items-start ${password.match(/[0-9]/) ? 'text-green-600' : 'text-gray-600'}`}>
+              <span className="mr-2">
+                {password.match(/[0-9]/) ? '✓' : '•'}
+              </span>
+              <span>At least one number</span>
             </li>
-            <li className={password.match(/[!@#$%^&*(),.?":{}|<>]/) ? 'text-green-600' : ''}>
-              At least one special character
+            <li className={`flex items-start ${password.match(/[!@#$%^&*(),.?\":{}|<>]/) ? 'text-green-600' : 'text-gray-600'}`}>
+              <span className="mr-2">
+                {password.match(/[!@#$%^&*(),.?\":{}|<>]/) ? '✓' : '•'}
+              </span>
+              <span>At least one special character</span>
             </li>
           </ul>
         </div>
