@@ -14,6 +14,7 @@ const ResetPassword = () => {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [validationErrors, setValidationErrors] = useState<{[key: string]: string}>({});
+  const [isSuccess, setIsSuccess] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { email, code } = (location.state || {}) as LocationState;
@@ -98,12 +99,17 @@ const ResetPassword = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Redirect to login page with success message
-      navigate('/login', { 
-        state: { 
-          message: 'Your password has been reset successfully. Please login with your new password.'
-        } 
-      });
+      // Set success state
+      setIsSuccess(true);
+      
+      // Auto-redirect to login after 3 seconds
+      setTimeout(() => {
+        navigate('/login', { 
+          state: { 
+            message: 'Your password has been reset successfully. Please login with your new password.'
+          } 
+        });
+      }, 3000);
     } catch (err) {
       setError('Failed to reset password. Please try again.');
       console.error('Reset password error:', err);
@@ -123,6 +129,31 @@ const ResetPassword = () => {
     // If no email or code is provided, redirect back to forgot password
     navigate('/forgot-password');
     return null;
+  }
+
+  if (isSuccess) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center p-4">
+        <div className="w-full max-w-md text-center">
+          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+            <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Password Reset Successful!</h2>
+          <p className="text-gray-600 mb-8">
+            Your password has been updated successfully. You will be redirected to the login page shortly.
+          </p>
+          <div className="mt-6">
+            <div className="relative">
+              <div className="overflow-hidden h-2 text-xs flex rounded bg-gray-200">
+                <div className="animate-progress bg-green-500"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
