@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 type LocationState = {
@@ -9,6 +9,7 @@ const TwoFactorAuth = () => {
   const [code, setCode] = useState(['', '', '', '', '', '']);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [resendTimer, setResendTimer] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
   const { email } = (location.state || {}) as LocationState;
@@ -20,10 +21,72 @@ const TwoFactorAuth = () => {
     newCode[index] = value;
     setCode(newCode);
     
-    // Auto-focus next input
+    // Auto-focus next input if there's a value and we're not at the last input
     if (value && index < 5) {
       const nextInput = document.getElementById(`code-${index + 1}`);
       if (nextInput) nextInput.focus();
+    }
+  };
+
+  // Auto-submit when all digits are entered
+  useEffect(() => {
+    const isCodeComplete = code.every(digit => digit !== '');
+    if (isCodeComplete && !isSubmitting) {
+      const verificationCode = code.join('');
+      verifyCode(verificationCode);
+    }
+  }, [code]);
+
+  // Handle resend code timer
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    
+    if (resendTimer > 0) {
+      timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
+    }
+    
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [resendTimer]);
+  
+  const handleResendCode = () => {
+    // Here you would typically resend the code
+    // For now, we'll just show an alert and start the timer
+    alert('New code sent!');
+    setResendTimer(30); // 30 seconds cooldown
+  };
+
+  const verifyCode = async (verificationCode: string) => {
+    if (verificationCode.length !== 6) return;
+    
+    setIsSubmitting(true);
+    setError('');
+    
+    try {
+      // Here you would typically verify the code with your backend
+      // For now, we'll just log it and redirect to reset password
+      console.log('Verification code:', verificationCode);
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Redirect to reset password page with email and code
+      navigate('/reset-password', { 
+        state: { 
+          email,
+          code: verificationCode 
+        } 
+      });
+    } catch (err) {
+      setError('Invalid verification code. Please try again.');
+      console.error('Verification error:', err);
+      // Clear the code on error
+      setCode(['', '', '', '', '', '']);
+      // Focus the first input
+      const firstInput = document.getElementById('code-0') as HTMLInputElement;
+      if (firstInput) firstInput.focus();
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -43,34 +106,13 @@ const TwoFactorAuth = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const verificationCode = code.join('');
-    
-    if (verificationCode.length !== 6) {
+    if (verificationCode.length === 6) {
+      verifyCode(verificationCode);
+    } else {
       setError('Please enter a 6-digit code');
-      return;
-    }
-    
-    setIsSubmitting(true);
-    setError('');
-    
-    try {
-      // Here you would typically verify the code with your backend
-      // For now, we'll just log it and redirect to reset password
-      console.log('Verification code:', verificationCode);
-      // Redirect to reset password page with email and code
-      navigate('/reset-password', { 
-        state: { 
-          email,
-          code: verificationCode 
-        } 
-      });
-    } catch (err) {
-      setError('Invalid verification code. Please try again.');
-      console.error('Verification error:', err);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -96,7 +138,7 @@ const TwoFactorAuth = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
           <div className="flex justify-center space-x-2 mb-8">
             {code.map((digit, index) => (
               <input
@@ -111,6 +153,7 @@ const TwoFactorAuth = () => {
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 onPaste={handlePaste}
                 className="w-12 h-12 text-2xl text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                autoComplete="off"
                 autoFocus={index === 0}
                 disabled={isSubmitting}
               />
@@ -118,18 +161,21 @@ const TwoFactorAuth = () => {
           </div>
 
           <div className="text-center text-sm text-gray-500">
-            Didn't receive a code?{' '}
-            <button 
-              type="button" 
-              className="text-black hover:underline focus:outline-none"
-              onClick={() => {
-                // Here you would typically resend the code
-                alert('New code sent!');
-              }}
-              disabled={isSubmitting}
-            >
-              Resend Code
-            </button>
+            {resendTimer > 0 ? (
+              <span>Resend code in {resendTimer} seconds</span>
+            ) : (
+              <>
+                Didn't receive a code?{' '}
+                <button 
+                  type="button" 
+                  className="text-black hover:underline focus:outline-none disabled:opacity-50"
+                  onClick={handleResendCode}
+                  disabled={isSubmitting}
+                >
+                  Resend Code
+                </button>
+              </>
+            )}
           </div>
 
           <div className="space-y-4">
