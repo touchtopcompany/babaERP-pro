@@ -10,6 +10,9 @@ const TwoFactorAuth = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [resendTimer, setResendTimer] = useState(0);
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const [isLocked, setIsLocked] = useState(false);
+  const [lockTimer, setLockTimer] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
   const { email } = (location.state || {}) as LocationState;
@@ -49,6 +52,22 @@ const TwoFactorAuth = () => {
       if (timer) clearTimeout(timer);
     };
   }, [resendTimer]);
+
+  // Handle lockout timer
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    
+    if (lockTimer > 0) {
+      timer = setTimeout(() => setLockTimer(lockTimer - 1), 1000);
+    } else if (isLocked) {
+      setIsLocked(false);
+      setFailedAttempts(0);
+    }
+    
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [lockTimer, isLocked]);
   
   const handleResendCode = () => {
     // Here you would typically resend the code
@@ -58,17 +77,38 @@ const TwoFactorAuth = () => {
   };
 
   const verifyCode = async (verificationCode: string) => {
-    if (verificationCode.length !== 6) return;
+    if (verificationCode.length !== 6 || isLocked) return;
     
     setIsSubmitting(true);
     setError('');
     
     try {
       // Here you would typically verify the code with your backend
-      // For now, we'll just log it and redirect to reset password
+      // For now, we'll simulate a failed attempt for demonstration
+      const isValid = verificationCode === '123456'; // Replace with actual verification
+      
+      if (!isValid) {
+        const attempts = failedAttempts + 1;
+        setFailedAttempts(attempts);
+        
+        if (attempts >= 3) {
+          // Lock the input for 5 minutes after 3 failed attempts
+          setIsLocked(true);
+          setLockTimer(300); // 5 minutes in seconds
+          throw new Error('Too many failed attempts. Please try again in 5 minutes.');
+        } else {
+          const remainingAttempts = 3 - attempts;
+          throw new Error(`Invalid verification code. ${remainingAttempts} ${remainingAttempts === 1 ? 'attempt' : 'attempts'} remaining.`);
+        }
+      }
+      
+      // If code is valid, proceed with verification
       console.log('Verification code:', verificationCode);
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Reset failed attempts on successful verification
+      setFailedAttempts(0);
       
       // Redirect to reset password page with email and code
       navigate('/reset-password', { 
@@ -77,14 +117,16 @@ const TwoFactorAuth = () => {
           code: verificationCode 
         } 
       });
-    } catch (err) {
-      setError('Invalid verification code. Please try again.');
+    } catch (err: any) {
+      setError(err.message || 'Invalid verification code. Please try again.');
       console.error('Verification error:', err);
-      // Clear the code on error
-      setCode(['', '', '', '', '', '']);
-      // Focus the first input
-      const firstInput = document.getElementById('code-0') as HTMLInputElement;
-      if (firstInput) firstInput.focus();
+      
+      // Clear the code on error but keep the input enabled if not locked
+      if (!isLocked) {
+        setCode(['', '', '', '', '', '']);
+        const firstInput = document.getElementById('code-0') as HTMLInputElement;
+        if (firstInput) firstInput.focus();
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -152,13 +194,23 @@ const TwoFactorAuth = () => {
                 onChange={(e) => handleCodeChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 onPaste={handlePaste}
-                className="w-12 h-12 text-2xl text-center border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                className={`w-12 h-12 text-2xl text-center border ${
+                  error && !isLocked ? 'border-red-500' : 'border-gray-300'
+                } rounded-md focus:outline-none focus:ring-2 ${
+                  isLocked ? 'bg-gray-100 cursor-not-allowed' : ''
+                } focus:ring-black focus:border-transparent`}
                 autoComplete="off"
-                autoFocus={index === 0}
-                disabled={isSubmitting}
+                autoFocus={index === 0 && !isLocked}
+                disabled={isSubmitting || isLocked}
+                aria-label={`Digit ${index + 1} of verification code`}
               />
             ))}
           </div>
+          {isLocked && (
+            <div className="mb-4 text-center text-red-600">
+              Too many failed attempts. Please try again in {Math.floor(lockTimer / 60)}:{(lockTimer % 60).toString().padStart(2, '0')}
+            </div>
+          )}
 
           <div className="text-center text-sm text-gray-500">
             {resendTimer > 0 ? (
