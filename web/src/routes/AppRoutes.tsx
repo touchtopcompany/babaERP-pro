@@ -5,11 +5,12 @@ import Unauthorized from "@/pages/Unauthorized";
 import NotFound from "@/pages/NotFound";
 import PublicRoutes from "./PublicRoutes";
 import Loading from "../pages/Loading";
-import ForgotPassword from "@/features/auth/pages/forgot password/ForgotPassword";
 
 // Lazy load components
 const Login = lazy(() => import("@/features/auth/pages/signin/Login"));
 const TwoFactorAuth = lazy(() => import("@/features/auth/pages/two-factor-auth/TwoFactorAuth"));
+const ResetPassword = lazy(() => import("@/features/auth/pages/reset-password/ResetPassword"));
+const ForgotPassword = lazy(() => import("@/features/auth/pages/forgot password/ForgotPassword"));
 
 /**
  * This is Root Route initializer for the application
@@ -25,6 +26,7 @@ export const AppRoutes: FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/two-factor-auth" element={<TwoFactorAuth />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/signin" element={<Navigate to="/login" />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
         </Route>
