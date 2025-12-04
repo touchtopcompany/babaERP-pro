@@ -288,7 +288,7 @@ const ResetPassword = () => {
           </div>
         </form>
 
-        <div className="mt-8 p-4 bg-gray-50 rounded-md text-sm">
+        <div className="mt-8 p-4 bg-white rounded-md text-sm">
           <h3 className="font-medium text-gray-800 mb-2">Password Requirements</h3>
           <ul className="space-y-1">
             <li className={`flex items-start ${password.length >= 8 ? 'text-green-600' : 'text-gray-600'}`}>

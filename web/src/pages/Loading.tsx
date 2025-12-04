@@ -11,7 +11,7 @@ const Loading = () => {
       >
         <div className="flex flex-col items-center gap-3">
           <Spin size="large" className="text-green-600" />
-          <span className="text-gray-600">Loading...</span>
+          <span className="text-white">Loading...</span>
         </div>
       </div>
     </div>
