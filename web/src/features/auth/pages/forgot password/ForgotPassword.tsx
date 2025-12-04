@@ -1,20 +1,45 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForgotPassword } from '../../api/auth.api';
+import { validateForgotPasswordForm } from '../../utils/validations';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+  const [errors, setErrors] = useState<{ email?: string }>({});
   const forgotPasswordMutation = useForgotPassword();
   const navigate = useNavigate();
 
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+    
+    // Clear error when user starts typing
+    if (errors.email) {
+      const { isValid } = validateForgotPasswordForm(newEmail);
+      if (isValid) {
+        setErrors({});
+      }
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate form
+    const { isValid, errors: validationErrors } = validateForgotPasswordForm(email);
+    
+    if (!isValid) {
+      setErrors(validationErrors);
+      return;
+    }
+    
     try {
       await forgotPasswordMutation.mutateAsync({ email });
       setIsSuccess(true);
       setMessage('If an account exists with this email, you will receive a password reset link.');
+      setErrors({});
     } catch (error) {
       setMessage('An error occurred. Please try again.');
     }
@@ -36,7 +61,7 @@ const ForgotPassword = () => {
 
         {!isSuccess ? (
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -48,11 +73,23 @@ const ForgotPassword = () => {
                   type="email"
                   name="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleEmailChange}
+                  onBlur={() => {
+                    const { isValid, errors: validationErrors } = validateForgotPasswordForm(email);
+                    if (!isValid) {
+                      setErrors(validationErrors);
+                    } else {
+                      setErrors({});
+                    }
+                  }}
                   className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-full bg-gray-50 hover:border-black/60 focus:border-black/60 focus:ring-0 focus:outline-none transition-all duration-200"
                   placeholder="Email address"
-                  required
                 />
+                <div className="absolute -bottom-6 left-0 right-0">
+                  {errors.email && (
+                    <p className="text-sm text-red-600 pl-3">{errors.email}</p>
+                  )}
+                </div>
               </div>
             </div>
 
