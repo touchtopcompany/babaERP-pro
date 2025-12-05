@@ -56,12 +56,57 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-5xl bg-white overflow-hidden flex">
-        <div className="hidden md:flex md:w-1/2 bg-gray-100">
-          <img 
-            src="/src/assets/image/login_image.png" 
-            alt="Login" 
-            className="w-full h-full object-cover"
-          />
+        <div className="hidden md:flex md:w-1/2 ">
+          <div className="relative w-full h-full overflow-hidden">
+            <img 
+              src="/src/assets/image/signin_img.svg" 
+              alt="Login"
+              width={800}
+              height={800}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover transition-opacity duration-300 opacity-100"
+              style={{
+                contentVisibility: 'auto',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                position: 'relative',
+                zIndex: 2
+              }}
+              onLoad={(e) => {
+                const img = e.target as HTMLImageElement;
+                img.style.opacity = '1';
+                const placeholder = img.nextElementSibling as HTMLElement;
+                if (placeholder) {
+                  placeholder.style.display = 'none';
+                }
+              }}
+              onError={(e) => {
+                const img = e.target as HTMLImageElement;
+                console.error('Failed to load image:', img.src);
+                const placeholder = img.nextElementSibling as HTMLElement;
+                if (placeholder) {
+                  placeholder.style.display = 'flex';
+                  placeholder.style.flexDirection = 'column';
+                  placeholder.style.justifyContent = 'center';
+                  placeholder.style.alignItems = 'center';
+                  placeholder.innerHTML = 'Login Image';
+                }
+              }}
+            />
+            <div 
+              className="absolute inset-0 bg-gray-100 flex items-center justify-center text-gray-400"
+              style={{
+                zIndex: 1,
+                backgroundImage: 'linear-gradient(90deg, #f3f4f6 0px, #e5e7eb 50%, #f3f4f6 100%)',
+                backgroundSize: '200% 100%',
+                animation: 'shimmer 2s infinite',
+              }}
+            >
+              Loading...
+            </div>
+          </div>
         </div>
         <div className="w-full md:w-1/2 p-16">
           <div className="text-center mb-8">
@@ -131,7 +176,7 @@ const Login = () => {
             </div>
           </form>
 
-          <div className="bg-gray-50 px-8 py-4 border-t border-gray-200 text-center">
+          <div className="bg-white px-8 py-4 border-t border-gray-200 text-center">
             <p className="text-sm text-gray-600">
               Don't have an account?{' '}
               <Link to="/signup" className="font-medium text-black/60 hover:text-black/80 hover:underline">
