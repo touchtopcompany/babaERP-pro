@@ -1,0 +1,225 @@
+/* Solutions Page Styles */
+
+.solutions-page {
+  min-height: 100vh;
+  background: #FFFFFF;
+  padding-top: 80px;
+}
+
+/* Hero Section */
+.solutions-hero {
+  background: linear-gradient(135deg, #F8FAFC 0%, #FFFFFF 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 80px 0 60px;
+  text-align: center;
+}
+
+.solutions-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.solutions-hero-title {
+  font-size: 56px !important;
+  font-weight: 900 !important;
+  margin-bottom: 24px !important;
+  color: #1A1A1A;
+  letter-spacing: -2px;
+}
+
+.solutions-hero-description {
+  font-size: 20px !important;
+  color: #666666;
+  line-height: 1.7 !important;
+  margin: 0 !important;
+}
+
+/* Solutions Grid */
+.solutions-grid {
+  padding: 80px 0;
+}
+
+.solution-card {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 32px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.solution-card:hover {
+  border-color: var(--icon-color);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.solution-icon-wrapper {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 16px;
+  font-size: 32px;
+  color: var(--icon-color);
+  margin-bottom: 24px;
+}
+
+.solution-card:hover .solution-icon-wrapper {
+  background: var(--icon-color);
+  color: #FFFFFF;
+}
+
+.solution-title {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  margin-bottom: 12px !important;
+  color: #1A1A1A;
+}
+
+.solution-description {
+  color: #666666 !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+  margin-bottom: 24px !important;
+  flex: 1;
+}
+
+.solution-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.solution-feature-tag {
+  margin: 0 !important;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #FAFAFA;
+  color: #4A4A4A;
+}
+
+.solution-link {
+  text-decoration: none;
+}
+
+.solution-cta {
+  padding: 0 !important;
+  height: auto !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #3B82F6 !important;
+}
+
+.solution-cta:hover {
+  color: #2563EB !important;
+}
+
+/* CTA Section */
+.solutions-cta {
+  padding: 80px 0;
+  background: #FAFAFA;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.cta-card {
+  border: none;
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  border-radius: 16px;
+  padding: 60px 40px;
+  text-align: center;
+}
+
+.cta-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-title {
+  color: #FFFFFF !important;
+  font-size: 40px !important;
+  font-weight: 800 !important;
+  margin-bottom: 16px !important;
+}
+
+.cta-description {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 18px !important;
+  line-height: 1.7 !important;
+  margin-bottom: 32px !important;
+}
+
+.cta-button {
+  height: 52px !important;
+  padding: 0 32px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  background: #FFFFFF !important;
+  color: #3B82F6 !important;
+  border: none !important;
+  border-radius: 8px !important;
+}
+
+.cta-button:hover {
+  background: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+  .solutions-hero-title {
+    font-size: 40px !important;
+  }
+
+  .solutions-hero-description {
+    font-size: 18px !important;
+  }
+
+  .solutions-grid {
+    padding: 60px 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .solutions-hero {
+    padding: 60px 0 40px;
+  }
+
+  .solutions-hero-content {
+    padding: 0 16px;
+  }
+
+  .solutions-hero-title {
+    font-size: 32px !important;
+  }
+
+  .solutions-hero-description {
+    font-size: 16px !important;
+  }
+
+  .solutions-grid {
+    padding: 40px 0;
+  }
+
+  .solution-card {
+    padding: 24px;
+  }
+
+  .cta-card {
+    padding: 40px 24px;
+  }
+
+  .cta-title {
+    font-size: 28px !important;
+  }
+
+  .cta-description {
+    font-size: 16px !important;
+  }
+}
+

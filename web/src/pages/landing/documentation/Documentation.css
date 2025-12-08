@@ -1,0 +1,479 @@
+/* Documentation Page Styles */
+
+.docs-page {
+  min-height: 100vh;
+  background: #FFFFFF;
+  padding-top: 80px;
+}
+
+.docs-header {
+  background: linear-gradient(135deg, #F8FAFC 0%, #FFFFFF 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 60px 0 40px;
+}
+
+.docs-header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+  text-align: center;
+}
+
+.docs-title {
+  font-size: 56px !important;
+  font-weight: 900 !important;
+  margin-bottom: 16px !important;
+  color: #1A1A1A;
+  letter-spacing: -2px;
+}
+
+.docs-subtitle {
+  font-size: 20px !important;
+  color: #666666;
+  margin-bottom: 40px !important;
+  max-width: 800px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.docs-breadcrumb {
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.docs-breadcrumb .ant-breadcrumb-link {
+  color: #666666;
+}
+
+.docs-breadcrumb .ant-breadcrumb-link:hover {
+  color: #3B82F6;
+}
+
+.docs-search-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.docs-search {
+  width: 100%;
+}
+
+.docs-search .ant-input {
+  border-radius: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  padding: 14px 20px;
+  font-size: 16px;
+}
+
+.docs-search .ant-input:hover {
+  border-color: #3B82F6;
+}
+
+.docs-search .ant-input:focus {
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.docs-container {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 300px);
+}
+
+/* Sidebar Styles */
+.docs-sidebar {
+  width: 280px;
+  background: #FAFAFA;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.sidebar-header {
+  display: none;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-title {
+  margin: 0 !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+}
+
+.sidebar-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666666;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.docs-nav {
+  padding: 24px 0;
+}
+
+.docs-nav-section {
+  margin-bottom: 8px;
+}
+
+.nav-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  cursor: pointer;
+  color: #4A4A4A;
+  font-weight: 600;
+  font-size: 15px;
+  user-select: none;
+}
+
+.nav-section-header:hover {
+  background: rgba(0, 0, 0, 0.02);
+  color: #1A1A1A;
+}
+
+.nav-section-header.active {
+  background: rgba(59, 130, 246, 0.08);
+  color: #3B82F6;
+  border-right: 3px solid #3B82F6;
+}
+
+.nav-section-icon {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-section-title {
+  flex: 1;
+}
+
+.nav-section-content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.nav-section-content.expanded {
+  max-height: 1000px;
+  opacity: 1;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-article-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px 10px 52px;
+  color: #666666;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.nav-article-link:hover {
+  background: rgba(0, 0, 0, 0.02);
+  color: #1A1A1A;
+}
+
+.nav-article-link .ant-tag {
+  margin: 0;
+}
+
+/* Main Content Styles */
+.docs-main {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 90px;
+  left: 20px;
+  z-index: 100;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #4A4A4A;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.docs-content {
+  padding: 40px 60px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.docs-section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.section-header-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 12px;
+  font-size: 24px;
+  color: #3B82F6;
+}
+
+.docs-section-title {
+  font-size: 36px !important;
+  font-weight: 800 !important;
+  margin: 0 !important;
+  color: #1A1A1A;
+  letter-spacing: -1px;
+}
+
+.docs-article {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 48px;
+  margin-bottom: 32px;
+}
+
+.article-header {
+  margin-bottom: 24px;
+}
+
+.article-header .ant-divider {
+  margin: 16px 0 24px 0 !important;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.article-main-title {
+  font-size: 40px !important;
+  font-weight: 700 !important;
+  margin-bottom: 0 !important;
+  color: #1A1A1A;
+  letter-spacing: -0.5px;
+  line-height: 1.2 !important;
+}
+
+.article-tag {
+  font-size: 13px;
+  padding: 4px 12px;
+}
+
+.article-body {
+  color: #4A4A4A;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.article-intro {
+  font-size: 16px !important;
+  color: #4A4A4A !important;
+  margin-bottom: 32px !important;
+  line-height: 1.6 !important;
+  font-weight: 400 !important;
+}
+
+.article-body {
+  text-align: left;
+}
+
+.article-content {
+  line-height: 1.8;
+  color: #4A4A4A;
+}
+
+.article-content h1 {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 32px 0 24px 0;
+  color: #1A1A1A;
+  letter-spacing: -0.5px;
+}
+
+.article-content h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 32px 0 16px 0;
+  color: #1A1A1A;
+}
+
+.article-content h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 24px 0 12px 0;
+  color: #1A1A1A;
+}
+
+.article-content p {
+  margin-bottom: 16px;
+  line-height: 1.8;
+}
+
+.article-content ul,
+.article-content ol {
+  margin: 16px 0;
+  padding-left: 24px;
+}
+
+.article-content li {
+  margin-bottom: 8px;
+  line-height: 1.7;
+}
+
+.article-content pre {
+  background: #F8FAFC;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  padding: 20px;
+  overflow-x: auto;
+  margin: 24px 0;
+}
+
+.article-content code {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 14px;
+  background: #F8FAFC;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #E83E8C;
+}
+
+.article-content pre code {
+  background: transparent;
+  padding: 0;
+  color: #4A4A4A;
+}
+
+.article-placeholder {
+  padding: 48px 32px;
+  text-align: center;
+  background: #FAFAFA;
+  border-radius: 12px;
+  border: 1px dashed rgba(0, 0, 0, 0.15);
+  margin-top: 24px;
+}
+
+.article-placeholder .ant-typography {
+  color: #666666 !important;
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
+}
+
+.docs-footer {
+  padding: 24px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  margin-top: 32px;
+}
+
+.docs-footer a {
+  color: #3B82F6;
+  text-decoration: none;
+}
+
+.docs-footer a:hover {
+  color: #2563EB;
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .docs-sidebar {
+    position: fixed;
+    left: -280px;
+    top: 0;
+    z-index: 1000;
+    height: 100vh;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+  }
+
+  .docs-sidebar.sidebar-open {
+    left: 0;
+  }
+
+  .sidebar-header {
+    display: flex;
+  }
+
+  .sidebar-toggle {
+    display: block;
+  }
+
+  .docs-content {
+    padding: 32px 24px;
+  }
+
+  .docs-title {
+    font-size: 40px !important;
+  }
+
+  .docs-subtitle {
+    font-size: 18px !important;
+  }
+
+  .docs-section-title {
+    font-size: 28px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .docs-header {
+    padding: 40px 0 32px;
+  }
+
+  .docs-header-content {
+    padding: 0 16px;
+  }
+
+  .docs-title {
+    font-size: 32px !important;
+  }
+
+  .docs-subtitle {
+    font-size: 16px !important;
+  }
+
+  .docs-content {
+    padding: 24px 16px;
+  }
+
+  .docs-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .docs-section-title {
+    font-size: 24px !important;
+  }
+
+  .docs-articles {
+    gap: 16px;
+  }
+
+  .docs-article-card {
+    padding: 20px;
+  }
+}
+
