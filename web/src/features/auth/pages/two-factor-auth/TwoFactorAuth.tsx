@@ -168,7 +168,7 @@ const TwoFactorAuth = () => {
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Two-Factor Authentication</h1>
+          <h1 className="text-3xl font-bold text-teal-700 mb-2">Two-Factor Authentication</h1>
           <p className="text-gray-600">
             We've sent a 6-digit verification code to <span className="font-medium">{email}</span>
           </p>
@@ -196,9 +196,9 @@ const TwoFactorAuth = () => {
                 onPaste={handlePaste}
                 className={`w-12 h-12 text-2xl text-center border ${
                   error && !isLocked ? 'border-red-500' : 'border-gray-300'
-                } rounded-md focus:outline-none focus:ring-2 ${
-                  isLocked ? 'bg-gray-100 cursor-not-allowed' : ''
-                } focus:ring-black focus:border-transparent`}
+                } rounded-md focus:outline-none  focus:border-teal-700 ${
+                  isLocked ? 'bg-gray-100 cursor-not-allowed' : 'hover:border-teal-700'
+                }`}
                 autoComplete="off"
                 autoFocus={index === 0 && !isLocked}
                 disabled={isSubmitting || isLocked}
@@ -220,7 +220,7 @@ const TwoFactorAuth = () => {
                 Didn't receive a code?{' '}
                 <button 
                   type="button" 
-                  className="text-black hover:underline focus:outline-none disabled:opacity-50"
+                  className="text-teal-700 hover:text-teal-800 hover:underline focus:outline-none disabled:opacity-50"
                   onClick={handleResendCode}
                   disabled={isSubmitting}
                 >
@@ -234,7 +234,7 @@ const TwoFactorAuth = () => {
             <button
               type="submit"
               disabled={isSubmitting || code.some(digit => !digit)}
-              className="w-full flex justify-center py-3 px-4 bg-black text-white text-sm font-medium rounded-full hover:bg-black/90 focus:outline-none transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full flex justify-center py-3 px-4 bg-teal-700 text-white text-sm font-medium rounded-full hover:bg-teal-700 focus:outline-none  transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {isSubmitting ? 'Verifying...' : 'Verify Code'}
             </button>
@@ -242,7 +242,7 @@ const TwoFactorAuth = () => {
             <button
               type="button"
               onClick={() => navigate('/forgot-password')}
-              className="block w-full text-center text-sm text-gray-600 hover:text-gray-800 hover:underline"
+              className="block w-full text-center text-sm text-teal-700 hover:text-teal-800 hover:underline"
               disabled={isSubmitting}
             >
               Back to Forgot Password
