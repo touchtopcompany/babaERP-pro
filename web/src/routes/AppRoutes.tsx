@@ -23,11 +23,11 @@ export const AppRoutes: FC = () => {
       <Routes>
         {/* Public Routes - accessible only when not authenticated */}
         <Route element={<PublicRoutes />}>
-          <Route path="/login" element={<Login />} />
+          <Route path="/signin" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/two-factor-auth" element={<TwoFactorAuth />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/signin" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<Navigate to="/signin" />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
         </Route>
 
