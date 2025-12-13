@@ -11,6 +11,7 @@ const Home = lazy(() => import("@/pages/landing/Home"));
 const Features = lazy(() => import("@/pages/landing/features/Features"));
 const Solutions = lazy(() => import("@/pages/landing/solutions/Solutions"));
 const Pricing = lazy(() => import("@/pages/landing/pricing/Pricing"));
+
 const Resources = lazy(() => import("@/pages/landing/resources/Resources"));
 const Documentation = lazy(() => import("@/pages/landing/documentation/Documentation"));
 const Login = lazy(() => import("@/features/auth/pages/signin/Login"));
