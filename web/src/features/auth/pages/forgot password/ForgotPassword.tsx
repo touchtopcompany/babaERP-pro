@@ -48,7 +48,7 @@ const handleSendLinkClick = (e: React.MouseEvent) => {
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Forgot Password</h1>
+          <h1 className="text-3xl font-bold text-teal-700 mb-2">Forgot Password</h1>
           <p className="text-gray-600">Enter your email to receive a password reset link</p>
         </div>
 
@@ -97,14 +97,14 @@ const handleSendLinkClick = (e: React.MouseEvent) => {
                 type="button"
                 onClick={handleSendLinkClick}
                 disabled={forgotPasswordMutation.isPending}
-                className="w-full flex justify-center py-3 px-4 bg-black text-white text-sm font-medium rounded-full hover:bg-black/90 focus:outline-none transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full flex justify-center py-3 px-4 bg-teal-700 text-white text-sm font-medium rounded-full hover:bg-teal-700 focus:outline-none  transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {forgotPasswordMutation.isPending ? 'Sending...' : 'Send Reset Link'}
               </button>
               
               <Link
                 to="/login"
-                className="block w-full text-center text-sm text-gray-600 hover:text-gray-800 hover:underline"
+                className="block w-full text-center text-sm text-teal-700 hover:text-teal-800 hover:underline"
               >
                 Back to Sign In
               </Link>

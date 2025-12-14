@@ -28,24 +28,13 @@ export const AppRoutes: FC = () => {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        {/* Landing Page - always accessible */}
-        <Route path="/" element={<Home />} />
-        
-        {/* Landing Pages - always accessible */}
-        <Route path="/features" element={<Features />} />
-        <Route path="/solutions" element={<Solutions />} />
-        <Route path="/pricing" element={<Pricing />} />
-        <Route path="/resources" element={<Resources />} />
-        <Route path="/docs" element={<Documentation />} />
-        <Route path="/documentation" element={<Documentation />} />
-        
         {/* Public Routes - accessible only when not authenticated */}
         <Route element={<PublicRoutes />}>
-          <Route path="/login" element={<Login />} />
+          <Route path="/signin" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/two-factor-auth" element={<TwoFactorAuth />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/signin" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<Navigate to="/signin" />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
         </Route>
 

@@ -110,7 +110,7 @@ const Login = () => {
         </div>
         <div className="w-full md:w-1/2 p-16">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h1>
+            <h1 className="text-3xl font-bold text-teal-700 mb-2">Welcome Back</h1>
             <p className="text-gray-600">Sign in to your account to continue</p>
           </div>
 
@@ -167,8 +167,8 @@ const Login = () => {
                 disabled={!isFormValid() || loginMutation.isPending}
                 className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white ${
                   isFormValid() 
-                    ? 'bg-black hover:bg-gray-800 focus:outline-none  focus:ring-black' 
-                    : 'bg-gray-400 cursor-not-allowed'
+                    ? 'bg-teal-700 hover:bg-teal-700 focus:outline-none' 
+                    : 'bg-teal-700 cursor-not-allowed'
                 }`}
               >
                 {loginMutation.isPending ? 'Signing in...' : 'Sign in'}

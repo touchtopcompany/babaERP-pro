@@ -143,14 +143,14 @@ const ResetPassword = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Password Reset Successful!</h2>
+          <h2 className="text-2xl font-bold text-teal-700 mb-2">Password Reset Successful!</h2>
           <p className="text-gray-600 mb-8">
             Your password has been updated successfully. You will be redirected to the login page shortly.
           </p>
           <div className="mt-6">
             <div className="relative">
               <div className="overflow-hidden h-2 text-xs flex rounded bg-gray-200">
-                <div className="animate-progress bg-green-500"></div>
+                <div className="animate-progress bg-teal-500"></div>
               </div>
             </div>
           </div>
@@ -163,7 +163,7 @@ const ResetPassword = () => {
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Reset Your Password</h1>
+          <h1 className="text-3xl font-bold text-teal-700 mb-2">Reset Your Password</h1>
           <p className="text-gray-600">
             Create a new password for <span className="font-medium">{email}</span>
           </p>
@@ -272,15 +272,24 @@ const ResetPassword = () => {
             <button
               type="submit"
               disabled={isSubmitting || !password || !confirmPassword}
-              className="w-full flex justify-center py-3 px-4 bg-black text-white text-sm font-medium rounded-full hover:bg-black/90 focus:outline-none transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full flex justify-center py-3 px-4 bg-teal-600 text-white text-sm font-medium rounded-full hover:bg-teal-700 focus:outline-none transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? 'Resetting Password...' : 'Reset Password'}
+              {isSubmitting ? (
+                <div className="flex items-center justify-center space-x-2">
+                  <span>Resetting Password</span>
+                  <div className="flex space-x-1">
+                    <div className="w-1.5 h-1.5 rounded-full bg-white animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-white animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-white animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                  </div>
+                </div>
+              ) : 'Reset Password'}
             </button>
             
             <button
               type="button"
               onClick={() => navigate('/login')}
-              className="block w-full text-center text-sm text-gray-600 hover:text-gray-800 hover:underline"
+              className="block w-full text-center text-sm text-teal-700 hover:text-teal-800 hover:underline"
               disabled={isSubmitting}
             >
               Back to Login
