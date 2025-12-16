@@ -1,5 +1,5 @@
 /**
- * BABAERP Pro Color System
+ * BABAERP Color System
  * Centralized color palette following the application's design system
  */
 
