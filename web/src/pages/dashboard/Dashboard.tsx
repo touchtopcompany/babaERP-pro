@@ -90,46 +90,6 @@ const Dashboard = () => {
           </div>
         </Content>
       </Layout>
-
-      <style>{`
-        /* Classic Indicator Styles */
-        .classic-menu .ant-menu-item {
-          height: 60px !important;
-          margin-bottom: 8px !important;
-          position: relative !important;
-          overflow: visible !important; /* Important for the dot to show outside if needed */
-        }
-
-        .classic-menu .ant-menu-item-selected {
-          background-color: transparent !important;
-          color: white !important;
-          font-weight: 700 !important;
-        }
-
-        /* The Centered Dot underneath the text */
-        .classic-menu .ant-menu-item-selected::after {
-          content: '';
-          position: absolute;
-          left: 50%;
-          bottom: 10px; /* Adjust this to move dot up/down */
-          transform: translateX(-50%);
-          width: 6px;
-          height: 6px;
-          background: white;
-          border-radius: 50%;
-          border: none !important;
-          transition: all 0.3s;
-        }
-
-        /* Remove the default Ant Design side bar indicator */
-        .ant-menu-rtl .ant-menu-item::after, 
-        .ant-menu-vertical .ant-menu-item::after, 
-        .ant-menu-vertical-left .ant-menu-item::after, 
-        .ant-menu-vertical-right .ant-menu-item::after, 
-        .ant-menu-inline .ant-menu-item::after {
-          display: none !important;
-        }
-      `}</style>
     </Layout>
   );
 };

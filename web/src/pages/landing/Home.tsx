@@ -272,7 +272,7 @@ const Home: React.FC = () => {
   const [activeCardIndex, setActiveCardIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [activePricingIndex, setActivePricingIndex] = useState(0);
+  // const [activePricingIndex, setActivePricingIndex] = useState(0);
   const pricingScrollRef = useRef<HTMLDivElement>(null);
   const pricingCardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const testimonialsScrollRef = useRef<HTMLDivElement>(null);
@@ -739,7 +739,7 @@ const Home: React.FC = () => {
             {pricingPlans.map((_, index) => (
               <div
                 key={index}
-                className={`pagination-dot ${index === activePricingIndex ? 'active' : ''}`}
+                // className={`pagination-dot ${index === activePricingIndex ? 'active' : ''}`}
                 onClick={() => scrollToPricingCard(index)}
               ></div>
             ))}

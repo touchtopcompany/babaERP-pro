@@ -13,6 +13,7 @@ const Login = lazy(() => import("@/features/auth/pages/signin/Login"));
 const TwoFactorAuth = lazy(() => import("@/features/auth/pages/two-factor-auth/TwoFactorAuth"));
 const ResetPassword = lazy(() => import("@/features/auth/pages/reset-password/ResetPassword"));
 const ForgotPassword = lazy(() => import("@/features/auth/pages/forgot password/ForgotPassword"));
+const Signup = lazy(() => import("@/features/auth/pages/signup/Signup"));
 const DashboardPage = lazy(() => import("@/features/dashboard/pages/home/DashboardPage"));
 const UsersPage = lazy(() => import("@/features/dashboard/pages/user-management/UsersPage"));
 const RolesPage = lazy(() => import("@/features/dashboard/pages/user-management/RolesPage"));
@@ -109,12 +110,12 @@ export const AppRoutes: FC = () => {
 
         {/* Public Routes - accessible only when not authenticated */}
         <Route element={<PublicRoutes />}>
-          <Route path="/auth/signin" element={<Login />} />
-          <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-          <Route path="/auth/two-factor-auth" element={<TwoFactorAuth />} />
-          <Route path="/auth/reset-password" element={<ResetPassword />} />
-          <Route path="/signin" element={<Navigate to="/auth/signin" replace />} />
-          <Route path="/login" element={<Navigate to="/auth/signin" replace />} />
+          <Route path="/signin" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/two-factor-auth" element={<TwoFactorAuth />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Navigate to="/signin" />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
         </Route>
 
