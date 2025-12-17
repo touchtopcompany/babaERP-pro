@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ant-design/charts": "^2.6.7",
+    "@ant-design/charts": "^2.6.6",
     "@tailwindcss/vite": "^4.1.17",
     "@tanstack/react-query": "^5.90.7",
     "@types/react-icons": "^2.2.7",
@@ -27,10 +27,12 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@ant-design/icons": "^6.1.0",
     "@eslint/js": "^9.39.1",
-    "@types/node": "^24.10.0",
-    "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.2",
+    "@types/antd": "^0.12.32",
+    "@types/node": "^24.10.4",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react-swc": "^4.2.1",
     "autoprefixer": "^10.4.22",
     "eslint": "^9.39.1",

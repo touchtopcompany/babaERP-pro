@@ -203,6 +203,12 @@ export const AppRoutes: FC = () => {
           <Route path="/settings/tax-rates" element={<TaxRatesPage />} />
         </Route>
 
+        {/* Dashboard Route - Accessible without authentication for local development */}
+        <Route path="/dashboard" element={<Dashboard />} />
+        
+        {/* Redirect root to dashboard for easy access during development */}
+        <Route path="/" element={<Navigate to="/dashboard" />} />
+        
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
