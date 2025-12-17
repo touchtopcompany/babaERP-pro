@@ -249,7 +249,7 @@ const SolutionCard: React.FC<{
           </Title>
           <div className="solution-price-overlay">{solution.price}</div>
           <Space size="middle" className="solution-actions">
-            <Link to="/login">
+            <Link to="/signup">
               <Button type="primary" className="solution-btn-primary">
                 Get Started
               </Button>
@@ -537,7 +537,7 @@ const Home: React.FC = () => {
               </Paragraph>
 
               <Space size="large" className="hero-actions">
-                <Link to="/login">
+                <Link to="/signup">
                   <Button
                     type="primary"
                     size="large"
@@ -812,7 +812,7 @@ const Home: React.FC = () => {
             Join thousands of businesses who've streamlined their operations with BabaERP. Sign up today for exclusive deals and priority access.
           </Paragraph>
           <Space size="large" className="cta-actions">
-            <Link to="/login">
+            <Link to="/signup">
               <Button type="primary" size="large" className="cta-btn-primary">
                 Sign Up Free
               </Button>
