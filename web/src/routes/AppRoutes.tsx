@@ -207,7 +207,7 @@ export const AppRoutes: FC = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         
         {/* Redirect root to dashboard for easy access during development */}
-        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="/" element={<Home />} />
         
         <Route path="*" element={<NotFound />} />
       </Routes>
