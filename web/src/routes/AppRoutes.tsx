@@ -206,10 +206,10 @@ export const AppRoutes: FC = () => {
 
         {/* Dashboard Route - Accessible without authentication for local development */}
         <Route path="/dashboard" element={<Dashboard />} />
-        
+
         {/* Redirect root to dashboard for easy access during development */}
         <Route path="/" element={<Home />} />
-        
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>

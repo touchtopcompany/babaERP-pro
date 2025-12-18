@@ -1,14 +1,15 @@
 import { Layout, Menu, Button, Input, Badge, Avatar } from 'antd';
-import { 
-  DashboardOutlined, 
-  GlobalOutlined, 
-  TeamOutlined, 
+import {
+  DashboardOutlined,
+  GlobalOutlined,
+  TeamOutlined,
   AreaChartOutlined,
-  SettingOutlined, 
+  SettingOutlined,
   LogoutOutlined,
   SearchOutlined,
   BellOutlined
 } from '@ant-design/icons';
+import DashboardComponent from './components/Dashboard';
 
 const { Sider, Content } = Layout;
 
@@ -16,9 +17,9 @@ const Dashboard = () => {
   return (
     <Layout style={{ minHeight: '100vh', background: '#0d9488' }}>
       {/* Sidebar */}
-      <Sider 
-        width={260} 
-        style={{ 
+      <Sider
+        width={260}
+        style={{
           background: '#0d9488',
           padding: '40px 0',
           height: '100vh',
@@ -28,10 +29,10 @@ const Dashboard = () => {
         }}
       >
         <div style={{ color: 'white', padding: '0 40px', fontSize: '22px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '50px' }}>
-          <div style={{ width: '8px', height: '24px', background: 'white', borderRadius: '4px', transform: 'rotate(20deg)' }} />
-          Logo Here
+          <div style={{ width: '40px', height: '40px', background: 'white', borderRadius: '12px' }} />
+          <span>BabaERP</span>
         </div>
-        
+
         <Menu
           mode="inline"
           defaultSelectedKeys={['1']}
@@ -43,7 +44,6 @@ const Dashboard = () => {
           <Menu.Item key="3" icon={<TeamOutlined />}>User Management</Menu.Item>
           <Menu.Item key="4" icon={<AreaChartOutlined />}>Analytics</Menu.Item>
           <Menu.Item key="5" icon={<SettingOutlined />}>Setting</Menu.Item>
-          
         </Menu>
 
         <div style={{ position: 'absolute', bottom: '50px', width: '100%', padding: '0 30px' }}>
@@ -56,23 +56,23 @@ const Dashboard = () => {
       {/* Main Content */}
       <Layout style={{ marginLeft: 260, background: '#0d9488' }}>
         <Content style={{ minHeight: '100vh' }}>
-          <div style={{ 
-            background: '#F8FAFC', 
-            minHeight: '100vh', 
-            width: '100%', 
-            borderRadius: '50px 0 0 50px', 
+          <div style={{
+            background: '#F8FAFC',
+            minHeight: '100vh',
+            width: '100%',
+            borderRadius: '50px 0 0 50px',
             padding: '40px 50px',
             boxShadow: '-15px 0 30px rgba(0,0,0,0.1)'
           }}>
             {/* Header Row */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
-              <Input 
-                placeholder="Search.." 
-                prefix={<SearchOutlined style={{ color: 'rgba(9, 9, 9, 1)' }} />} 
-                style={{ 
-                  width: '300px', 
-                  borderRadius: '15px', 
-                  background: '#f0f2f5', 
+              <Input
+                placeholder="Search.."
+                prefix={<SearchOutlined style={{ color: 'rgba(9, 9, 9, 1)' }} />}
+                style={{
+                  width: '300px',
+                  borderRadius: '15px',
+                  background: '#f0f2f5',
                   border: '1px solid transparent',
                   height: '40px',
                   transition: 'border-color 0.3s',
@@ -87,6 +87,9 @@ const Dashboard = () => {
                 <Avatar style={{ backgroundColor: '#0d9488', verticalAlign: 'middle' }} size="large">YN</Avatar>
               </div>
             </div>
+
+            {/* Your Dashboard Component */}
+            <DashboardComponent />
           </div>
         </Content>
       </Layout>

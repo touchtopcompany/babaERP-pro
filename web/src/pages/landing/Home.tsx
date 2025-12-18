@@ -523,7 +523,7 @@ const Home: React.FC = () => {
         <div className="hero-container">
           <div className="hero-content-wrapper">
             <div className="hero-content">
-              <div className="hero-badge">
+              <div className="hero-badge ">
                 <span>Enterprise ERP Solution</span>
               </div>
               
@@ -544,7 +544,7 @@ const Home: React.FC = () => {
                   <Button
                     size="large"
                     icon={<RocketOutlined />}
-                    className="!bg-teal-700 hover:!bg-teal-800 !text-white !border-0"
+                    className="!bg-teal-700 hover:!bg-teal-700 !text-white !border-0"
                   >
                     Start Free Trial
                   </Button>
