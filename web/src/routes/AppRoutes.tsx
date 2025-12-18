@@ -96,6 +96,7 @@ const BarcodeSettingsPage = lazy(() => import("../features/dashboard/pages/setti
 const PrintersPage = lazy(() => import("../features/dashboard/pages/settings/PrintersPage"));
 const TaxRatesPage = lazy(() => import("../features/dashboard/pages/settings/TaxRatesPage"));
 const SubdomainManagement = lazy(() => import("@/pages/dashboard/components/Subdomain Management"));
+const UserManagement = lazy(() => import("@/pages/dashboard/components/User Management"));
 
 /**
  * This is Root Route initializer for the application
@@ -208,6 +209,7 @@ export const AppRoutes: FC = () => {
         {/* Dashboard Routes - Accessible without authentication for local development */}
         <Route path="/dashboard" element={<Dashboard />}>
           <Route path="subdomains" element={<SubdomainManagement />} />
+          <Route path="users" element={<UserManagement />} />
         </Route>
 
         {/* Redirect root to dashboard for easy access during development */}
