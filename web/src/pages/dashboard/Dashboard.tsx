@@ -1,4 +1,5 @@
 import { Layout, Menu, Button, Input, Badge, Avatar } from 'antd';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
   DashboardOutlined,
   GlobalOutlined,
@@ -14,6 +15,18 @@ import DashboardComponent from './components/Dashboard';
 const { Sider, Content } = Layout;
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const menuItems = [
+    { key: '1', icon: <DashboardOutlined />, label: 'Dashboard', path: '/dashboard' },
+    { key: '2', icon: <GlobalOutlined />, label: 'Subdomain Management', path: '/dashboard/subdomains' },
+    { key: '3', icon: <TeamOutlined />, label: 'User Management', path: '/dashboard/users' },
+    { key: '4', icon: <AreaChartOutlined />, label: 'Analytics', path: '/dashboard/analytics' },
+    { key: '5', icon: <SettingOutlined />, label: 'Setting', path: '/dashboard/settings' },
+  ];
+
+  const selectedKey = menuItems.find(item => location.pathname === item.path)?.key || '1';
   return (
     <Layout style={{ minHeight: '100vh', background: '#0d9488' }}>
       {/* Sidebar */}
@@ -35,15 +48,19 @@ const Dashboard = () => {
 
         <Menu
           mode="inline"
-          defaultSelectedKeys={['1']}
+          selectedKeys={[selectedKey]}
           style={{ background: 'transparent', color: 'rgba(255,255,255,0.7)', border: 'none' }}
           className="classic-menu"
         >
-          <Menu.Item key="1" icon={<DashboardOutlined />}>Dashboard</Menu.Item>
-          <Menu.Item key="2" icon={<GlobalOutlined />}>Subdomain Management</Menu.Item>
-          <Menu.Item key="3" icon={<TeamOutlined />}>User Management</Menu.Item>
-          <Menu.Item key="4" icon={<AreaChartOutlined />}>Analytics</Menu.Item>
-          <Menu.Item key="5" icon={<SettingOutlined />}>Setting</Menu.Item>
+          {menuItems.map(item => (
+            <Menu.Item
+              key={item.key}
+              icon={item.icon}
+              onClick={() => navigate(item.path)}
+            >
+              {item.label}
+            </Menu.Item>
+          ))}
         </Menu>
 
         <div style={{ position: 'absolute', bottom: '50px', width: '100%', padding: '0 30px' }}>
@@ -88,8 +105,11 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Your Dashboard Component */}
-            <DashboardComponent />
+            {/* Nested routes will be rendered here */}
+            <Outlet />
+
+            {/* Render the appropriate component based on the route */}
+            {location.pathname === '/dashboard' && <DashboardComponent />}
           </div>
         </Content>
       </Layout>
