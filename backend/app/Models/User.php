@@ -18,8 +18,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'lastname',
+        'username',
+        'business_id',
         'email',
-        'phone',
         'password',
     ];
 
@@ -49,5 +51,10 @@ class User extends Authenticatable
     public function assets()
     {
         return $this->hasMany(Asset::class, 'user_id');
+    }
+
+    public function business()
+    {
+        return $this->belongsTo(Business::class);
     }
 }

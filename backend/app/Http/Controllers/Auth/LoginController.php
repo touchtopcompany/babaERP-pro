@@ -25,7 +25,7 @@ class LoginController extends Controller
         $password = $request->input('password');
 
         $user = User::where('email', $identifier)
-            ->orWhere('phone', $identifier)
+            ->orWhere('username', $identifier)
             ->first();
 
         if (!$user || !Hash::check($password, $user->password)) {
