@@ -13,24 +13,30 @@ const Login = () => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
   const loginMutation = useLogin();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitted(true);
-    
+
     const { isValid, errors: validationErrors } = validateLoginForm(formData);
     setErrors(validationErrors);
-    
+
     if (isValid) {
-      loginMutation.mutate(formData);
+      setLoginError(null); // Clear any previous errors
+      loginMutation.mutate(formData, {
+        onError: () => {
+          setLoginError('The provided credentials are incorrect.');
+        }
+      });
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    
+
     // Validate field if it was touched or form was submitted
     if (touched[name] || isSubmitted) {
       const error = validateField(name, value);
@@ -41,16 +47,16 @@ const Login = () => {
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setTouched(prev => ({ ...prev, [name]: true }));
-    
+
     // Validate the field when it loses focus
     const error = validateField(name, value);
     setErrors(prev => ({ ...prev, [name]: error || '' }));
   };
 
   const isFormValid = () => {
-    return Object.values(errors).every(error => !error) && 
-           formData.username.trim() !== '' && 
-           formData.password.trim() !== '';
+    return Object.values(errors).every(error => !error) &&
+      formData.username.trim() !== '' &&
+      formData.password.trim() !== '';
   };
 
   return (
@@ -58,8 +64,8 @@ const Login = () => {
       <div className="w-full max-w-5xl bg-white overflow-hidden flex">
         <div className="hidden md:flex md:w-1/2 ">
           <div className="relative w-full h-full overflow-hidden">
-            <img 
-              src="/src/assets/image/signin_img.svg" 
+            <img
+              src="/src/assets/image/signin_img.svg"
               alt="Login"
               width={800}
               height={800}
@@ -95,7 +101,7 @@ const Login = () => {
                 }
               }}
             />
-            <div 
+            <div
               className="absolute inset-0 bg-gray-100 flex items-center justify-center text-gray-400"
               style={{
                 zIndex: 1,
@@ -115,6 +121,20 @@ const Login = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+            {loginError && (
+              <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-4">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm text-red-700">{loginError}</p>
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="space-y-4">
               <FormField
                 name="username"
@@ -151,8 +171,8 @@ const Login = () => {
 
               <div className="flex justify-center">
                 <div className="text-sm">
-                  <Link 
-                    to="/forgot-password" 
+                  <Link
+                    to="/forgot-password"
                     className="font-medium text-black/60 hover:text-black/80 hover:underline"
                   >
                     Forgot password?
@@ -165,11 +185,10 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={!isFormValid() || loginMutation.isPending}
-                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white ${
-                  isFormValid() 
-                    ? 'bg-teal-700 hover:bg-teal-700 focus:outline-none' 
-                    : 'bg-teal-700 cursor-not-allowed'
-                }`}
+                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white ${isFormValid()
+                  ? 'bg-teal-700 hover:bg-teal-700 focus:outline-none'
+                  : 'bg-teal-700 cursor-not-allowed'
+                  }`}
               >
                 {loginMutation.isPending ? 'Signing in...' : 'Sign in'}
               </button>
