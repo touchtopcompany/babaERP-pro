@@ -9,7 +9,7 @@ const Unauthorized: FC = () => {
     const unsubscribe = setTimeout(() => {
       localStorage.removeItem("user")
       localStorage.removeItem("token")
-      window.location.replace("/signin")
+      window.location.replace("/auth/signin")
 
     }, 500);
 

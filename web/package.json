@@ -10,11 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/charts": "^2.6.7",
     "@tailwindcss/vite": "^4.1.17",
     "@tanstack/react-query": "^5.90.7",
     "@types/react-icons": "^2.2.7",
     "antd": "^5.28.1",
     "axios": "^1.13.2",
+    "dayjs": "^1.11.19",
     "framer-motion": "^12.23.25",
     "laravel-echo": "^2.2.6",
     "react": "^19.2.0",

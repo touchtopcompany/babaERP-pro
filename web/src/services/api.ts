@@ -79,11 +79,11 @@ api.interceptors.response.use(
 
         // Redirect to login page
         if (typeof window !== "undefined" && 
-            !window.location.pathname.includes("/signin") && 
+            !window.location.pathname.includes("/auth/signin") && 
             !window.location.pathname.includes("/auth/") &&
             window.location.pathname !== "/") {
           logger.log("🚪 Redirecting to signin page");
-          window.location.href = "/signin";
+          window.location.href = "/auth/signin";
         }
       }
     } else if (error.request) {
