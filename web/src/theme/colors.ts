@@ -3,14 +3,14 @@
  * Centralized color palette following the application's design system
  */
 
-export const primaryColor = "#D99"; // Primary brand color (light purple/pink)
+export const primaryColor = "#1890ff"; // Primary brand color (blue)
 
 // Color Palette
 export const colors = {
   // Primary Colors
   primary: primaryColor,
-  primaryLight: "#E5B3E5",
-  primaryDark: "#C47BC4",
+  primaryLight: "#40a9ff",
+  primaryDark: "#0050b3",
   
   // Neutral Colors
   white: "#FFFFFF",
@@ -56,10 +56,10 @@ export const colorVariables = {
   '--primary-color': primaryColor,
   '--primary-color-light': colors.primaryLight,
   '--primary-color-dark': colors.primaryDark,
-  '--primary-shadow': 'rgba(221, 153, 221, 0.3)',
-  '--primary-shadow-light': 'rgba(221, 153, 221, 0.2)',
-  '--primary-bg-light': 'rgba(221, 153, 221, 0.1)',
-  '--primary-bg-medium': 'rgba(221, 153, 221, 0.15)',
+  '--primary-shadow': 'rgba(24, 144, 255, 0.3)',
+  '--primary-shadow-light': 'rgba(24, 144, 255, 0.2)',
+  '--primary-bg-light': 'rgba(24, 144, 255, 0.1)',
+  '--primary-bg-medium': 'rgba(24, 144, 255, 0.15)',
 } as const;
 
 export type ColorKey = keyof typeof colors;

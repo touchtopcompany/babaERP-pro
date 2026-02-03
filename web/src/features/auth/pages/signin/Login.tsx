@@ -176,14 +176,6 @@ const Login = () => {
             </div>
           </form>
 
-          <div className="bg-white px-8 py-4 border-t border-gray-200 text-center">
-            <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
-              <Link to="/signup" className="font-medium text-black/60 hover:text-black/80 hover:underline">
-                Sign up
-              </Link>
-            </p>
-          </div>
         </div>
       </div>
     </div>

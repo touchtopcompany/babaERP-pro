@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         removeFromStorage("user");
         removeFromStorage("token");
         setUser(null);
-        window.location.replace("/signin");
+        window.location.replace("/auth/signin");
       },
     });
   }, [logout, removeFromStorage]);

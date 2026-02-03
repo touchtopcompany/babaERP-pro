@@ -4,7 +4,7 @@ import useTheme from "./useTheme";
 import { ConfigProvider, theme as antdTheme } from "antd";
 import { applyColorVariables } from "../utils/colorUtils";
 
-export const primaryColor = "#D99";
+export const primaryColor = "#1890ff";
 
 export const ThemeWraper = ({ children }: { children: ReactNode }) => {
   const { theme } = useTheme();
@@ -43,8 +43,8 @@ export const ThemeWraper = ({ children }: { children: ReactNode }) => {
             itemSelectedColor: primaryColor,
             itemSelectedBg:
               theme === "dark"
-                ? "rgba(255, 255, 255, 0.25)"
-                : "rgba(250, 204, 21, 0.12)",
+                ? "rgba(24, 144, 255, 0.25)"
+                : "rgba(24, 144, 255, 0.12)",
           },
           Drawer: {
             margin: 0,
