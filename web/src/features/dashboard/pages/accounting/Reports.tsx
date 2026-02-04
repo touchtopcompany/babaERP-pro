@@ -28,6 +28,8 @@ import {
     PrinterOutlined,
     FilterOutlined,
     SearchOutlined,
+    CaretDownOutlined,
+    CaretRightOutlined,
 } from "@ant-design/icons";
 import useTheme from "@/theme/useTheme";
 import dayjs from "dayjs";
@@ -116,6 +118,10 @@ const Reports: React.FC = () => {
             setCurrentView("ar-ageing-summary");
         } else if (reportId === "ap-ageing-summary") {
             setCurrentView("ap-ageing-summary");
+        } else if (reportId === "ar-ageing-details") {
+            setCurrentView("ar-ageing-details");
+        } else if (reportId === "ap-ageing-details") {
+            setCurrentView("ap-ageing-details");
         } else {
             // For now, show a styled message. Individual report pages can be created later.
             const reportTitle = reportCards.find(card => card.id === reportId)?.title;
@@ -670,7 +676,7 @@ const Reports: React.FC = () => {
         );
     };
 
-      // Balance sheet
+    // Balance sheet
     const BalanceSheetView = () => {
         const formatDate = (date: dayjs.Dayjs) => date.format('DD-MM-YYYY');
 
@@ -824,7 +830,7 @@ const Reports: React.FC = () => {
         );
     };
 
-        // Account Receivable Ageing Report (Summary)
+    // Account Receivable Ageing Report (Summary)
     const ARAgeingSummaryView = () => {
         const formatDate = (date: dayjs.Dayjs) => date.format('DD-MM-YYYY');
         const [selectedLocation, setSelectedLocation] = useState<string>("All locations");
@@ -1711,6 +1717,1465 @@ const Reports: React.FC = () => {
         );
     };
 
+    // Account Receivable Ageing Details (Details)
+    const ARAgeingDetailsView = () => {
+        const formatDate = (date: dayjs.Dayjs) => date.format('DD-MM-YYYY');
+        const [selectedLocation, setSelectedLocation] = useState<string>("All locations");
+        const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
+            current: true,
+            '1-30': true,
+            '31-60': true,
+            '61-90': true,
+            '91+': true,
+        });
+
+        const toggleGroup = (group: string) => {
+            setExpandedGroups(prev => ({
+                ...prev,
+                [group]: !prev[group]
+            }));
+        };
+
+        // Sample data for each ageing period
+        const ageingData = {
+            current: [
+                { date: '15-01-2026', transactionType: 'Invoice', invoiceNo: 'INV-001', customer: 'ABC Trading Ltd', dueDate: '15-02-2026', due: 'TSh 500,000' },
+                { date: '20-01-2026', transactionType: 'Invoice', invoiceNo: 'INV-002', customer: 'XYZ Corporation', dueDate: '20-02-2026', due: 'TSh 750,000' },
+            ],
+            '1-30': [
+                { date: '15-12-2025', transactionType: 'Invoice', invoiceNo: 'INV-003', customer: 'Global Imports Inc', dueDate: '15-01-2026', due: 'TSh 200,000' },
+                { date: '20-12-2025', transactionType: 'Invoice', invoiceNo: 'INV-004', customer: 'Local Suppliers Ltd', dueDate: '20-01-2026', due: 'TSh 100,000' },
+            ],
+            '31-60': [
+                { date: '15-11-2025', transactionType: 'Invoice', invoiceNo: 'INV-005', customer: 'ABC Trading Ltd', dueDate: '15-12-2025', due: 'TSh 200,000' },
+                { date: '20-11-2025', transactionType: 'Invoice', invoiceNo: 'INV-006', customer: 'XYZ Corporation', dueDate: '20-12-2025', due: 'TSh 150,000' },
+            ],
+            '61-90': [
+                { date: '15-10-2025', transactionType: 'Invoice', invoiceNo: 'INV-007', customer: 'Global Imports Inc', dueDate: '15-11-2025', due: 'TSh 100,000' },
+                { date: '20-10-2025', transactionType: 'Invoice', invoiceNo: 'INV-008', customer: 'Local Suppliers Ltd', dueDate: '20-11-2025', due: 'TSh 75,000' },
+            ],
+            '91+': [
+                { date: '15-08-2025', transactionType: 'Invoice', invoiceNo: 'INV-009', customer: 'ABC Trading Ltd', dueDate: '15-09-2025', due: 'TSh 50,000' },
+                { date: '20-08-2025', transactionType: 'Invoice', invoiceNo: 'INV-010', customer: 'XYZ Corporation', dueDate: '20-09-2025', due: 'TSh 25,000' },
+            ],
+        };
+
+        const calculateTotal = (group: string) => {
+            return ageingData[group as keyof typeof ageingData]?.reduce((total, item) => {
+                const amount = parseInt(item.due.replace('TSh ', '').replace(/,/g, ''));
+                return total + amount;
+            }, 0) || 0;
+        };
+
+        const exportMenuItems = [
+            { key: 'csv', label: 'Export to CSV' },
+            { key: 'excel', label: 'Export to Excel' },
+            { key: 'pdf', label: 'Export to PDF' },
+            { key: 'print', label: 'Print' },
+        ];
+
+        return (
+            <div style={{ width: "100%", maxWidth: "100%", overflow: "hidden" }}>
+                {/* Header Section */}
+                <Row gutter={[16, 16]} style={{ marginBottom: "24px" }}>
+                    <Col xs={24} sm={24} md={24} lg={24}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                            <Button
+                                icon={<ArrowLeftOutlined />}
+                                onClick={handleBackToReports}
+                                style={{
+                                    background: isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0",
+                                    border: isDark ? "1px solid rgba(255,255,255,0.2)" : "1px solid #d9d9d9",
+                                    color: isDark ? "#fff" : "#1f1f1f",
+                                }}
+                            >
+                                Back to Reports
+                            </Button>
+                            <Title
+                                level={2}
+                                style={{
+                                    margin: 0,
+                                    color: isDark ? "#fff" : "#1f1f1f",
+                                    fontWeight: 600,
+                                }}
+                            >
+                                Account Receivable Ageing Details (Details)
+                            </Title>
+                        </div>
+                    </Col>
+                </Row>
+
+                <Row gutter={[24, 24]}>
+                    {/* Left Sidebar - Filters */}
+                    <Col xs={24} sm={24} md={8} lg={6}>
+                        <Card
+                            style={{
+                                background: isDark ? "rgba(255,255,255,0.05)" : "#ffffff",
+                                border: isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid #f0f0f0",
+                                borderRadius: "8px",
+                            }}
+                        >
+                            <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+                                <Title level={5} style={{ margin: 0, color: isDark ? "#fff" : "#1f1f1f" }}>
+                                    <FilterOutlined /> Filters
+                                </Title>
+                                <Divider style={{ margin: "12px 0", borderColor: isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0" }} />
+
+                                <div>
+                                    <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "12px", display: "block", marginBottom: "8px" }}>
+                                        Business Location
+                                    </Text>
+                                    <Select
+                                        value={selectedLocation}
+                                        onChange={setSelectedLocation}
+                                        style={{ width: "100%" }}
+                                    >
+                                        <Select.Option value="All locations">All locations</Select.Option>
+                                        <Select.Option value="Location 1">Location 1</Select.Option>
+                                        <Select.Option value="Location 2">Location 2</Select.Option>
+                                    </Select>
+                                </div>
+
+                                <div style={{ marginTop: "16px" }}>
+                                    <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "12px", display: "block", marginBottom: "8px" }}>
+                                        Date Range
+                                    </Text>
+                                    <RangePicker
+                                        value={dateRange}
+                                        onChange={(dates) => {
+                                            if (dates && dates[0] && dates[1]) {
+                                                setDateRange([dates[0], dates[1]]);
+                                            }
+                                        }}
+                                        format="DD-MM-YYYY"
+                                        style={{ width: "100%" }}
+                                        suffixIcon={<CalendarOutlined />}
+                                    />
+                                </div>
+
+                                <Divider style={{ margin: "12px 0", borderColor: isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0" }} />
+
+                                <div>
+                                    <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "12px", display: "block", marginBottom: "8px" }}>
+                                        PREDEFINED RANGES
+                                    </Text>
+                                    <Select
+                                        value="thisYear"
+                                        onChange={handlePredefinedRangeChange}
+                                        style={{ width: "100%" }}
+                                        size="small"
+                                    >
+                                        {predefinedRanges.map((range) => (
+                                            <Select.Option key={range.value} value={range.value}>
+                                                {range.label}
+                                            </Select.Option>
+                                        ))}
+                                    </Select>
+                                </div>
+                            </Space>
+                        </Card>
+                    </Col>
+
+                    {/* Main Content - AR Ageing Details Table */}
+                    <Col xs={24} sm={24} md={16} lg={18}>
+                        <Card
+                            style={{
+                                background: isDark ? "rgba(255,255,255,0.05)" : "#ffffff",
+                                border: isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid #f0f0f0",
+                                borderRadius: "8px",
+                            }}
+                        >
+                            <Space direction="vertical" size="large" style={{ width: "100%" }}>
+                                {/* Report Header */}
+                                <div style={{ textAlign: "center" }}>
+                                    <Title level={3} style={{ margin: 0, color: isDark ? "#fff" : "#1f1f1f" }}>
+                                        Account Receivable Ageing Details (Details)
+                                    </Title>
+                                    <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c" }}>
+                                        {formatDate(dateRange[0])} - {formatDate(dateRange[1])}
+                                    </Text>
+                                </div>
+
+                                <Divider style={{ margin: "16px 0", borderColor: isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0" }} />
+
+                                {/* Table Controls */}
+                                <Row gutter={[16, 16]} align="middle">
+                                    <Col xs={24} sm={12} md={8}>
+                                        <Space>
+                                            <Text style={{ color: isDark ? "#fff" : "#1f1f1f" }}>Show</Text>
+                                            <Select
+                                                value="all"
+                                                style={{ width: 80 }}
+                                            >
+                                                <Select.Option value="all">all</Select.Option>
+                                                <Select.Option value={25}>25</Select.Option>
+                                                <Select.Option value={50}>50</Select.Option>
+                                                <Select.Option value={100}>100</Select.Option>
+                                            </Select>
+                                            <Text style={{ color: isDark ? "#fff" : "#1f1f1f" }}>entries</Text>
+                                        </Space>
+                                    </Col>
+                                    <Col xs={24} sm={12} md={16}>
+                                        <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", flexWrap: "wrap" }}>
+                                            <Dropdown
+                                                menu={{
+                                                    items: exportMenuItems,
+                                                    onClick: ({ key }) => {
+                                                        switch (key) {
+                                                            case 'csv':
+                                                                message.info('Exporting to CSV...');
+                                                                break;
+                                                            case 'excel':
+                                                                message.info('Exporting to Excel...');
+                                                                break;
+                                                            case 'pdf':
+                                                                message.info('Exporting to PDF...');
+                                                                break;
+                                                            case 'print':
+                                                                message.info('Preparing report for printing...');
+                                                                break;
+                                                        }
+                                                    }
+                                                }}
+                                                trigger={['click']}
+                                            >
+                                                <Button icon={<DownloadOutlined />}>
+                                                    Export
+                                                </Button>
+                                            </Dropdown>
+                                            <Button icon={<PrinterOutlined />}>
+                                                Print
+                                            </Button>
+                                            <Button icon={<FilterOutlined />}>
+                                                Column visibility
+                                            </Button>
+                                        </div>
+                                    </Col>
+                                </Row>
+
+                                {/* Ageing Details Table */}
+                                <div style={{ overflowX: "auto" }}>
+                                    {/* Table Header */}
+                                    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                                        <thead>
+                                            <tr>
+                                                <th style={{
+                                                    padding: "12px",
+                                                    textAlign: "left",
+                                                    borderBottom: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    color: isDark ? "#fff" : "#1f1f1f",
+                                                    fontWeight: 600
+                                                }}>
+                                                    Date
+                                                </th>
+                                                <th style={{
+                                                    padding: "12px",
+                                                    textAlign: "left",
+                                                    borderBottom: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    color: isDark ? "#fff" : "#1f1f1f",
+                                                    fontWeight: 600
+                                                }}>
+                                                    Transaction Type
+                                                </th>
+                                                <th style={{
+                                                    padding: "12px",
+                                                    textAlign: "left",
+                                                    borderBottom: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    color: isDark ? "#fff" : "#1f1f1f",
+                                                    fontWeight: 600
+                                                }}>
+                                                    Invoice No.
+                                                </th>
+                                                <th style={{
+                                                    padding: "12px",
+                                                    textAlign: "left",
+                                                    borderBottom: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    color: isDark ? "#fff" : "#1f1f1f",
+                                                    fontWeight: 600
+                                                }}>
+                                                    Customer
+                                                </th>
+                                                <th style={{
+                                                    padding: "12px",
+                                                    textAlign: "left",
+                                                    borderBottom: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    color: isDark ? "#fff" : "#1f1f1f",
+                                                    fontWeight: 600
+                                                }}>
+                                                    Due Date
+                                                </th>
+                                                <th style={{
+                                                    padding: "12px",
+                                                    textAlign: "right",
+                                                    borderBottom: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    color: isDark ? "#fff" : "#1f1f1f",
+                                                    fontWeight: 600,
+                                                    width: "150px"
+                                                }}>
+                                                    Due
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {/* Current Group */}
+                                            <tr>
+                                                <td colSpan={6} style={{
+                                                    padding: "8px 12px",
+                                                    background: isDark ? "rgba(255,255,255,0.02)" : "#fafafa",
+                                                    borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    cursor: "pointer"
+                                                }} onClick={() => toggleGroup('current')}>
+                                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                        {expandedGroups.current ? <CaretDownOutlined /> : <CaretRightOutlined />}
+                                                        <Text strong style={{ color: "#52c41a" }}>Current</Text>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {expandedGroups.current && ageingData.current.map((item, index) => (
+                                                <tr key={`current-${index}`}>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.date}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.transactionType}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.invoiceNo}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.customer}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.dueDate}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.due}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {expandedGroups.current && (
+                                                <tr>
+                                                    <td colSpan={5} style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        Total for Current
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        TSh {calculateTotal('current').toLocaleString()}
+                                                    </td>
+                                                </tr>
+                                            )}
+
+                                            {/* 1-30 days past due Group */}
+                                            <tr>
+                                                <td colSpan={6} style={{
+                                                    padding: "8px 12px",
+                                                    background: isDark ? "rgba(255,255,255,0.02)" : "#fafafa",
+                                                    borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    cursor: "pointer"
+                                                }} onClick={() => toggleGroup('1-30')}>
+                                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                        {expandedGroups['1-30'] ? <CaretDownOutlined /> : <CaretRightOutlined />}
+                                                        <Text strong style={{ color: "#fa8c16" }}>1 - 30 days past due</Text>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {expandedGroups['1-30'] && ageingData['1-30'].map((item, index) => (
+                                                <tr key={`1-30-${index}`}>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.date}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.transactionType}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.invoiceNo}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.customer}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.dueDate}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.due}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {expandedGroups['1-30'] && (
+                                                <tr>
+                                                    <td colSpan={5} style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        Total for 1 - 30 days past due
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        TSh {calculateTotal('1-30').toLocaleString()}
+                                                    </td>
+                                                </tr>
+                                            )}
+
+                                            {/* 31-60 days past due Group */}
+                                            <tr>
+                                                <td colSpan={6} style={{
+                                                    padding: "8px 12px",
+                                                    background: isDark ? "rgba(255,255,255,0.02)" : "#fafafa",
+                                                    borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    cursor: "pointer"
+                                                }} onClick={() => toggleGroup('31-60')}>
+                                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                        {expandedGroups['31-60'] ? <CaretDownOutlined /> : <CaretRightOutlined />}
+                                                        <Text strong style={{ color: "#fa8c16" }}>31 - 60 days past due</Text>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {expandedGroups['31-60'] && ageingData['31-60'].map((item, index) => (
+                                                <tr key={`31-60-${index}`}>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.date}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.transactionType}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.invoiceNo}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.customer}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.dueDate}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.due}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {expandedGroups['31-60'] && (
+                                                <tr>
+                                                    <td colSpan={5} style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        Total for 31 - 60 days past due
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        TSh {calculateTotal('31-60').toLocaleString()}
+                                                    </td>
+                                                </tr>
+                                            )}
+
+                                            {/* 61-90 days past due Group */}
+                                            <tr>
+                                                <td colSpan={6} style={{
+                                                    padding: "8px 12px",
+                                                    background: isDark ? "rgba(255,255,255,0.02)" : "#fafafa",
+                                                    borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    cursor: "pointer"
+                                                }} onClick={() => toggleGroup('61-90')}>
+                                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                        {expandedGroups['61-90'] ? <CaretDownOutlined /> : <CaretRightOutlined />}
+                                                        <Text strong style={{ color: "#fa8c16" }}>61 - 90 days past due</Text>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {expandedGroups['61-90'] && ageingData['61-90'].map((item, index) => (
+                                                <tr key={`61-90-${index}`}>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.date}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.transactionType}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.invoiceNo}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.customer}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.dueDate}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.due}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {expandedGroups['61-90'] && (
+                                                <tr>
+                                                    <td colSpan={5} style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        Total for 61 - 90 days past due
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        TSh {calculateTotal('61-90').toLocaleString()}
+                                                    </td>
+                                                </tr>
+                                            )}
+
+                                            {/* 91 days and over past due Group */}
+                                            <tr>
+                                                <td colSpan={6} style={{
+                                                    padding: "8px 12px",
+                                                    background: isDark ? "rgba(255,255,255,0.02)" : "#fafafa",
+                                                    borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    cursor: "pointer"
+                                                }} onClick={() => toggleGroup('91+')}>
+                                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                        {expandedGroups['91+'] ? <CaretDownOutlined /> : <CaretRightOutlined />}
+                                                        <Text strong style={{ color: "#ff4d4f" }}>91 days and over past due</Text>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {expandedGroups['91+'] && ageingData['91+'].map((item, index) => (
+                                                <tr key={`91+-${index}`}>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.date}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.transactionType}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.invoiceNo}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.customer}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.dueDate}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.due}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {expandedGroups['91+'] && (
+                                                <tr>
+                                                    <td colSpan={5} style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        Total for 91 days and over past due
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        TSh {calculateTotal('91+').toLocaleString()}
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </Space>
+                        </Card>
+                    </Col>
+                </Row>
+            </div>
+        );
+    };
+
+    // Account Payable Ageing Details (Details)
+    const APAgeingDetailsView = () => {
+        const formatDate = (date: dayjs.Dayjs) => date.format('DD-MM-YYYY');
+        const [selectedLocation, setSelectedLocation] = useState<string>("All locations");
+        const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
+            current: true,
+            '1-30': true,
+            '31-60': true,
+            '61-90': true,
+            '91+': true,
+        });
+
+        const toggleGroup = (group: string) => {
+            setExpandedGroups(prev => ({
+                ...prev,
+                [group]: !prev[group]
+            }));
+        };
+
+        // Sample data for each ageing period - AP version with suppliers
+        const ageingData = {
+            current: [
+                { date: '15-01-2026', transactionType: 'Bill', referenceNo: 'BILL-001', supplier: 'ABC Supply Co', dueDate: '15-02-2026', due: 'TSh 300,000' },
+                { date: '20-01-2026', transactionType: 'Bill', referenceNo: 'BILL-002', supplier: 'XYZ Materials Ltd', dueDate: '20-02-2026', due: 'TSh 450,000' },
+            ],
+            '1-30': [
+                { date: '15-12-2025', transactionType: 'Bill', referenceNo: 'BILL-003', supplier: 'Global Suppliers Inc', dueDate: '15-01-2026', due: 'TSh 150,000' },
+                { date: '20-12-2025', transactionType: 'Bill', referenceNo: 'BILL-004', supplier: 'Local Vendor Ltd', dueDate: '20-01-2026', due: 'TSh 80,000' },
+            ],
+            '31-60': [
+                { date: '15-11-2025', transactionType: 'Bill', referenceNo: 'BILL-005', supplier: 'ABC Supply Co', dueDate: '15-12-2025', due: 'TSh 120,000' },
+                { date: '20-11-2025', transactionType: 'Bill', referenceNo: 'BILL-006', supplier: 'XYZ Materials Ltd', dueDate: '20-12-2025', due: 'TSh 90,000' },
+            ],
+            '61-90': [
+                { date: '15-10-2025', transactionType: 'Bill', referenceNo: 'BILL-007', supplier: 'Global Suppliers Inc', dueDate: '15-11-2025', due: 'TSh 60,000' },
+                { date: '20-10-2025', transactionType: 'Bill', referenceNo: 'BILL-008', supplier: 'Local Vendor Ltd', dueDate: '20-11-2025', due: 'TSh 45,000' },
+            ],
+            '91+': [
+                { date: '15-08-2025', transactionType: 'Bill', referenceNo: 'BILL-009', supplier: 'ABC Supply Co', dueDate: '15-09-2025', due: 'TSh 30,000' },
+                { date: '20-08-2025', transactionType: 'Bill', referenceNo: 'BILL-010', supplier: 'XYZ Materials Ltd', dueDate: '20-09-2025', due: 'TSh 15,000' },
+            ],
+        };
+
+        const calculateTotal = (group: string) => {
+            return ageingData[group as keyof typeof ageingData]?.reduce((total, item) => {
+                const amount = parseInt(item.due.replace('TSh ', '').replace(/,/g, ''));
+                return total + amount;
+            }, 0) || 0;
+        };
+
+        const exportMenuItems = [
+            { key: 'csv', label: 'Export to CSV' },
+            { key: 'excel', label: 'Export to Excel' },
+            { key: 'pdf', label: 'Export to PDF' },
+            { key: 'print', label: 'Print' },
+        ];
+
+        return (
+            <div style={{ width: "100%", maxWidth: "100%", overflow: "hidden" }}>
+                {/* Header Section */}
+                <Row gutter={[16, 16]} style={{ marginBottom: "24px" }}>
+                    <Col xs={24} sm={24} md={24} lg={24}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                            <Button
+                                icon={<ArrowLeftOutlined />}
+                                onClick={handleBackToReports}
+                                style={{
+                                    background: isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0",
+                                    border: isDark ? "1px solid rgba(255,255,255,0.2)" : "1px solid #d9d9d9",
+                                    color: isDark ? "#fff" : "#1f1f1f",
+                                }}
+                            >
+                                Back to Reports
+                            </Button>
+                            <Title
+                                level={2}
+                                style={{
+                                    margin: 0,
+                                    color: isDark ? "#fff" : "#1f1f1f",
+                                    fontWeight: 600,
+                                }}
+                            >
+                                Account Payable Ageing Details (Details)
+                            </Title>
+                        </div>
+                    </Col>
+                </Row>
+
+                <Row gutter={[24, 24]}>
+                    {/* Left Sidebar - Filters */}
+                    <Col xs={24} sm={24} md={8} lg={6}>
+                        <Card
+                            style={{
+                                background: isDark ? "rgba(255,255,255,0.05)" : "#ffffff",
+                                border: isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid #f0f0f0",
+                                borderRadius: "8px",
+                            }}
+                        >
+                            <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+                                <Title level={5} style={{ margin: 0, color: isDark ? "#fff" : "#1f1f1f" }}>
+                                    <FilterOutlined /> Filters
+                                </Title>
+                                <Divider style={{ margin: "12px 0", borderColor: isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0" }} />
+
+                                <div>
+                                    <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "12px", display: "block", marginBottom: "8px" }}>
+                                        Business Location
+                                    </Text>
+                                    <Select
+                                        value={selectedLocation}
+                                        onChange={setSelectedLocation}
+                                        style={{ width: "100%" }}
+                                    >
+                                        <Select.Option value="All locations">All locations</Select.Option>
+                                        <Select.Option value="Location 1">Location 1</Select.Option>
+                                        <Select.Option value="Location 2">Location 2</Select.Option>
+                                    </Select>
+                                </div>
+
+                                <div style={{ marginTop: "16px" }}>
+                                    <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "12px", display: "block", marginBottom: "8px" }}>
+                                        Date Range
+                                    </Text>
+                                    <RangePicker
+                                        value={dateRange}
+                                        onChange={(dates) => {
+                                            if (dates && dates[0] && dates[1]) {
+                                                setDateRange([dates[0], dates[1]]);
+                                            }
+                                        }}
+                                        format="DD-MM-YYYY"
+                                        style={{ width: "100%" }}
+                                        suffixIcon={<CalendarOutlined />}
+                                    />
+                                </div>
+
+                                <Divider style={{ margin: "12px 0", borderColor: isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0" }} />
+
+                                <div>
+                                    <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "12px", display: "block", marginBottom: "8px" }}>
+                                        PREDEFINED RANGES
+                                    </Text>
+                                    <Select
+                                        value="thisYear"
+                                        onChange={handlePredefinedRangeChange}
+                                        style={{ width: "100%" }}
+                                        size="small"
+                                    >
+                                        {predefinedRanges.map((range) => (
+                                            <Select.Option key={range.value} value={range.value}>
+                                                {range.label}
+                                            </Select.Option>
+                                        ))}
+                                    </Select>
+                                </div>
+                            </Space>
+                        </Card>
+                    </Col>
+
+                    {/* Main Content - AP Ageing Details Table */}
+                    <Col xs={24} sm={24} md={16} lg={18}>
+                        <Card
+                            style={{
+                                background: isDark ? "rgba(255,255,255,0.05)" : "#ffffff",
+                                border: isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid #f0f0f0",
+                                borderRadius: "8px",
+                            }}
+                        >
+                            <Space direction="vertical" size="large" style={{ width: "100%" }}>
+                                {/* Report Header */}
+                                <div style={{ textAlign: "center" }}>
+                                    <Title level={3} style={{ margin: 0, color: isDark ? "#fff" : "#1f1f1f" }}>
+                                        Account Payable Ageing Details (Details)
+                                    </Title>
+                                    <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c" }}>
+                                        {formatDate(dateRange[0])} - {formatDate(dateRange[1])}
+                                    </Text>
+                                </div>
+
+                                <Divider style={{ margin: "16px 0", borderColor: isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0" }} />
+
+                                {/* Table Controls */}
+                                <Row gutter={[16, 16]} align="middle">
+                                    <Col xs={24} sm={12} md={8}>
+                                        <Space>
+                                            <Text style={{ color: isDark ? "#fff" : "#1f1f1f" }}>Show</Text>
+                                            <Select
+                                                value="all"
+                                                style={{ width: 80 }}
+                                            >
+                                                <Select.Option value="all">all</Select.Option>
+                                                <Select.Option value={25}>25</Select.Option>
+                                                <Select.Option value={50}>50</Select.Option>
+                                                <Select.Option value={100}>100</Select.Option>
+                                            </Select>
+                                            <Text style={{ color: isDark ? "#fff" : "#1f1f1f" }}>entries</Text>
+                                        </Space>
+                                    </Col>
+                                    <Col xs={24} sm={12} md={16}>
+                                        <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", flexWrap: "wrap" }}>
+                                            <Dropdown
+                                                menu={{
+                                                    items: exportMenuItems,
+                                                    onClick: ({ key }) => {
+                                                        switch (key) {
+                                                            case 'csv':
+                                                                message.info('Exporting to CSV...');
+                                                                break;
+                                                            case 'excel':
+                                                                message.info('Exporting to Excel...');
+                                                                break;
+                                                            case 'pdf':
+                                                                message.info('Exporting to PDF...');
+                                                                break;
+                                                            case 'print':
+                                                                message.info('Preparing report for printing...');
+                                                                break;
+                                                        }
+                                                    }
+                                                }}
+                                                trigger={['click']}
+                                            >
+                                                <Button icon={<DownloadOutlined />}>
+                                                    Export
+                                                </Button>
+                                            </Dropdown>
+                                            <Button icon={<PrinterOutlined />}>
+                                                Print
+                                            </Button>
+                                            <Button icon={<FilterOutlined />}>
+                                                Column visibility
+                                            </Button>
+                                        </div>
+                                    </Col>
+                                </Row>
+
+                                {/* Ageing Details Table */}
+                                <div style={{ overflowX: "auto" }}>
+                                    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                                        <thead>
+                                            <tr>
+                                                <th style={{
+                                                    padding: "12px",
+                                                    textAlign: "left",
+                                                    borderBottom: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    color: isDark ? "#fff" : "#1f1f1f",
+                                                    fontWeight: 600
+                                                }}>
+                                                    Date
+                                                </th>
+                                                <th style={{
+                                                    padding: "12px",
+                                                    textAlign: "left",
+                                                    borderBottom: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    color: isDark ? "#fff" : "#1f1f1f",
+                                                    fontWeight: 600
+                                                }}>
+                                                    Transaction Type
+                                                </th>
+                                                <th style={{
+                                                    padding: "12px",
+                                                    textAlign: "left",
+                                                    borderBottom: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    color: isDark ? "#fff" : "#1f1f1f",
+                                                    fontWeight: 600
+                                                }}>
+                                                    Reference No
+                                                </th>
+                                                <th style={{
+                                                    padding: "12px",
+                                                    textAlign: "left",
+                                                    borderBottom: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    color: isDark ? "#fff" : "#1f1f1f",
+                                                    fontWeight: 600
+                                                }}>
+                                                    Suppliers
+                                                </th>
+                                                <th style={{
+                                                    padding: "12px",
+                                                    textAlign: "left",
+                                                    borderBottom: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    color: isDark ? "#fff" : "#1f1f1f",
+                                                    fontWeight: 600
+                                                }}>
+                                                    Due Date
+                                                </th>
+                                                <th style={{
+                                                    padding: "12px",
+                                                    textAlign: "right",
+                                                    borderBottom: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    color: isDark ? "#fff" : "#1f1f1f",
+                                                    fontWeight: 600,
+                                                    width: "150px"
+                                                }}>
+                                                    Due
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {/* Current Group */}
+                                            <tr>
+                                                <td colSpan={6} style={{
+                                                    padding: "8px 12px",
+                                                    background: isDark ? "rgba(255,255,255,0.02)" : "#fafafa",
+                                                    borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    cursor: "pointer"
+                                                }} onClick={() => toggleGroup('current')}>
+                                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                        {expandedGroups.current ? <CaretDownOutlined /> : <CaretRightOutlined />}
+                                                        <Text strong style={{ color: "#52c41a" }}>Current</Text>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {expandedGroups.current && ageingData.current.map((item, index) => (
+                                                <tr key={`current-${index}`}>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.date}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.transactionType}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.referenceNo}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.supplier}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.dueDate}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.due}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {expandedGroups.current && (
+                                                <tr>
+                                                    <td colSpan={5} style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        Total for Current
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        TSh {calculateTotal('current').toLocaleString()}
+                                                    </td>
+                                                </tr>
+                                            )}
+
+                                            {/* 1-30 days past due Group */}
+                                            <tr>
+                                                <td colSpan={6} style={{
+                                                    padding: "8px 12px",
+                                                    background: isDark ? "rgba(255,255,255,0.02)" : "#fafafa",
+                                                    borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    cursor: "pointer"
+                                                }} onClick={() => toggleGroup('1-30')}>
+                                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                        {expandedGroups['1-30'] ? <CaretDownOutlined /> : <CaretRightOutlined />}
+                                                        <Text strong style={{ color: "#fa8c16" }}>1 - 30 days past due</Text>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {expandedGroups['1-30'] && ageingData['1-30'].map((item, index) => (
+                                                <tr key={`1-30-${index}`}>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.date}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.transactionType}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.referenceNo}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.supplier}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.dueDate}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.due}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {expandedGroups['1-30'] && (
+                                                <tr>
+                                                    <td colSpan={5} style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        Total for 1 - 30 days past due
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        TSh {calculateTotal('1-30').toLocaleString()}
+                                                    </td>
+                                                </tr>
+                                            )}
+
+                                            {/* 31-60 days past due Group */}
+                                            <tr>
+                                                <td colSpan={6} style={{
+                                                    padding: "8px 12px",
+                                                    background: isDark ? "rgba(255,255,255,0.02)" : "#fafafa",
+                                                    borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    cursor: "pointer"
+                                                }} onClick={() => toggleGroup('31-60')}>
+                                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                        {expandedGroups['31-60'] ? <CaretDownOutlined /> : <CaretRightOutlined />}
+                                                        <Text strong style={{ color: "#fa8c16" }}>31 - 60 days past due</Text>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {expandedGroups['31-60'] && ageingData['31-60'].map((item, index) => (
+                                                <tr key={`31-60-${index}`}>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.date}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.transactionType}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.referenceNo}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.supplier}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.dueDate}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.due}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {expandedGroups['31-60'] && (
+                                                <tr>
+                                                    <td colSpan={5} style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        Total for 31 - 60 days past due
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        TSh {calculateTotal('31-60').toLocaleString()}
+                                                    </td>
+                                                </tr>
+                                            )}
+
+                                            {/* 61-90 days past due Group */}
+                                            <tr>
+                                                <td colSpan={6} style={{
+                                                    padding: "8px 12px",
+                                                    background: isDark ? "rgba(255,255,255,0.02)" : "#fafafa",
+                                                    borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    cursor: "pointer"
+                                                }} onClick={() => toggleGroup('61-90')}>
+                                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                        {expandedGroups['61-90'] ? <CaretDownOutlined /> : <CaretRightOutlined />}
+                                                        <Text strong style={{ color: "#f5222d" }}>61 - 90 days past due</Text>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {expandedGroups['61-90'] && ageingData['61-90'].map((item, index) => (
+                                                <tr key={`61-90-${index}`}>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.date}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.transactionType}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.referenceNo}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.supplier}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.dueDate}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.due}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {expandedGroups['61-90'] && (
+                                                <tr>
+                                                    <td colSpan={5} style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        Total for 61 - 90 days past due
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        TSh {calculateTotal('61-90').toLocaleString()}
+                                                    </td>
+                                                </tr>
+                                            )}
+
+                                            {/* 91 days and over past due Group */}
+                                            <tr>
+                                                <td colSpan={6} style={{
+                                                    padding: "8px 12px",
+                                                    background: isDark ? "rgba(255,255,255,0.02)" : "#fafafa",
+                                                    borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "#f0f0f0"}`,
+                                                    cursor: "pointer"
+                                                }} onClick={() => toggleGroup('91+')}>
+                                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                        {expandedGroups['91+'] ? <CaretDownOutlined /> : <CaretRightOutlined />}
+                                                        <Text strong style={{ color: "#f5222d" }}>91 days and over past due</Text>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {expandedGroups['91+'] && ageingData['91+'].map((item, index) => (
+                                                <tr key={`91+-${index}`}>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.date}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.transactionType}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.referenceNo}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.supplier}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.dueDate}
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f"
+                                                    }}>
+                                                        {item.due}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {expandedGroups['91+'] && (
+                                                <tr>
+                                                    <td colSpan={5} style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        Total for 91 days and over past due
+                                                    </td>
+                                                    <td style={{
+                                                        padding: "12px",
+                                                        textAlign: "right",
+                                                        borderBottom: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "#f0f0f0"}`,
+                                                        color: isDark ? "#fff" : "#1f1f1f",
+                                                        fontWeight: 600
+                                                    }}>
+                                                        TSh {calculateTotal('91+').toLocaleString()}
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </Space>
+                        </Card>
+                    </Col>
+                </Row>
+            </div>
+        );
+    };
+
     return (
         <div style={{ width: "100%", maxWidth: "100%", overflow: "hidden" }}>
             {currentView === "trial-balance" ? (
@@ -1723,6 +3188,10 @@ const Reports: React.FC = () => {
                 <ARAgeingSummaryView />
             ) : currentView === "ap-ageing-summary" ? (
                 <APAgeingSummaryView />
+            ) : currentView === "ar-ageing-details" ? (
+                <ARAgeingDetailsView />
+            ) : currentView === "ap-ageing-details" ? (
+                <APAgeingDetailsView />
             ) : (
                 <>
                     {/* Header Section */}
