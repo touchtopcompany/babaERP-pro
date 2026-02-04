@@ -70,6 +70,7 @@ const JournalEntryPage = lazy(() => import("@/features/dashboard/pages/accountin
 const TransferPage = lazy(() => import("@/features/dashboard/pages/accounting/TransferPage"));
 const TransactionsPage = lazy(() => import("@/features/dashboard/pages/accounting/TransactionsPage"));
 const BudgetPage = lazy(() => import("@/features/dashboard/pages/accounting/BudgetPage"));
+const ReportsPage = lazy(() => import("@/features/dashboard/pages/accounting/ReportsPage"));
 const ProfitLossReportPage = lazy(() => import("@/features/dashboard/pages/reports/ProfitLossReportPage"));
 const PurchaseSaleReportPage = lazy(() => import("@/features/dashboard/pages/reports/PurchaseSaleReportPage"));
 const TaxReportPage = lazy(() => import("@/features/dashboard/pages/reports/TaxReportPage"));
@@ -98,6 +99,7 @@ const TaxRatesPage = lazy(() => import("../features/dashboard/pages/settings/Tax
 const SubdomainManagement = lazy(() => import("@/pages/dashboard/components/Subdomain Management"));
 const UserManagement = lazy(() => import("@/pages/dashboard/components/User Management"));
 const Analytics = lazy(() => import("@/pages/dashboard/components/Analytics"));
+const Dashboard = lazy(() => import("@/pages/dashboard/Dashboard"));
 
 /**
  * This is Root Route initializer for the application
@@ -180,6 +182,7 @@ export const AppRoutes: FC = () => {
           <Route path="/accounting/transfer" element={<TransferPage />} />
           <Route path="/accounting/transactions" element={<TransactionsPage />} />
           <Route path="/accounting/budget" element={<BudgetPage />} />
+          <Route path="/accounting/reports" element={<ReportsPage />} />
           <Route path="/reports/profit-loss-report" element={<ProfitLossReportPage />} />
           <Route path="/reports/purchase-sale" element={<PurchaseSaleReportPage />} />
           <Route path="/reports/tax-report" element={<TaxReportPage />} />

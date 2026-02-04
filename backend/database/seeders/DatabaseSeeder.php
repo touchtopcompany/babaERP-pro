@@ -19,7 +19,9 @@ class DatabaseSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'admin@c2z.com'],
             [
-                'name' => 'Admin User',
+                'name' => 'Admin',
+                'lastname' => 'User',
+                'username' => 'admin_c2z',
                 'phone' => 'admin_c2z',
                 'password' => Hash::make('password123'),
                 'email_verified_at' => now(),
