@@ -71,6 +71,7 @@ const TransferPage = lazy(() => import("@/features/dashboard/pages/accounting/Tr
 const TransactionsPage = lazy(() => import("@/features/dashboard/pages/accounting/TransactionsPage"));
 const BudgetPage = lazy(() => import("@/features/dashboard/pages/accounting/BudgetPage"));
 const ReportsPage = lazy(() => import("@/features/dashboard/pages/accounting/ReportsPage"));
+const SettingsPage = lazy(() => import("@/features/dashboard/pages/accounting/SettingsPage"));
 const ProfitLossReportPage = lazy(() => import("@/features/dashboard/pages/reports/ProfitLossReportPage"));
 const PurchaseSaleReportPage = lazy(() => import("@/features/dashboard/pages/reports/PurchaseSaleReportPage"));
 const TaxReportPage = lazy(() => import("@/features/dashboard/pages/reports/TaxReportPage"));
@@ -183,6 +184,7 @@ export const AppRoutes: FC = () => {
           <Route path="/accounting/transactions" element={<TransactionsPage />} />
           <Route path="/accounting/budget" element={<BudgetPage />} />
           <Route path="/accounting/reports" element={<ReportsPage />} />
+          <Route path="/accounting/settings" element={<SettingsPage />} />
           <Route path="/reports/profit-loss-report" element={<ProfitLossReportPage />} />
           <Route path="/reports/purchase-sale" element={<PurchaseSaleReportPage />} />
           <Route path="/reports/tax-report" element={<TaxReportPage />} />
