@@ -14,6 +14,10 @@ import {
   Dropdown,
   Checkbox,
   Select,
+  Modal,
+  Form,
+  Divider,
+  Tooltip,
 } from "antd";
 import type { MenuProps } from "antd";
 import {
@@ -30,6 +34,7 @@ import {
   UnorderedListOutlined,
   FileTextOutlined,
   DownOutlined,
+  InfoCircleOutlined,
 } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import useTheme from "@/theme/useTheme";
@@ -40,6 +45,7 @@ import dayjs from "dayjs";
 
 const { Title, Text } = Typography;
 const { Search } = Input;
+const { Option } = Select;
 
 export interface UserData {
   key: string;
@@ -60,6 +66,8 @@ const Users: React.FC = () => {
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [addUserModalOpen, setAddUserModalOpen] = useState(false);
+  const [form] = Form.useForm();
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
   const [actionLoading, setActionLoading] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -177,8 +185,8 @@ const Users: React.FC = () => {
   }, [users, searchText, filters]);
 
   const handleAddUser = () => {
-    // TODO: Navigate to add user page or open add user modal
-    message.info("Add user functionality coming soon");
+    setAddUserModalOpen(true);
+    form.resetFields();
   };
 
   const handleRefresh = () => {
@@ -264,8 +272,8 @@ const Users: React.FC = () => {
             </thead>
             <tbody>
               ${filteredUsers
-                .map(
-                  (user) => `
+        .map(
+          (user) => `
                 <tr>
                   <td>${user.id}</td>
                   <td>${user.name}</td>
@@ -276,8 +284,8 @@ const Users: React.FC = () => {
                   <td>${user.createdAt}</td>
                 </tr>
               `
-                )
-                .join("")}
+        )
+        .join("")}
             </tbody>
           </table>
         </body>
@@ -942,6 +950,255 @@ const Users: React.FC = () => {
         itemName={selectedUser?.name}
         loading={actionLoading}
       />
+
+      {/* Add User Modal */}
+      <Modal
+        title="Add user"
+        open={addUserModalOpen}
+        onCancel={() => {
+          setAddUserModalOpen(false);
+          form.resetFields();
+        }}
+        footer={[
+          <Button
+            key="cancel"
+            onClick={() => {
+              setAddUserModalOpen(false);
+              form.resetFields();
+            }}
+          >
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            onClick={async () => {
+              try {
+                const values = await form.validateFields();
+                setActionLoading(true);
+                // TODO: Implement API call to add user
+                // await addUser(values);
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+                message.success("User added successfully");
+                setAddUserModalOpen(false);
+                form.resetFields();
+                // Refresh users list
+                handleRefresh();
+              } catch (error) {
+                console.error("Validation failed:", error);
+              } finally {
+                setActionLoading(false);
+              }
+            }}
+            loading={actionLoading}
+          >
+            Save
+          </Button>,
+        ]}
+        width={700}
+        style={{
+          background: isDark ? "rgba(255,255,255,0.05)" : "#ffffff",
+        }}
+      >
+        <Form
+          form={form}
+          layout="vertical"
+          style={{
+            background: isDark ? "rgba(255,255,255,0.05)" : "#ffffff",
+          }}
+        >
+          {/* User Details Section */}
+          <Row gutter={[16, 0]}>
+            <Col span={8}>
+              <Form.Item
+                label="Prefix"
+                name="prefix"
+              >
+                <Input placeholder="Mr / Mrs / Miss" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                label="First Name"
+                name="firstName"
+                rules={[{ required: true, message: "Please input first name!" }]}
+              >
+                <Input placeholder="First Name" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                label="Last Name"
+                name="lastName"
+                rules={[{ required: true, message: "Please input last name!" }]}
+              >
+                <Input placeholder="Last Name" />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={[16, 0]}>
+            <Col span={24}>
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[
+                  { required: true, message: "Please input email!" },
+                  { type: "email", message: "Please enter a valid email!" },
+                ]}
+              >
+                <Input placeholder="Email" />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={[16, 0]}>
+            <Col span={24}>
+              <Form.Item
+                name="isActive"
+                valuePropName="checked"
+              >
+                <Checkbox>
+                  Is active?
+                  <Tooltip title="Enable or disable user account">
+                    <InfoCircleOutlined style={{ marginLeft: 4, color: isDark ? "rgba(255,255,255,0.45)" : "#8c8c8c" }} />
+                  </Tooltip>
+                </Checkbox>
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Divider style={{ margin: "20px 0" }} />
+
+          {/* Roles and Permissions Section */}
+          <Title level={5} style={{ marginBottom: 16 }}>Roles and Permissions</Title>
+
+          <Row gutter={[16, 0]}>
+            <Col span={24}>
+              <Form.Item
+                name="allowLogin"
+                valuePropName="checked"
+              >
+                <Checkbox>Allow login</Checkbox>
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={[16, 0]}>
+            <Col span={24}>
+              <Form.Item
+                label="Username"
+                name="username"
+                help="Leave blank to auto generate username"
+              >
+                <Input placeholder="Username" />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={[16, 0]}>
+            <Col span={12}>
+              <Form.Item
+                label="Password"
+                name="password"
+                rules={[{ required: true, message: "Please input password!" }]}
+              >
+                <Input.Password placeholder="Password" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Confirm Password"
+                name="confirmPassword"
+                dependencies={["password"]}
+                rules={[
+                  { required: true, message: "Please confirm password!" },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue("password") === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error("Passwords do not match!"));
+                    },
+                  }),
+                ]}
+              >
+                <Input.Password placeholder="Confirm Password" />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={[16, 0]}>
+            <Col span={24}>
+              <Form.Item
+                label="Role"
+                name="role"
+                rules={[{ required: true, message: "Please select a role!" }]}
+              >
+                <Select placeholder="Select role" suffixIcon={<InfoCircleOutlined style={{ color: isDark ? "rgba(255,255,255,0.45)" : "#8c8c8c" }} />}>
+                  <Option value="Admin">Admin</Option>
+                  <Option value="Manager">Manager</Option>
+                  <Option value="Sales Agent">Sales Agent</Option>
+                  <Option value="Staff">Staff</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Divider style={{ margin: "20px 0" }} />
+
+          {/* Access locations Section */}
+          <Title level={5} style={{ marginBottom: 16 }}>Access locations</Title>
+
+          <Row gutter={[16, 0]}>
+            <Col span={24}>
+              <Form.Item
+                name="allLocations"
+                valuePropName="checked"
+              >
+                <Checkbox
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      form.setFieldsValue({ locations: [] });
+                    }
+                  }}
+                >
+                  All Locations
+                  <Tooltip title="Grant access to all locations">
+                    <InfoCircleOutlined style={{ marginLeft: 4, color: isDark ? "rgba(255,255,255,0.45)" : "#8c8c8c" }} />
+                  </Tooltip>
+                </Checkbox>
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={[16, 0]}>
+            <Col span={24}>
+              <Form.Item
+                label="Specific Locations"
+                name="locations"
+                tooltip="Select specific locations for user access. Leave empty if 'All Locations' is checked."
+              >
+                <Select
+                  mode="multiple"
+                  placeholder="Select locations"
+                  style={{ width: '100%' }}
+                  options={[
+                    { value: 'headquarters', label: 'Headquarters' },
+                    { value: 'branch-north', label: 'Branch North' },
+                    { value: 'branch-south', label: 'Branch South' },
+                    { value: 'branch-east', label: 'Branch East' },
+                    { value: 'branch-west', label: 'Branch West' },
+                    { value: 'warehouse-main', label: 'Main Warehouse' },
+                    { value: 'warehouse-secondary', label: 'Secondary Warehouse' },
+                  ]}
+                  disabled={form.getFieldValue('allLocations')}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </Modal>
     </div>
   );
 };
