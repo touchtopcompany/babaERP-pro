@@ -1562,7 +1562,7 @@ const ListProducts: React.FC = () => {
                       letterSpacing: '1px'
                     }}
                   >
-                    VALUE @ C.P
+                    VALUE @ Cost Price
                   </th>
                   <th
                     style={{
@@ -1575,7 +1575,7 @@ const ListProducts: React.FC = () => {
                       letterSpacing: '1px'
                     }}
                   >
-                    VALUE @ S.P
+                    VALUE @ Selling Price
                   </th>
                 </tr>
               </thead>

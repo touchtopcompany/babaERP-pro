@@ -26,13 +26,20 @@ import {
 
 import {
 
-    SettingOutlined,
-
     ReloadOutlined,
+    SettingOutlined,
 
 } from "@ant-design/icons";
 
 import useTheme from "@/theme/useTheme";
+import type { ExpenseCategoryFormData } from "@/components/modals/AddExpenseCategoryModal";
+
+// Define the interface locally since it's not exported
+interface ExpenseCategoryData {
+    key: string;
+    categoryName: string;
+    categoryCode: string;
+}
 
 
 
@@ -96,7 +103,76 @@ const Settings: React.FC = () => {
 
     });
 
+    const [selectedLocation, setSelectedLocation] = useState<string>("main-shop");
 
+    const [expensePaymentAccount, setExpensePaymentAccount] = useState<string>("");
+
+    const [expenseDepositTo, setExpenseDepositTo] = useState<string>("");
+
+    // Mock expense categories data - same as in ExpenseCategories.tsx
+    const defaultExpenseCategories: ExpenseCategoryData[] = [
+        { key: "1", categoryName: "Office Supplies", categoryCode: "OFF-001" },
+        { key: "2", categoryName: "Utilities", categoryCode: "UTL-001" },
+        { key: "3", categoryName: "Travel", categoryCode: "TRV-001" },
+        { key: "4", categoryName: "Marketing", categoryCode: "MRK-001" },
+        { key: "5", categoryName: "Rent", categoryCode: "RNT-001" },
+        { key: "6", categoryName: "Insurance", categoryCode: "INS-001" },
+        { key: "7", categoryName: "Professional Services", categoryCode: "PRF-001" },
+        { key: "8", categoryName: "Maintenance", categoryCode: "MNT-001" },
+        { key: "9", categoryName: "Training", categoryCode: "TRN-001" },
+        { key: "10", categoryName: "Software", categoryCode: "SFT-001" },
+        { key: "11", categoryName: "Hardware", categoryCode: "HRD-001" },
+        { key: "12", categoryName: "Communication", categoryCode: "COM-001" },
+        { key: "13", categoryName: "Legal", categoryCode: "LGL-001" },
+        { key: "14", categoryName: "Accounting", categoryCode: "ACC-001" },
+        { key: "15", categoryName: "Bank Charges", categoryCode: "BNK-001" },
+    ];
+
+    // Location-specific expense categories mapping
+    const locationExpenseCategories: Record<string, ExpenseCategoryData[]> = {
+        "main-shop": [
+            { key: "1", categoryName: "Office Supplies", categoryCode: "OFF-001" },
+            { key: "2", categoryName: "Utilities", categoryCode: "UTL-001" },
+            { key: "5", categoryName: "Rent", categoryCode: "RNT-001" },
+            { key: "6", categoryName: "Insurance", categoryCode: "INS-001" },
+            { key: "8", categoryName: "Maintenance", categoryCode: "MNT-001" },
+            { key: "12", categoryName: "Communication", categoryCode: "COM-001" },
+            { key: "15", categoryName: "Bank Charges", categoryCode: "BNK-001" },
+        ],
+        "branch-1": [
+            { key: "1", categoryName: "Office Supplies", categoryCode: "OFF-001" },
+            { key: "2", categoryName: "Utilities", categoryCode: "UTL-001" },
+            { key: "5", categoryName: "Rent", categoryCode: "RNT-001" },
+            { key: "8", categoryName: "Maintenance", categoryCode: "MNT-001" },
+            { key: "10", categoryName: "Software", categoryCode: "SFT-001" },
+        ],
+        "branch-2": [
+            { key: "1", categoryName: "Office Supplies", categoryCode: "OFF-001" },
+            { key: "2", categoryName: "Utilities", categoryCode: "UTL-001" },
+            { key: "4", categoryName: "Marketing", categoryCode: "MRK-001" },
+            { key: "9", categoryName: "Training", categoryCode: "TRN-001" },
+            { key: "11", categoryName: "Hardware", categoryCode: "HRD-001" },
+        ],
+        "warehouse": [
+            { key: "1", categoryName: "Office Supplies", categoryCode: "OFF-001" },
+            { key: "2", categoryName: "Utilities", categoryCode: "UTL-001" },
+            { key: "8", categoryName: "Maintenance", categoryCode: "MNT-001" },
+            { key: "11", categoryName: "Hardware", categoryCode: "HRD-001" },
+            { key: "14", categoryName: "Accounting", categoryCode: "ACC-001" },
+        ],
+        "online-store": [
+            { key: "4", categoryName: "Marketing", categoryCode: "MRK-001" },
+            { key: "10", categoryName: "Software", categoryCode: "SFT-001" },
+            { key: "12", categoryName: "Communication", categoryCode: "COM-001" },
+            { key: "13", categoryName: "Legal", categoryCode: "LGL-001" },
+            { key: "14", categoryName: "Accounting", categoryCode: "ACC-001" },
+        ],
+    };
+
+    // Get filtered expense categories based on selected location
+    const getFilteredExpenseCategories = () => {
+        return locationExpenseCategories[selectedLocation] || defaultExpenseCategories;
+    };
 
     const handleResetData = () => {
 
@@ -312,17 +388,51 @@ const Settings: React.FC = () => {
 
 
 
-                            {/* MAIN SHOP Section */}
+                            {/* Location Filter Section */}
 
                             <div>
 
-                                <Title level={5} style={{ margin: "0 0 16px 0", color: isDark ? "#fff" : "#1f1f1f" }}>
+                                <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "16px" }}>
 
-                                    MAIN SHOP
+                                    <Title level={5} style={{ margin: 0, color: isDark ? "#fff" : "#1f1f1f" }}>
 
-                                </Title>
+                                        Location
 
+                                    </Title>
 
+                                    <Select
+
+                                        value={selectedLocation}
+
+                                        onChange={(value) => setSelectedLocation(value)}
+
+                                        style={{
+
+                                            minWidth: "200px",
+
+                                            background: isDark ? "rgba(255,255,255,0.05)" : "#fff",
+
+                                            border: isDark ? "1px solid rgba(255,255,255,0.2)" : "1px solid #d9d9d9",
+
+                                        }}
+
+                                        placeholder="Select location"
+
+                                    >
+
+                                        <Select.Option value="main-shop">Main Shop</Select.Option>
+
+                                        <Select.Option value="branch-1">Branch 1</Select.Option>
+
+                                        <Select.Option value="branch-2">Branch 2</Select.Option>
+
+                                        <Select.Option value="warehouse">Warehouse</Select.Option>
+
+                                        <Select.Option value="online-store">Online Store</Select.Option>
+
+                                    </Select>
+
+                                </div>
 
                                 <Row gutter={[24, 24]}>
 
@@ -464,185 +574,185 @@ const Settings: React.FC = () => {
 
                                                         <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "11px", display: "block", marginBottom: "4px" }}>
 
-                                                                Payment account
+                                                            Payment account
 
-                                                            </Text>
+                                                        </Text>
 
-                                                            <Select
+                                                        <Select
 
-                                                                value={transactionMapping.purchasePaymentsPaymentAccount}
+                                                            value={transactionMapping.purchasePaymentsPaymentAccount}
 
-                                                                onChange={(value) => handleTransactionMappingChange('purchasePaymentsPaymentAccount', value)}
+                                                            onChange={(value) => handleTransactionMappingChange('purchasePaymentsPaymentAccount', value)}
 
-                                                                style={{ width: "100%" }}
+                                                            style={{ width: "100%" }}
 
-                                                                placeholder="Select account"
+                                                            placeholder="Select account"
 
-                                                                size="small"
+                                                            size="small"
 
-                                                            >
+                                                        >
 
-                                                                <Select.Option value="">Select account</Select.Option>
+                                                            <Select.Option value="">Select account</Select.Option>
 
-                                                                {/* Add account options here */}
+                                                            {/* Add account options here */}
 
-                                                            </Select>
+                                                        </Select>
 
-                                                        </div>
+                                                    </div>
 
-                                                    </Col>
+                                                </Col>
 
-                                                    <Col span={12}>
+                                                <Col span={12}>
 
-                                                        <div>
+                                                    <div>
 
-                                                            <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "11px", display: "block", marginBottom: "4px" }}>
+                                                        <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "11px", display: "block", marginBottom: "4px" }}>
 
-                                                                Deposit to
+                                                            Deposit to
 
-                                                            </Text>
+                                                        </Text>
 
-                                                            <Select
+                                                        <Select
 
-                                                                value={transactionMapping.purchasePaymentsDepositTo}
+                                                            value={transactionMapping.purchasePaymentsDepositTo}
 
-                                                                onChange={(value) => handleTransactionMappingChange('purchasePaymentsDepositTo', value)}
+                                                            onChange={(value) => handleTransactionMappingChange('purchasePaymentsDepositTo', value)}
 
-                                                                style={{ width: "100%" }}
+                                                            style={{ width: "100%" }}
 
-                                                                placeholder="Select account"
+                                                            placeholder="Select account"
 
-                                                                size="small"
+                                                            size="small"
 
-                                                            >
+                                                        >
 
-                                                                <Select.Option value="">Select account</Select.Option>
+                                                            <Select.Option value="">Select account</Select.Option>
 
-                                                                {/* Add account options here */}
+                                                            {/* Add account options here */}
 
-                                                            </Select>
+                                                        </Select>
 
-                                                        </div>
+                                                    </div>
 
-                                                    </Col>
+                                                </Col>
 
-                                                </Row>
+                                            </Row>
 
-                                                <Row gutter={[8, 0]}>
+                                            <Row gutter={[8, 0]}>
 
-                                                    <Col span={12}>
+                                                <Col span={12}>
 
-                                                        <div>
+                                                    <div>
 
-                                                            <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "11px", display: "block", marginBottom: "4px" }}>
+                                                        <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "11px", display: "block", marginBottom: "4px" }}>
 
-                                                                Payment account
+                                                            Payment account
 
-                                                            </Text>
+                                                        </Text>
 
-                                                            <Select
+                                                        <Select
 
-                                                                value=""
+                                                            value=""
 
-                                                                onChange={(value) => { }}
+                                                            onChange={(value) => { }}
 
-                                                                style={{ width: "100%" }}
+                                                            style={{ width: "100%" }}
 
-                                                                placeholder="Select account"
+                                                            placeholder="Select account"
 
-                                                                size="small"
+                                                            size="small"
 
-                                                            >
+                                                        >
 
-                                                                <Select.Option value="">Select account</Select.Option>
+                                                            <Select.Option value="">Select account</Select.Option>
 
-                                                                {/* Add account options here */}
+                                                            {/* Add account options here */}
 
-                                                            </Select>
+                                                        </Select>
 
-                                                        </div>
+                                                    </div>
 
-                                                    </Col>
+                                                </Col>
 
-                                                    <Col span={12}>
+                                                <Col span={12}>
 
-                                                        <div>
+                                                    <div>
 
-                                                            <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "11px", display: "block", marginBottom: "4px" }}>
+                                                        <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "11px", display: "block", marginBottom: "4px" }}>
 
-                                                                Payment account
+                                                            Payment account
 
-                                                            </Text>
+                                                        </Text>
 
-                                                            <Select
+                                                        <Select
 
-                                                                value=""
+                                                            value=""
 
-                                                                onChange={(value) => { }}
+                                                            onChange={(value) => { }}
 
-                                                                style={{ width: "100%" }}
+                                                            style={{ width: "100%" }}
 
-                                                                placeholder="Select account"
+                                                            placeholder="Select account"
 
-                                                                size="small"
+                                                            size="small"
 
-                                                            >
+                                                        >
 
-                                                                <Select.Option value="">Select account</Select.Option>
+                                                            <Select.Option value="">Select account</Select.Option>
 
-                                                                {/* Add account options here */}
+                                                            {/* Add account options here */}
 
-                                                            </Select>
+                                                        </Select>
 
-                                                        </div>
+                                                    </div>
 
-                                                    </Col>
+                                                </Col>
 
-                                                </Row>
+                                            </Row>
 
-                                                <Row gutter={[8, 0]}>
+                                            <Row gutter={[8, 0]}>
 
-                                                    <Col span={12}>
+                                                <Col span={12}>
 
-                                                        <div>
+                                                    <div>
 
-                                                            <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "11px", display: "block", marginBottom: "4px" }}>
+                                                        <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "11px", display: "block", marginBottom: "4px" }}>
 
-                                                                Payment account
+                                                            Payment account
 
-                                                            </Text>
+                                                        </Text>
 
-                                                            <Select
+                                                        <Select
 
-                                                                value=""
+                                                            value=""
 
-                                                                onChange={(value) => { }}
+                                                            onChange={(value) => { }}
 
-                                                                style={{ width: "100%" }}
+                                                            style={{ width: "100%" }}
 
-                                                                placeholder="Select account"
+                                                            placeholder="Select account"
 
-                                                                size="small"
+                                                            size="small"
 
-                                                            >
+                                                        >
 
-                                                                <Select.Option value="">Select account</Select.Option>
+                                                            <Select.Option value="">Select account</Select.Option>
 
-                                                                {/* Add account options here */}
+                                                            {/* Add account options here */}
 
-                                                            </Select>
+                                                        </Select>
 
-                                                        </div>
+                                                    </div>
 
-                                                    </Col>
+                                                </Col>
 
-                                                    <Col span={12}>
+                                                <Col span={12}>
 
-                                                        {/* Empty column for balance */}
+                                                    {/* Empty column for balance */}
 
-                                                    </Col>
+                                                </Col>
 
-                                                </Row>
+                                            </Row>
 
                                         </Card>
 
@@ -971,6 +1081,116 @@ const Settings: React.FC = () => {
                                                 </Row>
 
                                             </Space>
+
+                                        </Card>
+
+                                    </Col>
+
+                                    {/* Expenses Section */}
+
+                                    <Col xs={24} sm={12} md={12} lg={6}>
+
+                                        <Card
+
+                                            size="small"
+
+                                            style={{
+
+                                                background: isDark ? "rgba(255,255,255,0.03)" : "#fafafa",
+
+                                                border: isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid #f0f0f0",
+
+                                                borderRadius: "6px",
+
+                                            }}
+
+                                        >
+
+                                            <Title level={5} style={{ margin: "0 0 12px 0", color: isDark ? "#fff" : "#1f1f1f", fontSize: "14px" }}>
+
+                                                Expenses
+
+                                            </Title>
+
+                                            <Row gutter={[8, 0]}>
+
+                                                <Col span={12}>
+
+                                                    <div>
+
+                                                        <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "11px", display: "block", marginBottom: "4px" }}>
+
+                                                            Payment account
+
+                                                        </Text>
+
+                                                        <Select
+
+                                                            value={expensePaymentAccount}
+
+                                                            onChange={(value) => setExpensePaymentAccount(value)}
+
+                                                            style={{ width: "100%" }}
+
+                                                            placeholder="Select account"
+
+                                                            size="small"
+
+                                                        >
+
+                                                            <Select.Option value="">Select account</Select.Option>
+
+                                                            {getFilteredExpenseCategories().map((category) => (
+                                                                <Select.Option key={category.key} value={category.categoryCode}>
+                                                                    {category.categoryName}
+                                                                </Select.Option>
+                                                            ))}
+
+                                                        </Select>
+
+                                                    </div>
+
+                                                </Col>
+
+                                                <Col span={12}>
+
+                                                    <div>
+
+                                                        <Text style={{ color: isDark ? "rgba(255,255,255,0.65)" : "#8c8c8c", fontSize: "11px", display: "block", marginBottom: "4px" }}>
+
+                                                            Deposit to
+
+                                                        </Text>
+
+                                                        <Select
+
+                                                            value={expenseDepositTo}
+
+                                                            onChange={(value) => setExpenseDepositTo(value)}
+
+                                                            style={{ width: "100%" }}
+
+                                                            placeholder="Select account"
+
+                                                            size="small"
+
+                                                        >
+
+                                                            <Select.Option value="">Select account</Select.Option>
+
+                                                            {getFilteredExpenseCategories().map((category) => (
+                                                                <Select.Option key={category.key} value={category.categoryCode}>
+                                                                    {category.categoryName}
+                                                                </Select.Option>
+                                                            ))}
+
+                                                        </Select>
+
+                                                    </div>
+
+                                                </Col>
+
+                                            </Row>
 
                                         </Card>
 
