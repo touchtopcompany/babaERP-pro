@@ -147,7 +147,10 @@ const PricingCard: React.FC<{
           <div className="pricing-amount">{plan.price}</div>
           <div className="pricing-provider">{plan.provider}</div>
           <Link to="/pricing">
-            <Button type="primary" className="pricing-view-btn">
+            <Button 
+              type="primary" 
+              className="pricing-view-btn !bg-teal-600 hover:!bg-teal-700 !border-0"
+            >
               View Details
             </Button>
           </Link>
@@ -249,13 +252,13 @@ const SolutionCard: React.FC<{
           </Title>
           <div className="solution-price-overlay">{solution.price}</div>
           <Space size="middle" className="solution-actions">
-            <Link to="/login">
-              <Button type="primary" className="solution-btn-primary">
+            <Link to="/signup">
+              <Button type="primary" className="solution-btn-primary !bg-teal-700 hover:!bg-teal-800">
                 Get Started
               </Button>
             </Link>
             <Link to="/solutions">
-              <Button className="solution-btn-secondary">
+              <Button className="solution-btn-secondary hover:!text-teal-700 hover:!border-teal-700 !text-black">
                 Learn More
               </Button>
             </Link>
@@ -272,7 +275,7 @@ const Home: React.FC = () => {
   const [activeCardIndex, setActiveCardIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [activePricingIndex, setActivePricingIndex] = useState(0);
+  // const [activePricingIndex, setActivePricingIndex] = useState(0);
   const pricingScrollRef = useRef<HTMLDivElement>(null);
   const pricingCardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const testimonialsScrollRef = useRef<HTMLDivElement>(null);
@@ -520,7 +523,7 @@ const Home: React.FC = () => {
         <div className="hero-container">
           <div className="hero-content-wrapper">
             <div className="hero-content">
-              <div className="hero-badge">
+              <div className="hero-badge ">
                 <span>Enterprise ERP Solution</span>
               </div>
               
@@ -537,12 +540,11 @@ const Home: React.FC = () => {
               </Paragraph>
 
               <Space size="large" className="hero-actions">
-                <Link to="/login">
+                <Link to="/signup">
                   <Button
-                    type="primary"
                     size="large"
                     icon={<RocketOutlined />}
-                    className="hero-btn-primary"
+                    className="!bg-teal-700 hover:!bg-teal-700 !text-white !border-0"
                   >
                     Start Free Trial
                   </Button>
@@ -550,7 +552,7 @@ const Home: React.FC = () => {
                 <Button
                   size="large"
                   icon={<SearchOutlined />}
-                  className="hero-btn-secondary"
+                  className="hero-btn-secondary hover:!text-teal-700 hover:!border-teal-700"
                 >
                   Explore Features
                 </Button>
@@ -739,7 +741,7 @@ const Home: React.FC = () => {
             {pricingPlans.map((_, index) => (
               <div
                 key={index}
-                className={`pagination-dot ${index === activePricingIndex ? 'active' : ''}`}
+                // className={`pagination-dot ${index === activePricingIndex ? 'active' : ''}`}
                 onClick={() => scrollToPricingCard(index)}
               ></div>
             ))}
@@ -812,13 +814,20 @@ const Home: React.FC = () => {
             Join thousands of businesses who've streamlined their operations with BabaERP. Sign up today for exclusive deals and priority access.
           </Paragraph>
           <Space size="large" className="cta-actions">
-            <Link to="/login">
-              <Button type="primary" size="large" className="cta-btn-primary">
+            <Link to="/signup">
+              <Button 
+                type="primary" 
+                size="large" 
+                className="cta-btn-primary !bg-teal-700 hover:!bg-teal-800 !text-white !border-0"
+              >
                 Sign Up Free
               </Button>
             </Link>
             <Link to="/login">
-              <Button size="large" className="cta-btn-secondary">
+              <Button 
+                size="large" 
+                className="cta-btn-secondary !border-teal-600"
+              >
                 Already a Member? Log In
               </Button>
             </Link>

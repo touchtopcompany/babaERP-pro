@@ -13,6 +13,7 @@ const Login = lazy(() => import("@/features/auth/pages/signin/Login"));
 const TwoFactorAuth = lazy(() => import("@/features/auth/pages/two-factor-auth/TwoFactorAuth"));
 const ResetPassword = lazy(() => import("@/features/auth/pages/reset-password/ResetPassword"));
 const ForgotPassword = lazy(() => import("@/features/auth/pages/forgot password/ForgotPassword"));
+const Signup = lazy(() => import("@/features/auth/pages/signup/Signup"));
 const DashboardPage = lazy(() => import("@/features/dashboard/pages/home/DashboardPage"));
 const UsersPage = lazy(() => import("@/features/dashboard/pages/user-management/UsersPage"));
 const RolesPage = lazy(() => import("@/features/dashboard/pages/user-management/RolesPage"));
@@ -69,6 +70,8 @@ const JournalEntryPage = lazy(() => import("@/features/dashboard/pages/accountin
 const TransferPage = lazy(() => import("@/features/dashboard/pages/accounting/TransferPage"));
 const TransactionsPage = lazy(() => import("@/features/dashboard/pages/accounting/TransactionsPage"));
 const BudgetPage = lazy(() => import("@/features/dashboard/pages/accounting/BudgetPage"));
+const ReportsPage = lazy(() => import("@/features/dashboard/pages/accounting/ReportsPage"));
+const SettingsPage = lazy(() => import("@/features/dashboard/pages/accounting/SettingsPage"));
 const ProfitLossReportPage = lazy(() => import("@/features/dashboard/pages/reports/ProfitLossReportPage"));
 const PurchaseSaleReportPage = lazy(() => import("@/features/dashboard/pages/reports/PurchaseSaleReportPage"));
 const TaxReportPage = lazy(() => import("@/features/dashboard/pages/reports/TaxReportPage"));
@@ -94,6 +97,10 @@ const InvoiceSettingsPage = lazy(() => import("../features/dashboard/pages/setti
 const BarcodeSettingsPage = lazy(() => import("../features/dashboard/pages/settings/BarcodeSettingsPage"));
 const PrintersPage = lazy(() => import("../features/dashboard/pages/settings/PrintersPage"));
 const TaxRatesPage = lazy(() => import("../features/dashboard/pages/settings/TaxRatesPage"));
+const SubdomainManagement = lazy(() => import("@/pages/dashboard/components/Subdomain Management"));
+const UserManagement = lazy(() => import("@/pages/dashboard/components/User Management"));
+const Analytics = lazy(() => import("@/pages/dashboard/components/Analytics"));
+const Dashboard = lazy(() => import("@/pages/dashboard/Dashboard"));
 
 /**
  * This is Root Route initializer for the application
@@ -109,12 +116,12 @@ export const AppRoutes: FC = () => {
 
         {/* Public Routes - accessible only when not authenticated */}
         <Route element={<PublicRoutes />}>
-          <Route path="/auth/signin" element={<Login />} />
-          <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-          <Route path="/auth/two-factor-auth" element={<TwoFactorAuth />} />
-          <Route path="/auth/reset-password" element={<ResetPassword />} />
-          <Route path="/signin" element={<Navigate to="/auth/signin" replace />} />
-          <Route path="/login" element={<Navigate to="/auth/signin" replace />} />
+          <Route path="/signin" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/two-factor-auth" element={<TwoFactorAuth />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Navigate to="/signin" />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
         </Route>
 
@@ -176,6 +183,8 @@ export const AppRoutes: FC = () => {
           <Route path="/accounting/transfer" element={<TransferPage />} />
           <Route path="/accounting/transactions" element={<TransactionsPage />} />
           <Route path="/accounting/budget" element={<BudgetPage />} />
+          <Route path="/accounting/reports" element={<ReportsPage />} />
+          <Route path="/accounting/settings" element={<SettingsPage />} />
           <Route path="/reports/profit-loss-report" element={<ProfitLossReportPage />} />
           <Route path="/reports/purchase-sale" element={<PurchaseSaleReportPage />} />
           <Route path="/reports/tax-report" element={<TaxReportPage />} />
@@ -202,6 +211,16 @@ export const AppRoutes: FC = () => {
           <Route path="/settings/receipt-printers" element={<PrintersPage />} />
           <Route path="/settings/tax-rates" element={<TaxRatesPage />} />
         </Route>
+
+        {/* Dashboard Routes - Accessible without authentication for local development */}
+        <Route path="/admindashboard" element={<Dashboard />}>
+          <Route path="subdomains" element={<SubdomainManagement />} />
+          <Route path="users" element={<UserManagement />} />
+          <Route path="analytics" element={<Analytics />} />
+        </Route>
+
+        {/* Redirect root to dashboard for easy access during development */}
+        <Route path="/" element={<Home />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

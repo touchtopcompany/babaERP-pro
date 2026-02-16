@@ -15,6 +15,7 @@ import {
   Collapse,
   Divider,
   Tabs,
+  Modal,
 } from "antd";
 import type { MenuProps } from "antd";
 import {
@@ -73,7 +74,7 @@ const ListProducts: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [pageSize, setPageSize] = useState(25);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  
+
   // Filter states
   const [filters, setFilters] = useState({
     businessLocation: "all",
@@ -257,6 +258,8 @@ const ListProducts: React.FC = () => {
   ];
 
   const [products, setProducts] = useState<ProductData[]>(defaultProducts);
+  const [stockEvaluationModalOpen, setStockEvaluationModalOpen] = useState(false);
+  const [isPrintMode, setIsPrintMode] = useState(false);
 
   // Filter products based on search text and filters
   const filteredProducts = useMemo(() => {
@@ -309,8 +312,15 @@ const ListProducts: React.FC = () => {
   };
 
   const handleStockEvaluationReport = () => {
-    // TODO: Generate stock evaluation report
-    message.info("Stock evaluation report functionality coming soon");
+    setStockEvaluationModalOpen(true);
+  };
+
+  const handlePrintStockEvaluation = () => {
+    setIsPrintMode(true);
+    setTimeout(() => {
+      window.print();
+      setIsPrintMode(false);
+    }, 100);
   };
 
   const handleDownloadExcel = () => {
@@ -324,6 +334,40 @@ const ListProducts: React.FC = () => {
       setLoading(false);
       message.success("Products refreshed successfully");
     }, 1000);
+  };
+
+  // Calculate stock evaluation data for the selected business location
+  const getStockEvaluationData = () => {
+    const locationProducts = filters.businessLocation === "all"
+      ? filteredProducts
+      : filteredProducts.filter(p => p.businessLocation === filters.businessLocation);
+
+    // Calculate department-wise data
+    const departments = [
+      { name: "D1", description: "" },
+      { name: "D2", description: "Back Cover" },
+      { name: "D3", description: "Battery" },
+      { name: "D4", description: "Benzine" },
+      { name: "D5", description: "Complete" }
+    ];
+
+    return departments.map(dept => {
+      // For demo purposes, distribute products across departments
+      const deptIndex = departments.indexOf(dept);
+      const deptProducts = locationProducts.slice(
+        deptIndex * Math.ceil(locationProducts.length / departments.length),
+        (deptIndex + 1) * Math.ceil(locationProducts.length / departments.length)
+      );
+
+      const costPrice = deptProducts.reduce((sum, p) => sum + (p.unitPurchasePrice * p.currentStock), 0);
+      const sellingPrice = deptProducts.reduce((sum, p) => sum + (p.sellingPrice * p.currentStock), 0);
+
+      return {
+        department: dept.description ? `${dept.name} (${dept.description})` : dept.name,
+        costPrice,
+        sellingPrice
+      };
+    });
   };
 
   const handleExportCSV = () => {
@@ -412,8 +456,8 @@ const ListProducts: React.FC = () => {
             </thead>
             <tbody>
               ${filteredProducts
-                .map(
-                  (product) => `
+        .map(
+          (product) => `
                 <tr>
                   <td>${product.product}</td>
                   <td>${product.businessLocation}</td>
@@ -422,8 +466,8 @@ const ListProducts: React.FC = () => {
                   <td>${product.sku}</td>
                 </tr>
               `
-                )
-                .join("")}
+        )
+        .join("")}
             </tbody>
           </table>
         </body>
@@ -1157,19 +1201,19 @@ const ListProducts: React.FC = () => {
                           placeholder="Search..."
                           allowClear
                           enterButton={
-                  <Button
-                    type="primary"
-                    icon={<SearchOutlined />}
-                    style={{
-                      height: "40px",
-                      borderRadius: "0 6px 6px 0",
-                    }}
-                  />
-                }
+                            <Button
+                              type="primary"
+                              icon={<SearchOutlined />}
+                              style={{
+                                height: "40px",
+                                borderRadius: "0 6px 6px 0",
+                              }}
+                            />
+                          }
                           size="large"
                           value={searchText}
                           onChange={(e) => setSearchText(e.target.value)}
-              onSearch={(value) => setSearchText(value)}
+                          onSearch={(value) => setSearchText(value)}
                           style={{
                             width: 200,
                           }}
@@ -1178,7 +1222,7 @@ const ListProducts: React.FC = () => {
                     </Col>
                   </Row>
 
-            <style>{`
+                  <style>{`
               .products-table .ant-table-thead > tr > th {
                 transition: all 0.2s ease;
                 cursor: pointer;
@@ -1216,116 +1260,116 @@ const ListProducts: React.FC = () => {
                 opacity: 1 !important;
               }
             `}</style>
-            <Table
-              className="products-table"
-              rowSelection={rowSelection}
-              columns={visibleColumns}
-              dataSource={filteredProducts}
-              loading={loading}
-              pagination={{
-                pageSize: pageSize,
-                showSizeChanger: false,
-                showTotal: (total, range) =>
-                  `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                style: {
-                  marginTop: "16px",
-                },
-              }}
-              scroll={{ x: "max-content" }}
-              style={{
-                background: isDark ? "transparent" : "#fafafa",
-              }}
-            />
+                  <Table
+                    className="products-table"
+                    rowSelection={rowSelection}
+                    columns={visibleColumns}
+                    dataSource={filteredProducts}
+                    loading={loading}
+                    pagination={{
+                      pageSize: pageSize,
+                      showSizeChanger: false,
+                      showTotal: (total, range) =>
+                        `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+                      style: {
+                        marginTop: "16px",
+                      },
+                    }}
+                    scroll={{ x: "max-content" }}
+                    style={{
+                      background: isDark ? "transparent" : "#fafafa",
+                    }}
+                  />
 
-            {/* Bulk Actions */}
-            {selectedRowKeys.length > 0 && (
-              <Card
-                style={{
-                  marginTop: "24px",
-                  background: isDark ? "rgba(255,255,255,0.05)" : "#ffffff",
-                  border: isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid #f0f0f0",
-                  borderRadius: "8px",
-          overflow: "hidden",
-          maxWidth: "100%",
-                }}
-                bodyStyle={{ padding: "16px 24px" }}
-              >
-                <Space wrap>
-                  <Text
-                    strong
-                    style={{
-                      fontSize: "14px",
-                      color: isDark ? "#fff" : "#1f1f1f",
-                    }}
-                  >
-                    {selectedRowKeys.length} product(s) selected
-                  </Text>
-                  <Button
-                    danger
-                    icon={<DeleteOutlined />}
-                    onClick={handleBulkDelete}
-                    style={{
-                      height: "36px",
-                      borderRadius: "6px",
-                      fontWeight: 500,
-                    }}
-                  >
-                    Delete Selected
-                  </Button>
-                  <Button
-                    type="primary"
-                    icon={<EditOutlined />}
-                    onClick={handleBulkEdit}
-                    style={{
-                      height: "36px",
-                      borderRadius: "6px",
-                      fontWeight: 500,
-                    }}
-                  >
-                    Bulk Edit
-                  </Button>
-                  <Button
-                    style={{
-                      height: "36px",
-                      borderRadius: "6px",
-                      fontWeight: 500,
-                      background: "#52c41a",
-                      borderColor: "#52c41a",
-                      color: "#fff",
-                    }}
-                    onClick={handleAddToLocation}
-                  >
-                    Add to location
-                  </Button>
-                  <Button
-                    style={{
-                      height: "36px",
-                      borderRadius: "6px",
-                      fontWeight: 500,
-                      background: "#fa8c16",
-                      borderColor: "#fa8c16",
-                      color: "#fff",
-                    }}
-                    onClick={handleRemoveFromLocation}
-                  >
-                    Remove from location
-                  </Button>
-                  <Button
-                    style={{
-                      height: "36px",
-                      borderRadius: "6px",
-                      fontWeight: 500,
-                      background: "#faad14",
-                      borderColor: "#faad14",
-                      color: "#fff",
-                    }}
-                    onClick={handleDeactivateSelected}
-                  >
-                    Deactivate Selected
-                  </Button>
-                </Space>
-              </Card>
-            )}
+                  {/* Bulk Actions */}
+                  {selectedRowKeys.length > 0 && (
+                    <Card
+                      style={{
+                        marginTop: "24px",
+                        background: isDark ? "rgba(255,255,255,0.05)" : "#ffffff",
+                        border: isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid #f0f0f0",
+                        borderRadius: "8px",
+                        overflow: "hidden",
+                        maxWidth: "100%",
+                      }}
+                      bodyStyle={{ padding: "16px 24px" }}
+                    >
+                      <Space wrap>
+                        <Text
+                          strong
+                          style={{
+                            fontSize: "14px",
+                            color: isDark ? "#fff" : "#1f1f1f",
+                          }}
+                        >
+                          {selectedRowKeys.length} product(s) selected
+                        </Text>
+                        <Button
+                          danger
+                          icon={<DeleteOutlined />}
+                          onClick={handleBulkDelete}
+                          style={{
+                            height: "36px",
+                            borderRadius: "6px",
+                            fontWeight: 500,
+                          }}
+                        >
+                          Delete Selected
+                        </Button>
+                        <Button
+                          type="primary"
+                          icon={<EditOutlined />}
+                          onClick={handleBulkEdit}
+                          style={{
+                            height: "36px",
+                            borderRadius: "6px",
+                            fontWeight: 500,
+                          }}
+                        >
+                          Bulk Edit
+                        </Button>
+                        <Button
+                          style={{
+                            height: "36px",
+                            borderRadius: "6px",
+                            fontWeight: 500,
+                            background: "#52c41a",
+                            borderColor: "#52c41a",
+                            color: "#fff",
+                          }}
+                          onClick={handleAddToLocation}
+                        >
+                          Add to location
+                        </Button>
+                        <Button
+                          style={{
+                            height: "36px",
+                            borderRadius: "6px",
+                            fontWeight: 500,
+                            background: "#fa8c16",
+                            borderColor: "#fa8c16",
+                            color: "#fff",
+                          }}
+                          onClick={handleRemoveFromLocation}
+                        >
+                          Remove from location
+                        </Button>
+                        <Button
+                          style={{
+                            height: "36px",
+                            borderRadius: "6px",
+                            fontWeight: 500,
+                            background: "#faad14",
+                            borderColor: "#faad14",
+                            color: "#fff",
+                          }}
+                          onClick={handleDeactivateSelected}
+                        >
+                          Deactivate Selected
+                        </Button>
+                      </Space>
+                    </Card>
+                  )}
                 </div>
               ),
             },
@@ -1391,6 +1435,239 @@ const ListProducts: React.FC = () => {
         loading={actionLoading}
         width={600}
       />
+
+      {/* Stock Evaluation Report Modal */}
+      <Modal
+        title={
+          <div style={{ textAlign: 'center', padding: '20px 0' }}>
+            <Title level={2} style={{ margin: 0, color: '#1890ff', fontSize: '24px', fontWeight: 'bold' }}>
+              {filters.businessLocation === "all" ? "ALL LOCATIONS" : filters.businessLocation.toUpperCase()}
+            </Title>
+            <Text style={{ fontSize: '16px', color: '#666' }}>
+              {filters.businessLocation === "all" ? "All Locations - Stock Evaluation Department Analysis" : `${filters.businessLocation} - Stock Evaluation Department Analysis`}
+            </Text>
+          </div>
+        }
+        open={stockEvaluationModalOpen}
+        onCancel={() => setStockEvaluationModalOpen(false)}
+        footer={[
+          <Button key="close" onClick={() => setStockEvaluationModalOpen(false)}>
+            Close
+          </Button>,
+          <Button key="print" type="primary" icon={<PrinterOutlined />} onClick={handlePrintStockEvaluation}>
+            Print
+          </Button>
+        ]}
+        width={1200}
+        style={{ top: 20 }}
+      >
+        <div style={{
+          padding: isPrintMode ? '20px' : '30px',
+          backgroundColor: '#fff',
+          fontFamily: 'Courier New, monospace',
+          position: 'relative'
+        }}>
+          {/* Print-specific styles */}
+          {isPrintMode && (
+            <style>{`
+              @media print {
+                body * {
+                  visibility: hidden;
+                }
+                .print-content, .print-content * {
+                  visibility: visible;
+                }
+                .print-content {
+                  position: absolute;
+                  left: 0;
+                  top: 0;
+                  width: 100%;
+                }
+                .no-print {
+                  display: none !important;
+                }
+                @page {
+                  margin: 20mm;
+                  size: A4;
+                }
+              }
+            `}</style>
+          )}
+
+          <div className={isPrintMode ? "print-content" : ""} style={{
+            border: '3px double #000',
+            padding: '20px',
+            marginBottom: '20px',
+            backgroundColor: '#f9f9f9'
+          }}>
+            {/* Print Header */}
+            {isPrintMode && (
+              <div style={{
+                textAlign: 'center',
+                marginBottom: '30px',
+                borderBottom: '3px double #000',
+                paddingBottom: '20px'
+              }}>
+                <h1 style={{
+                  fontSize: '24px',
+                  fontWeight: 'bold',
+                  color: '#1890ff',
+                  margin: '0 0 10px 0',
+                  letterSpacing: '2px'
+                }}>
+                  {filters.businessLocation === "all" ? "ALL LOCATIONS" : filters.businessLocation.toUpperCase()}
+                </h1>
+                <p style={{
+                  fontSize: '16px',
+                  color: '#666',
+                  margin: '0'
+                }}>
+                  {filters.businessLocation === "all" ? "All Locations - Stock Evaluation Department Analysis" : `${filters.businessLocation} - Stock Evaluation Department Analysis`}
+                </p>
+              </div>
+            )}
+
+            <table
+              style={{
+                width: '100%',
+                borderCollapse: 'collapse',
+                border: '3px double #000',
+                fontSize: '16px',
+                backgroundColor: '#ffffff'
+              }}
+            >
+              <thead>
+                <tr style={{ backgroundColor: '#e0e0e0', borderBottom: '3px double #000' }}>
+                  <th
+                    style={{
+                      border: '2px solid #000',
+                      padding: '15px',
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      backgroundColor: '#d4e4f7',
+                      fontSize: '18px',
+                      letterSpacing: '1px'
+                    }}
+                  >
+                    DEPARTMENT
+                  </th>
+                  <th
+                    style={{
+                      border: '2px solid #000',
+                      padding: '15px',
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      backgroundColor: '#d4e4f7',
+                      fontSize: '18px',
+                      letterSpacing: '1px'
+                    }}
+                  >
+                    VALUE @ Cost Price
+                  </th>
+                  <th
+                    style={{
+                      border: '2px solid #000',
+                      padding: '15px',
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      backgroundColor: '#d4e4f7',
+                      fontSize: '18px',
+                      letterSpacing: '1px'
+                    }}
+                  >
+                    VALUE @ Selling Price
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {getStockEvaluationData().map((row, index) => (
+                  <tr key={index} style={{
+                    borderBottom: '1px solid #000',
+                    backgroundColor: index % 2 === 0 ? '#ffffff' : '#f5f5f5'
+                  }}>
+                    <td style={{
+                      border: '2px solid #000',
+                      padding: '12px 15px',
+                      textAlign: 'left',
+                      fontWeight: 'bold',
+                      fontSize: '16px'
+                    }}>
+                      {row.department}
+                    </td>
+                    <td style={{
+                      border: '2px solid #000',
+                      padding: '12px 15px',
+                      textAlign: 'right',
+                      fontSize: '16px',
+                      fontFamily: 'Courier New, monospace'
+                    }}>
+                      {row.costPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </td>
+                    <td style={{
+                      border: '2px solid #000',
+                      padding: '12px 15px',
+                      textAlign: 'right',
+                      fontSize: '16px',
+                      fontFamily: 'Courier New, monospace'
+                    }}>
+                      {row.sellingPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </td>
+                  </tr>
+                ))}
+                <tr style={{
+                  backgroundColor: '#e8e8e8',
+                  fontWeight: 'bold',
+                  borderTop: '3px double #000'
+                }}>
+                  <td style={{
+                    border: '2px solid #000',
+                    padding: '15px',
+                    textAlign: 'center',
+                    fontSize: '18px',
+                    fontWeight: 'bold',
+                    letterSpacing: '2px'
+                  }}>
+                    TOTAL
+                  </td>
+                  <td style={{
+                    border: '2px solid #000',
+                    padding: '15px',
+                    textAlign: 'right',
+                    fontSize: '18px',
+                    fontWeight: 'bold',
+                    fontFamily: 'Courier New, monospace',
+                    backgroundColor: '#fff2cc'
+                  }}>
+                    {getStockEvaluationData().reduce((sum, row) => sum + row.costPrice, 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </td>
+                  <td style={{
+                    border: '2px solid #000',
+                    padding: '15px',
+                    textAlign: 'right',
+                    fontSize: '18px',
+                    fontWeight: 'bold',
+                    fontFamily: 'Courier New, monospace',
+                    backgroundColor: '#fff2cc'
+                  }}>
+                    {getStockEvaluationData().reduce((sum, row) => sum + row.sellingPrice, 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style={{
+            textAlign: 'center',
+            color: '#333',
+            fontSize: '14px',
+            borderTop: '2px solid #000',
+            paddingTop: '15px',
+            fontFamily: 'Arial, sans-serif'
+          }}>
+            <Text strong>Report Generated: {new Date().toLocaleDateString()} at {new Date().toLocaleTimeString()}</Text>
+          </div>
+        </div>
+      </Modal>
 
       {/* Delete Modal */}
       <DeleteModal

@@ -131,7 +131,7 @@ const Accounting: React.FC = () => {
   // Chart configuration
   const getChartConfig = (data: PieChartData[], colors: string[]) => {
     const filteredData = data.filter((item) => item.value > 0);
-    
+
     if (filteredData.length === 0) {
       return {
         data: [{ type: "No Data", value: 1 }],
@@ -144,7 +144,7 @@ const Accounting: React.FC = () => {
         statistic: { title: false, content: false },
       };
     }
-    
+
     return {
       data: filteredData,
       angleField: "value",
@@ -306,10 +306,18 @@ const Accounting: React.FC = () => {
           >
             <Text style={{ color: isDark ? "rgba(255,255,255,0.85)" : "#595959" }}>Budget</Text>
           </Button>
-          <Button type="link" style={{ padding: 0, height: "auto" }}>
+          <Button
+            type="link"
+            style={{ padding: 0, height: "auto" }}
+            onClick={() => navigate("/accounting/reports")}
+          >
             <Text style={{ color: isDark ? "rgba(255,255,255,0.85)" : "#595959" }}>Reports</Text>
           </Button>
-          <Button type="link" style={{ padding: 0, height: "auto" }}>
+          <Button 
+            type="link"
+            style={{ padding: 0, height: "auto" }}
+            onClick={() => navigate("/accounting/settings")}
+          >
             <Text style={{ color: isDark ? "rgba(255,255,255,0.85)" : "#595959" }}>Settings</Text>
           </Button>
         </Space>

@@ -170,7 +170,7 @@ const ExpenseCategories: React.FC = () => {
     try {
       // TODO: Implement API call to create expense category
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      
+
       // Generate a new key for the category
       const newKey = String(categories.length + 1);
       const newCategory: ExpenseCategoryData = {
@@ -178,7 +178,7 @@ const ExpenseCategories: React.FC = () => {
         categoryName: values.categoryName,
         categoryCode: values.categoryCode || `CAT-${String(categories.length + 1).padStart(3, "0")}`,
       };
-      
+
       setCategories([...categories, newCategory]);
       message.success("Expense category added successfully");
       setAddModalOpen(false);
@@ -274,15 +274,15 @@ const ExpenseCategories: React.FC = () => {
             </thead>
             <tbody>
               ${filteredCategories
-                .map(
-                  (category) => `
+        .map(
+          (category) => `
                 <tr>
                   <td>${category.categoryName}</td>
                   <td>${category.categoryCode}</td>
                 </tr>
               `
-                )
-                .join("")}
+        )
+        .join("")}
             </tbody>
           </table>
         </body>
