@@ -213,7 +213,7 @@ export const AppRoutes: FC = () => {
         </Route>
 
         {/* Dashboard Routes - Accessible without authentication for local development */}
-        <Route path="/dashboard" element={<Dashboard />}>
+        <Route path="/admindashboard" element={<Dashboard />}>
           <Route path="subdomains" element={<SubdomainManagement />} />
           <Route path="users" element={<UserManagement />} />
           <Route path="analytics" element={<Analytics />} />

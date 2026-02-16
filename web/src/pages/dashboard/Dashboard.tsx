@@ -19,14 +19,14 @@ const Dashboard = () => {
   const location = useLocation();
 
   const menuItems = [
-    { key: '1', icon: <DashboardOutlined />, label: 'Dashboard', path: '/dashboard' },
-    { key: '2', icon: <GlobalOutlined />, label: 'Subdomain Management', path: '/dashboard/subdomains' },
-    { key: '3', icon: <TeamOutlined />, label: 'User Management', path: '/dashboard/users' },
-    { key: '4', icon: <AreaChartOutlined />, label: 'Analytics', path: '/dashboard/analytics' },
-    { key: '5', icon: <SettingOutlined />, label: 'Setting', path: '/dashboard/settings' },
+    { key: '1', icon: <DashboardOutlined />, label: 'Dashboard', path: '/admindashboard' },
+    { key: '2', icon: <GlobalOutlined />, label: 'Subdomain Management', path: '/admindashboard/subdomains' },
+    { key: '3', icon: <TeamOutlined />, label: 'User Management', path: '/admindashboard/users' },
+    { key: '4', icon: <AreaChartOutlined />, label: 'Analytics', path: '/admindashboard/analytics' },
+    { key: '5', icon: <SettingOutlined />, label: 'Setting', path: '/admindashboard/settings' },
   ];
 
-  const selectedKey = menuItems.find(item => location.pathname === item.path)?.key || '1';
+  const selectedKey = menuItems.find(item => location.pathname.startsWith(item.path))?.key || '1';
   return (
     <Layout style={{ minHeight: '100vh', background: '#0d9488' }}>
       {/* Sidebar */}
@@ -109,7 +109,7 @@ const Dashboard = () => {
             <Outlet />
 
             {/* Render the appropriate component based on the route */}
-            {location.pathname === '/dashboard' && <DashboardComponent />}
+            {location.pathname === '/admindashboard' && <DashboardComponent />}
           </div>
         </Content>
       </Layout>

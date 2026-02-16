@@ -4,34 +4,45 @@ import { FormField } from '../signin/components/FormField';
 import { getNames } from 'country-list';
 
 // Mock validation functions - you might want to implement proper validation
-const validateField = (name: string, value: string): string => {
+const validateField = (name: string, value: string, formData?: Record<string, string>): string => {
   if (!value.trim()) return `${name.charAt(0).toUpperCase() + name.slice(1)} is required`;
-  
+
   if (name === 'email') {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(value)) return 'Please enter a valid email address';
   }
-  
+
   if (name === 'phone') {
     const phoneRegex = /^\+?[0-9\s-]{10,}$/;
     if (!phoneRegex.test(value)) return 'Please enter a valid phone number';
   }
-  
+
+  if (name === 'password') {
+    if (value.length < 8) return 'Password must be at least 8 characters long';
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(value)) {
+      return 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
+    }
+  }
+
+  if (name === 'password_confirmation' && formData) {
+    if (value !== formData.password) return 'Passwords do not match';
+  }
+
   return '';
 };
 
 const validateForm = (formData: Record<string, string>) => {
   const errors: Record<string, string> = {};
   let isValid = true;
-  
+
   Object.keys(formData).forEach(key => {
-    const error = validateField(key, formData[key]);
+    const error = validateField(key, formData[key], formData);
     if (error) {
       errors[key] = error;
       isValid = false;
     }
   });
-  
+
   return { isValid, errors };
 };
 
@@ -52,8 +63,10 @@ const Signup = () => {
     email: '',
     country: '',
     phone: '',
+    password: '',
+    password_confirmation: '',
   });
-  
+
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,10 +75,10 @@ const Signup = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     const { isValid, errors: validationErrors } = validateForm(formData);
     setErrors(validationErrors);
-    
+
     if (isValid) {
       setIsSubmitting(true);
       // TODO: Implement signup API call
@@ -80,11 +93,12 @@ const Signup = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    
+    const newFormData = { ...formData, [name]: value };
+    setFormData(newFormData);
+
     // Validate field if it was touched or form was submitted
     if (touched[name] || Object.keys(errors).length > 0) {
-      const error = validateField(name, value);
+      const error = validateField(name, value, newFormData);
       setErrors(prev => ({ ...prev, [name]: error || '' }));
     }
   };
@@ -92,9 +106,9 @@ const Signup = () => {
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setTouched(prev => ({ ...prev, [name]: true }));
-    
+
     // Validate the field when it loses focus
-    const error = validateField(name, value);
+    const error = validateField(name, value, formData);
     setErrors(prev => ({ ...prev, [name]: error || '' }));
   };
 
@@ -105,7 +119,9 @@ const Signup = () => {
       formData.lastName.trim() !== '' &&
       formData.email.trim() !== '' &&
       formData.country.trim() !== '' &&
-      formData.phone.trim() !== ''
+      formData.phone.trim() !== '' &&
+      formData.password.trim() !== '' &&
+      formData.password_confirmation.trim() !== ''
     );
   };
 
@@ -114,8 +130,8 @@ const Signup = () => {
       <div className="w-full max-w-5xl bg-white overflow-hidden flex">
         <div className="hidden md:flex md:w-1/2">
           <div className="relative w-full h-full overflow-hidden">
-            <img 
-              src="/src/assets/image/signin_img.svg" 
+            <img
+              src="/src/assets/image/signin_img.svg"
               alt="Sign Up"
               width={800}
               height={800}
@@ -151,7 +167,7 @@ const Signup = () => {
                 }
               }}
             />
-            <div 
+            <div
               className="absolute inset-0 bg-gray-100 flex items-center justify-center text-gray-400"
               style={{
                 zIndex: 1,
@@ -236,9 +252,8 @@ const Signup = () => {
                   value={formData.country}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={`block w-full pl-10 pr-3 py-3 border ${
-                    errors.country ? 'border-red-500' : 'border-gray-300 hover:border-black/60 focus:border-black/60'
-                  } rounded-full bg-gray-50 focus:ring-0 focus:outline-none transition-all duration-200 appearance-none`}
+                  className={`block w-full pl-10 pr-3 py-3 border ${errors.country ? 'border-red-500' : 'border-gray-300 hover:border-black/60 focus:border-black/60'
+                    } rounded-full bg-gray-50 focus:ring-0 focus:outline-none transition-all duration-200 appearance-none`}
                   required
                 >
                   {countries.map(option => (
@@ -336,11 +351,10 @@ const Signup = () => {
               <button
                 type="submit"
                 disabled={!isFormValid() || isSubmitting}
-                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white ${
-                  isFormValid() 
-                    ? 'bg-teal-700 hover:bg-teal-800 focus:outline-none' 
-                    : 'bg-teal-500 cursor-not-allowed'
-                }`}
+                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white ${isFormValid()
+                  ? 'bg-teal-700 hover:bg-teal-800 focus:outline-none'
+                  : 'bg-teal-500 cursor-not-allowed'
+                  }`}
               >
                 {isSubmitting ? 'Creating Account...' : 'Create Account'}
               </button>
