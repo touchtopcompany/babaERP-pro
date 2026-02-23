@@ -96,6 +96,13 @@ const ListInvoicesPage = lazy(() => import("../features/dashboard/pages/repair/L
 const AddInvoicePage = lazy(() => import("../features/dashboard/pages/repair/AddInvoicePage"));
 const RepairPage = lazy(() => import("../features/dashboard/pages/repair/RepairPage"));
 const RepairSettingPage = lazy(() => import("../features/dashboard/pages/repair/SettingPage"));
+const AssetManagementPage = lazy(() => import("../features/dashboard/pages/Asset-management/AssetManagementPage"));
+const AssetPage = lazy(() => import("../features/dashboard/pages/Asset-management/AssetPage"));
+const AssetAllocatedPage = lazy(() => import("../features/dashboard/pages/Asset-management/AssetAllocatedPage"));
+const AssetRevokedPage = lazy(() => import("../features/dashboard/pages/Asset-management/AssetRevokedpage"));
+const AssetMaintainancePage = lazy(() => import("../features/dashboard/pages/Asset-management/AssetMaintainancePge"));
+const AssetCategoresPage = lazy(() => import("../features/dashboard/pages/Asset-management/AssetCategoresPage"));
+const AssetSettingsPage = lazy(() => import("../features/dashboard/pages/Asset-management/Settings.Page"));
 const NotificationTemplatesPage = lazy(() => import("../features/dashboard/pages/notification-templates/NotificationTemplatesPage"));
 const BusinessSettingsPage = lazy(() => import("../features/dashboard/pages/settings/BusinessSettingsPage"));
 const BusinessLocationsPage = lazy(() => import("../features/dashboard/pages/settings/BusinessLocationsPage"));
@@ -216,6 +223,13 @@ export const AppRoutes: FC = () => {
           <Route path="/repair/invoices" element={<ListInvoicesPage />} />
           <Route path="/repair/add-invoice" element={<AddInvoicePage />} />
           <Route path="/repair/settings" element={<RepairSettingPage />} />
+          <Route path="/asset-management" element={<AssetManagementPage />} />
+          <Route path="/asset-management/assets" element={<AssetPage />} />
+          <Route path="/asset-management/asset-allocated" element={<AssetAllocatedPage />} />
+          <Route path="/asset-management/asset-revoked" element={<AssetRevokedPage />} />
+          <Route path="/asset-management/asset-maintenance" element={<AssetMaintainancePage />} />
+          <Route path="/asset-management/asset-categories" element={<AssetCategoresPage />} />
+          <Route path="/asset-management/settings" element={<AssetSettingsPage />} />
 
           <Route path="/notification-templates" element={<NotificationTemplatesPage />} />
           <Route path="/settings/business-settings" element={<BusinessSettingsPage />} />

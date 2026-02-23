@@ -21,6 +21,7 @@ import {
   SettingOutlined,
   RightOutlined,
   ToolOutlined,
+  DesktopOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 
@@ -233,6 +234,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
       key: "/repair",
       icon: <ToolOutlined />,
       label: "Repair",
+      noChevron: true,
+    },
+    {
+      key: "/asset-management",
+      icon: <DesktopOutlined />,
+      label: "Asset Management",
       noChevron: true,
     },
     {
@@ -504,6 +511,9 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
     }
     if (pathname.startsWith("/repair")) {
       keys.push("/repair");
+    }
+    if (pathname.startsWith("/asset-management")) {
+      keys.push("/asset-management");
     }
     if (pathname.startsWith("/stock-transfers")) {
       keys.push("/stock-transfers");
