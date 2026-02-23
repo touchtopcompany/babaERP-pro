@@ -32,7 +32,6 @@ const ImportOpeningStockPage = lazy(() => import("@/features/dashboard/pages/pro
 const PriceGroupPage = lazy(() => import("@/features/dashboard/pages/products/PriceGroupPage"));
 const UnitsPage = lazy(() => import("@/features/dashboard/pages/products/UnitsPage"));
 const CategoriesPage = lazy(() => import("@/features/dashboard/pages/products/CategoriesPage"));
-const BrandsPage = lazy(() => import("@/features/dashboard/pages/products/BrandsPage"));
 const WarrantiesPage = lazy(() => import("@/features/dashboard/pages/products/WarrantiesPage"));
 const ListPurchasesPage = lazy(() => import("@/features/dashboard/pages/purchases/ListPurchasesPage"));
 const AddPurchasePage = lazy(() => import("@/features/dashboard/pages/purchases/AddPurchasePage"));
@@ -90,6 +89,13 @@ const ExpenseReportPage = lazy(() => import("../features/dashboard/pages/reports
 const RegisterReportPage = lazy(() => import("../features/dashboard/pages/reports/RegisterReportPage"));
 const SalesRepresentativeReportPage = lazy(() => import("../features/dashboard/pages/reports/SalesRepresentativeReportPage"));
 const ActivityLogPage = lazy(() => import("../features/dashboard/pages/reports/ActivityLogPage"));
+const JobSheetsPage = lazy(() => import("../features/dashboard/pages/repair/JobSheetsPage"));
+const AddJobSheetPage = lazy(() => import("../features/dashboard/pages/repair/AddJobSheetPage"));
+const BrandsPage = lazy(() => import("../features/dashboard/pages/repair/BrandsPage"));
+const ListInvoicesPage = lazy(() => import("../features/dashboard/pages/repair/ListInvoicesPage"));
+const AddInvoicePage = lazy(() => import("../features/dashboard/pages/repair/AddInvoicePage"));
+const RepairPage = lazy(() => import("../features/dashboard/pages/repair/RepairPage"));
+const RepairSettingPage = lazy(() => import("../features/dashboard/pages/repair/SettingPage"));
 const NotificationTemplatesPage = lazy(() => import("../features/dashboard/pages/notification-templates/NotificationTemplatesPage"));
 const BusinessSettingsPage = lazy(() => import("../features/dashboard/pages/settings/BusinessSettingsPage"));
 const BusinessLocationsPage = lazy(() => import("../features/dashboard/pages/settings/BusinessLocationsPage"));
@@ -203,6 +209,14 @@ export const AppRoutes: FC = () => {
           <Route path="/reports/register-report" element={<RegisterReportPage />} />
           <Route path="/reports/sales-representative-report" element={<SalesRepresentativeReportPage />} />
           <Route path="/reports/activity-log" element={<ActivityLogPage />} />
+          <Route path="/repair" element={<RepairPage />} />
+          <Route path="/repair/job-sheets" element={<JobSheetsPage />} />
+          <Route path="/repair/add-job-sheet" element={<AddJobSheetPage />} />
+          <Route path="/repair/brands" element={<BrandsPage />} />
+          <Route path="/repair/invoices" element={<ListInvoicesPage />} />
+          <Route path="/repair/add-invoice" element={<AddInvoicePage />} />
+          <Route path="/repair/settings" element={<RepairSettingPage />} />
+
           <Route path="/notification-templates" element={<NotificationTemplatesPage />} />
           <Route path="/settings/business-settings" element={<BusinessSettingsPage />} />
           <Route path="/settings/business-locations" element={<BusinessLocationsPage />} />
