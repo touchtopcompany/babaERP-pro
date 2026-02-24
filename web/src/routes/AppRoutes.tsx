@@ -103,7 +103,12 @@ const AssetRevokedPage = lazy(() => import("../features/dashboard/pages/Asset-ma
 const AssetMaintainancePage = lazy(() => import("../features/dashboard/pages/Asset-management/AssetMaintainancePge"));
 const AssetCategoresPage = lazy(() => import("../features/dashboard/pages/Asset-management/AssetCategoresPage"));
 const AssetSettingsPage = lazy(() => import("../features/dashboard/pages/Asset-management/Settings.Page"));
-const NotificationTemplatesPage = lazy(() => import("../features/dashboard/pages/notification-templates/NotificationTemplatesPage"));
+const NotificationTemplatesPage = lazy(() => import("@/features/dashboard/pages/notification-templates/NotificationTemplatesPage"));
+const CMSPage = lazy(() => import("@/features/dashboard/pages/CMS/CMSPage"));
+const PagesPage = lazy(() => import("@/features/dashboard/pages/CMS/PagesPage"));
+const BlogPage = lazy(() => import("@/features/dashboard/pages/CMS/BlogPage"));
+const SiteDetailsPage = lazy(() => import("@/features/dashboard/pages/CMS/SiteDetailsPage"));
+const TestimonialPage = lazy(() => import("@/features/dashboard/pages/CMS/TestimonialPage"));
 const BusinessSettingsPage = lazy(() => import("../features/dashboard/pages/settings/BusinessSettingsPage"));
 const BusinessLocationsPage = lazy(() => import("../features/dashboard/pages/settings/BusinessLocationsPage"));
 const InvoiceSettingsPage = lazy(() => import("../features/dashboard/pages/settings/InvoiceSettingsPage"));
@@ -232,6 +237,11 @@ export const AppRoutes: FC = () => {
           <Route path="/asset-management/settings" element={<AssetSettingsPage />} />
 
           <Route path="/notification-templates" element={<NotificationTemplatesPage />} />
+          <Route path="/cms" element={<CMSPage />} />
+          <Route path="/cms/pages" element={<PagesPage />} />
+          <Route path="/cms/blog" element={<BlogPage />} />
+          <Route path="/cms/site-details" element={<SiteDetailsPage />} />
+          <Route path="/cms/testimonials" element={<TestimonialPage />} />
           <Route path="/settings/business-settings" element={<BusinessSettingsPage />} />
           <Route path="/settings/business-locations" element={<BusinessLocationsPage />} />
           <Route path="/settings/invoice-settings" element={<InvoiceSettingsPage />} />
