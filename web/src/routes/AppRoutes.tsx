@@ -105,6 +105,10 @@ const AssetCategoresPage = lazy(() => import("../features/dashboard/pages/Asset-
 const AssetSettingsPage = lazy(() => import("../features/dashboard/pages/Asset-management/Settings.Page"));
 const NotificationTemplatesPage = lazy(() => import("@/features/dashboard/pages/notification-templates/NotificationTemplatesPage"));
 const CMSPage = lazy(() => import("@/features/dashboard/pages/CMS/CMSPage"));
+const ManufacturingPage = lazy(() => import("@/features/dashboard/pages/Manufacturing/ManufacturingPage"));
+const ProductionPage = lazy(() => import("@/features/dashboard/pages/Manufacturing/ProductionPage"));
+const ManufacturingSettingsPage = lazy(() => import("@/features/dashboard/pages/Manufacturing/SettingsPage"));
+const ManufacturingReportPage = lazy(() => import("@/features/dashboard/pages/Manufacturing/ManufacturingreportPage"));
 const PagesPage = lazy(() => import("@/features/dashboard/pages/CMS/PagesPage"));
 const BlogPage = lazy(() => import("@/features/dashboard/pages/CMS/BlogPage"));
 const SiteDetailsPage = lazy(() => import("@/features/dashboard/pages/CMS/SiteDetailsPage"));
@@ -239,6 +243,10 @@ export const AppRoutes: FC = () => {
 
           <Route path="/notification-templates" element={<NotificationTemplatesPage />} />
           <Route path="/cms" element={<CMSPage />} />
+          <Route path="/manufacturing" element={<ManufacturingPage />} />
+          <Route path="/manufacturing/production" element={<ProductionPage />} />
+          <Route path="/manufacturing/settings" element={<ManufacturingSettingsPage />} />
+          <Route path="/manufacturing/reports" element={<ManufacturingReportPage />} />
           <Route path="/cms/pages" element={<PagesPage />} />
           <Route path="/cms/blog" element={<BlogPage />} />
           <Route path="/cms/site-details" element={<SiteDetailsPage />} />

@@ -24,6 +24,7 @@ import {
   DesktopOutlined,
   GlobalOutlined,
   QrcodeOutlined,
+  ExperimentOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 
@@ -242,6 +243,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
       key: "/asset-management",
       icon: <DesktopOutlined />,
       label: "Asset Management",
+      noChevron: true,
+    },
+    {
+      key: "/manufacturing",
+      icon: <ExperimentOutlined />,
+      label: "Manufacturing",
       noChevron: true,
     },
     {
@@ -528,6 +535,9 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
     }
     if (pathname.startsWith("/asset-management")) {
       keys.push("/asset-management");
+    }
+    if (pathname.startsWith("/manufacturing")) {
+      keys.push("/manufacturing");
     }
     if (pathname.startsWith("/stock-transfers")) {
       keys.push("/stock-transfers");
