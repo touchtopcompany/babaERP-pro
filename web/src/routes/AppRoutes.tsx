@@ -109,6 +109,7 @@ const PagesPage = lazy(() => import("@/features/dashboard/pages/CMS/PagesPage"))
 const BlogPage = lazy(() => import("@/features/dashboard/pages/CMS/BlogPage"));
 const SiteDetailsPage = lazy(() => import("@/features/dashboard/pages/CMS/SiteDetailsPage"));
 const TestimonialPage = lazy(() => import("@/features/dashboard/pages/CMS/TestimonialPage"));
+const CatalogueQRPage = lazy(() => import("@/features/dashboard/pages/Product-catalogue/CatalogueQRPage"));
 const BusinessSettingsPage = lazy(() => import("../features/dashboard/pages/settings/BusinessSettingsPage"));
 const BusinessLocationsPage = lazy(() => import("../features/dashboard/pages/settings/BusinessLocationsPage"));
 const InvoiceSettingsPage = lazy(() => import("../features/dashboard/pages/settings/InvoiceSettingsPage"));
@@ -242,6 +243,7 @@ export const AppRoutes: FC = () => {
           <Route path="/cms/blog" element={<BlogPage />} />
           <Route path="/cms/site-details" element={<SiteDetailsPage />} />
           <Route path="/cms/testimonials" element={<TestimonialPage />} />
+          <Route path="/product-catalogue/qr" element={<CatalogueQRPage />} />
           <Route path="/settings/business-settings" element={<BusinessSettingsPage />} />
           <Route path="/settings/business-locations" element={<BusinessLocationsPage />} />
           <Route path="/settings/invoice-settings" element={<InvoiceSettingsPage />} />

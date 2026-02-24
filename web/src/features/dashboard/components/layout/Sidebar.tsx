@@ -23,6 +23,7 @@ import {
   ToolOutlined,
   DesktopOutlined,
   GlobalOutlined,
+  QrcodeOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 
@@ -423,6 +424,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
       noChevron: true,
     },
     {
+      key: "/product-catalogue/qr",
+      icon: <QrcodeOutlined />,
+      label: "Catalogue QR",
+      noChevron: true,
+    },
+    {
       key: "/settings",
       icon: <SettingOutlined />,
       label: "Settings",
@@ -548,6 +555,9 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
     }
     if (pathname.startsWith("/cms")) {
       keys.push("/cms");
+    }
+    if (pathname.startsWith("/product-catalogue")) {
+      keys.push("/product-catalogue/qr");
     }
     if (pathname.startsWith("/settings")) {
       keys.push("/settings");
