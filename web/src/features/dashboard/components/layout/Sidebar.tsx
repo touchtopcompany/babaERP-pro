@@ -25,6 +25,7 @@ import {
   GlobalOutlined,
   QrcodeOutlined,
   ExperimentOutlined,
+  FireOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 
@@ -431,6 +432,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
       noChevron: true,
     },
     {
+      key: "/kitchen",
+      icon: <FireOutlined />,
+      label: "Kitchen",
+      noChevron: true,
+    },
+    {
       key: "/product-catalogue/qr",
       icon: <QrcodeOutlined />,
       label: "Catalogue QR",
@@ -565,6 +572,9 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
     }
     if (pathname.startsWith("/cms")) {
       keys.push("/cms");
+    }
+    if (pathname.startsWith("/kitchen")) {
+      keys.push("/kitchen");
     }
     if (pathname.startsWith("/product-catalogue")) {
       keys.push("/product-catalogue/qr");

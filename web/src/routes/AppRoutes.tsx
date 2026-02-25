@@ -124,6 +124,7 @@ const SubdomainManagement = lazy(() => import("@/pages/dashboard/components/Subd
 const UserManagement = lazy(() => import("@/pages/dashboard/components/User Management"));
 const Analytics = lazy(() => import("@/pages/dashboard/components/Analytics"));
 const Dashboard = lazy(() => import("@/pages/dashboard/Dashboard"));
+const KitchenPage = lazy(() => import("../features/dashboard/pages/Kitchen/KitchenPage"));
 
 /**
  * This is Root Route initializer for the application
@@ -150,14 +151,22 @@ export const AppRoutes: FC = () => {
 
         {/* Authenticated Routes - require login */}
         <Route element={<AuthenticatedRoutes />}>
+
+        {/* DASHBOARD */}
           <Route path="/dashboard" element={<DashboardPage />} />
+
+          {/* USER MANAGEMENT */}
           <Route path="/user-management/users" element={<UsersPage />} />
           <Route path="/user-management/roles" element={<RolesPage />} />
           <Route path="/user-management/sales-commission-agents" element={<SalesCommissionAgentsPage />} />
+
+          {/* CONTACTS */}
           <Route path="/contacts/suppliers" element={<SuppliersPage />} />
           <Route path="/contacts/customers" element={<CustomersPage />} />
           <Route path="/contacts/customer-groups" element={<CustomerGroupsPage />} />
           <Route path="/contacts/import-contacts" element={<ImportContactsPage />} />
+
+          {/* PRODUCTS */}
           <Route path="/products/list-products" element={<ListProductsPage />} />
           <Route path="/products/add-product" element={<AddProductPage />} />
           <Route path="/products/update-price" element={<UpdatePricePage />} />
@@ -170,10 +179,14 @@ export const AppRoutes: FC = () => {
           <Route path="/products/categories" element={<CategoriesPage />} />
           <Route path="/products/brands" element={<BrandsPage />} />
           <Route path="/products/warranties" element={<WarrantiesPage />} />
+
+          {/* PURCHASE */}
           <Route path="/purchases/list-purchases" element={<ListPurchasesPage />} />
           <Route path="/purchases/add-purchase" element={<AddPurchasePage />} />
           <Route path="/purchases/purchase-return" element={<PurchaseReturnPage />} />
           <Route path="/purchases/add-purchase-return" element={<AddPurchaseReturnPage />} />
+
+          {/* SELL */}
           <Route path="/sell/all-sales" element={<AllSalesPage />} />
           <Route path="/sell/add-sale" element={<AddSalePage />} />
           <Route path="/sell/list-pos" element={<ListPOSPage />} />
@@ -187,19 +200,31 @@ export const AppRoutes: FC = () => {
           <Route path="/sell/discounts" element={<DiscountsPage />} />
           <Route path="/sell/import-sales" element={<ImportSalesPage />} />
           <Route path="/sell/sales-void" element={<SalesVoidPage />} />
+
+          {/* STOCK TRANSFER */}
           <Route path="/stock-transfers/list-stock-transfers" element={<ListStockTransfersPage />} />
           <Route path="/stock-transfers/add-stock-transfer" element={<AddStockTransferPage />} />
+
+          {/* STOCK ADJUSTMENT */}
           <Route path="/stock-adjustment/list-stock-adjustments" element={<ListStockAdjustmentsPage />} />
           <Route path="/stock-adjustment/add-stock-adjustment" element={<AddStockAdjustmentPage />} />
+
+          {/* STOCKTAKING */}
           <Route path="/stock-taking" element={<StockTakingPage />} />
+
+          {/* EXPENSE */}
           <Route path="/expenses/list-expenses" element={<ListExpensesPage />} />
           <Route path="/expenses/add-expense" element={<AddExpensePage />} />
           <Route path="/expenses/expense-categories" element={<ExpenseCategoriesPage />} />
+
+          {/* PAYMENT ACCOUNT */}
           <Route path="/payment-accounts/list-accounts" element={<ListAccountsPage />} />
           <Route path="/payment-accounts/payment-account-report" element={<PaymentAccountReportPage />} />
           <Route path="/payment-accounts/balance-sheet" element={<BalanceSheetPage />} />
           <Route path="/payment-accounts/trial-balance" element={<TrialBalancePage />} />
           <Route path="/payment-accounts/cash-flow" element={<CashFlowPage />} />
+
+          {/* ACCOUNTING */}
           <Route path="/accounting" element={<AccountingPage />} />
           <Route path="/accounting/chart-of-accounts" element={<ChartOfAccountsPage />} />
           <Route path="/accounting/journal-entry" element={<JournalEntryPage />} />
@@ -208,6 +233,8 @@ export const AppRoutes: FC = () => {
           <Route path="/accounting/budget" element={<BudgetPage />} />
           <Route path="/accounting/reports" element={<ReportsPage />} />
           <Route path="/accounting/settings" element={<SettingsPage />} />
+
+          {/* REPORT */}
           <Route path="/reports/profit-loss-report" element={<ProfitLossReportPage />} />
           <Route path="/reports/purchase-sale" element={<PurchaseSaleReportPage />} />
           <Route path="/reports/tax-report" element={<TaxReportPage />} />
@@ -226,6 +253,8 @@ export const AppRoutes: FC = () => {
           <Route path="/reports/register-report" element={<RegisterReportPage />} />
           <Route path="/reports/sales-representative-report" element={<SalesRepresentativeReportPage />} />
           <Route path="/reports/activity-log" element={<ActivityLogPage />} />
+          
+          {/* REPAIR */}
           <Route path="/repair" element={<RepairPage />} />
           <Route path="/repair/job-sheets" element={<JobSheetsPage />} />
           <Route path="/repair/add-job-sheet" element={<AddJobSheetPage />} />
@@ -233,6 +262,8 @@ export const AppRoutes: FC = () => {
           <Route path="/repair/invoices" element={<ListInvoicesPage />} />
           <Route path="/repair/add-invoice" element={<AddInvoicePage />} />
           <Route path="/repair/settings" element={<RepairSettingPage />} />
+
+          {/* ASSETS */}
           <Route path="/asset-management" element={<AssetManagementPage />} />
           <Route path="/asset-management/assets" element={<AssetPage />} />
           <Route path="/asset-management/asset-allocated" element={<AssetAllocatedPage />} />
@@ -241,17 +272,28 @@ export const AppRoutes: FC = () => {
           <Route path="/asset-management/asset-categories" element={<AssetCategoresPage />} />
           <Route path="/asset-management/settings" element={<AssetSettingsPage />} />
 
+          {/* NOTIFICATION */}
           <Route path="/notification-templates" element={<NotificationTemplatesPage />} />
-          <Route path="/cms" element={<CMSPage />} />
+
+          {/* MANUFACTURNG */}
           <Route path="/manufacturing" element={<ManufacturingPage />} />
           <Route path="/manufacturing/production" element={<ProductionPage />} />
           <Route path="/manufacturing/settings" element={<ManufacturingSettingsPage />} />
           <Route path="/manufacturing/reports" element={<ManufacturingReportPage />} />
+
+          {/* CMS */}
+          <Route path="/cms" element={<CMSPage />} />
           <Route path="/cms/pages" element={<PagesPage />} />
           <Route path="/cms/blog" element={<BlogPage />} />
           <Route path="/cms/site-details" element={<SiteDetailsPage />} />
           <Route path="/cms/testimonials" element={<TestimonialPage />} />
           <Route path="/product-catalogue/qr" element={<CatalogueQRPage />} />
+          <Route path="/kitchen" element={<KitchenPage />} />
+
+          {/* KITCHEN */}
+          <Route path="/kitchen" element={<KitchenPage />} />
+
+          {/* settings */}
           <Route path="/settings/business-settings" element={<BusinessSettingsPage />} />
           <Route path="/settings/business-locations" element={<BusinessLocationsPage />} />
           <Route path="/settings/invoice-settings" element={<InvoiceSettingsPage />} />
