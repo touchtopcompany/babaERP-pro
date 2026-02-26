@@ -444,6 +444,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
       noChevron: true,
     },
     {
+      key: "/hms",
+      icon: <QrcodeOutlined />,
+      label: "HMS",
+      noChevron: true,
+    },
+    {
       key: "/settings",
       icon: <SettingOutlined />,
       label: "Settings",
@@ -575,6 +581,9 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
     }
     if (pathname.startsWith("/kitchen")) {
       keys.push("/kitchen");
+    }
+    if (pathname.startsWith("/hms")) {
+      keys.push("/hms");
     }
     if (pathname.startsWith("/product-catalogue")) {
       keys.push("/product-catalogue/qr");

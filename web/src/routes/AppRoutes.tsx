@@ -6,6 +6,7 @@ import NotFound from "@/pages/NotFound";
 import PublicRoutes from "./PublicRoutes";
 import AuthenticatedRoutes from "./AuthenticatedRoutes";
 import Loading from "../pages/Loading";
+import LeavePage from "@/features/dashboard/pages/HMS/Leave";
 
 // Lazy load components
 const Home = lazy(() => import("@/pages/landing/Home"));
@@ -125,6 +126,20 @@ const UserManagement = lazy(() => import("@/pages/dashboard/components/User Mana
 const Analytics = lazy(() => import("@/pages/dashboard/components/Analytics"));
 const Dashboard = lazy(() => import("@/pages/dashboard/Dashboard"));
 const KitchenPage = lazy(() => import("../features/dashboard/pages/Kitchen/KitchenPage"));
+const HMSPage = lazy(() => import("../features/dashboard/pages/HMS/HMSPage"));
+const LeaveTypePage = lazy(() => import("../features/dashboard/pages/HMS/leaveType"));
+const AttendancePage = lazy(() => import("../features/dashboard/pages/HMS/Attendance"));
+const PayrollPage = lazy(() => import("../features/dashboard/pages/HMS/PayrollPage"));
+const HolidayPage = lazy(() => import("../features/dashboard/pages/HMS/HolidayPage"));
+const DepartmentPage = lazy(() => import("../features/dashboard/pages/HMS/Department"));
+const DesignationPage = lazy(() => import("../features/dashboard/pages/HMS/DesignationPage"));
+const SalesTargetsPage = lazy(() => import("../features/dashboard/pages/HMS/SalesTargetsPage"));
+const HMSSettingsPage = lazy(() => import("../features/dashboard/pages/HMS/SettingsPage"));
+
+
+
+
+
 
 /**
  * This is Root Route initializer for the application
@@ -152,7 +167,7 @@ export const AppRoutes: FC = () => {
         {/* Authenticated Routes - require login */}
         <Route element={<AuthenticatedRoutes />}>
 
-        {/* DASHBOARD */}
+          {/* DASHBOARD */}
           <Route path="/dashboard" element={<DashboardPage />} />
 
           {/* USER MANAGEMENT */}
@@ -253,7 +268,7 @@ export const AppRoutes: FC = () => {
           <Route path="/reports/register-report" element={<RegisterReportPage />} />
           <Route path="/reports/sales-representative-report" element={<SalesRepresentativeReportPage />} />
           <Route path="/reports/activity-log" element={<ActivityLogPage />} />
-          
+
           {/* REPAIR */}
           <Route path="/repair" element={<RepairPage />} />
           <Route path="/repair/job-sheets" element={<JobSheetsPage />} />
@@ -289,6 +304,20 @@ export const AppRoutes: FC = () => {
           <Route path="/cms/testimonials" element={<TestimonialPage />} />
           <Route path="/product-catalogue/qr" element={<CatalogueQRPage />} />
           <Route path="/kitchen" element={<KitchenPage />} />
+
+          {/* HMS */}
+          <Route path="/hms" element={<HMSPage />} />
+          <Route path="/hms/leave-type" element={<LeaveTypePage />} />
+          <Route path="/hms/leave" element={<LeavePage />} />
+          <Route path="/hms/attendance" element={<AttendancePage />} />
+          <Route path="/hms/payroll" element={<PayrollPage />} />
+          <Route path="/hms/holiday" element={<HolidayPage />} />
+          <Route path="/hms/departments" element={<DepartmentPage />} />
+          <Route path="/hms/designations" element={<DesignationPage />} />
+          <Route path="/hms/sales-targets" element={<SalesTargetsPage />} />
+          <Route path="/hms/settings" element={<HMSSettingsPage />} />
+
+
 
           {/* KITCHEN */}
           <Route path="/kitchen" element={<KitchenPage />} />

@@ -44,7 +44,7 @@ const AddModal = <T extends Record<string, any>>({
     try {
       const values = await form.validateFields();
       const processedValues: any = { ...values };
-      
+
       // Convert dayjs objects to ISO strings
       fields.forEach((field) => {
         if (field.type === "date" && processedValues[field.name]) {
