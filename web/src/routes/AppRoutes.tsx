@@ -135,6 +135,7 @@ const DepartmentPage = lazy(() => import("../features/dashboard/pages/HMS/Depart
 const DesignationPage = lazy(() => import("../features/dashboard/pages/HMS/DesignationPage"));
 const SalesTargetsPage = lazy(() => import("../features/dashboard/pages/HMS/SalesTargetsPage"));
 const HMSSettingsPage = lazy(() => import("../features/dashboard/pages/HMS/SettingsPage"));
+const WoocommercePage = lazy(() => import("../features/dashboard/pages/Woocommerce/WoocommercePage"));
 
 
 
@@ -329,6 +330,7 @@ export const AppRoutes: FC = () => {
           <Route path="/settings/barcode-settings" element={<BarcodeSettingsPage />} />
           <Route path="/settings/receipt-printers" element={<PrintersPage />} />
           <Route path="/settings/tax-rates" element={<TaxRatesPage />} />
+          <Route path="/woocommerce" element={<WoocommercePage />} />
         </Route>
 
         {/* Dashboard Routes - Accessible without authentication for local development */}

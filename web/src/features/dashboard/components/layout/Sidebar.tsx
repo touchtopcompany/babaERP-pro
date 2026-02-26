@@ -26,6 +26,7 @@ import {
   QrcodeOutlined,
   ExperimentOutlined,
   FireOutlined,
+  ShoppingOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 
@@ -450,6 +451,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
       noChevron: true,
     },
     {
+      key: "/woocommerce",
+      icon: <ShoppingOutlined />,
+      label: "WooCommerce",
+      noChevron: true,
+    },
+    {
       key: "/settings",
       icon: <SettingOutlined />,
       label: "Settings",
@@ -584,6 +591,9 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
     }
     if (pathname.startsWith("/hms")) {
       keys.push("/hms");
+    }
+    if (pathname.startsWith("/woocommerce")) {
+      keys.push("/woocommerce");
     }
     if (pathname.startsWith("/product-catalogue")) {
       keys.push("/product-catalogue/qr");
