@@ -469,6 +469,13 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
       label: "Spreadsheet",
       noChevron: true,
     },
+    {
+      key: "/projects",
+      icon: <AppstoreOutlined />,
+      label: "Projects",
+      noChevron: true,
+    },
+
 
     {
       key: "/settings",

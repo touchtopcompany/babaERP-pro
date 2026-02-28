@@ -142,6 +142,10 @@ const ReminderPage = lazy(() => import("../features/dashboard/pages/Essentials/R
 const MessagesPage = lazy(() => import("../features/dashboard/pages/Essentials/Messages"));
 const SpreadsheetPage = lazy(() => import("../features/dashboard/pages/Spreedsheet/SpreadsheetPage"));
 const TablesPage = lazy(() => import("../features/dashboard/pages/settings/TablesPage"));
+const ProjectsPage = lazy(() => import("../features/dashboard/pages/Projects/ProjectsPage"));
+const MyTasksPage = lazy(() => import("../features/dashboard/pages/Projects/MyTaskspage"));
+const ProjectsReportsPage = lazy(() => import("../features/dashboard/pages/Projects/ProjectsReportsPage"));
+const ProjectCategoriesPage = lazy(() => import("../features/dashboard/pages/Projects/ProjectCategoriesPage"));
 
 
 
@@ -325,6 +329,12 @@ export const AppRoutes: FC = () => {
           <Route path="/hms/sales-targets" element={<SalesTargetsPage />} />
           <Route path="/hms/settings" element={<HMSSettingsPage />} />
 
+          {/* Projects */}
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects/my-tasks" element={<MyTasksPage />} />
+          <Route path="/projects/reports" element={<ProjectsReportsPage />} />
+          <Route path="/projects/project-categories" element={<ProjectCategoriesPage />} />
+
 
 
           {/* KITCHEN */}
@@ -353,7 +363,7 @@ export const AppRoutes: FC = () => {
           <Route path="/settings/receipt-printers" element={<PrintersPage />} />
           <Route path="/settings/tax-rates" element={<TaxRatesPage />} />
           <Route path="/settings/tables" element={<TablesPage />} />
-          
+
         </Route>
 
         {/* Dashboard Routes - Accessible without authentication for local development */}
