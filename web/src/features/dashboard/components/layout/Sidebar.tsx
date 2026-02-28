@@ -20,6 +20,14 @@ import {
   MailOutlined,
   SettingOutlined,
   RightOutlined,
+  ToolOutlined,
+  DesktopOutlined,
+  GlobalOutlined,
+  QrcodeOutlined,
+  ExperimentOutlined,
+  FireOutlined,
+  ShoppingOutlined,
+  TableOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 
@@ -229,6 +237,24 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
       ],
     },
     {
+      key: "/repair",
+      icon: <ToolOutlined />,
+      label: "Repair",
+      noChevron: true,
+    },
+    {
+      key: "/asset-management",
+      icon: <DesktopOutlined />,
+      label: "Asset Management",
+      noChevron: true,
+    },
+    {
+      key: "/manufacturing",
+      icon: <ExperimentOutlined />,
+      label: "Manufacturing",
+      noChevron: true,
+    },
+    {
       key: "/stock-transfers",
       icon: <TruckOutlined />,
       label: "Stock Transfers",
@@ -402,6 +428,56 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
       noChevron: true,
     },
     {
+      key: "/cms",
+      icon: <GlobalOutlined />,
+      label: "CMS",
+      noChevron: true,
+    },
+    {
+      key: "/kitchen",
+      icon: <FireOutlined />,
+      label: "Kitchen",
+      noChevron: true,
+    },
+    {
+      key: "/product-catalogue/qr",
+      icon: <QrcodeOutlined />,
+      label: "Catalogue QR",
+      noChevron: true,
+    },
+    {
+      key: "/hms",
+      icon: <QrcodeOutlined />,
+      label: "HMS",
+      noChevron: true,
+    },
+    {
+      key: "/woocommerce",
+      icon: <ShoppingOutlined />,
+      label: "WooCommerce",
+      noChevron: true,
+    },
+    {
+      key: "/essentials",
+      icon: <FileTextOutlined />,
+      label: "Essentials",
+      noChevron: true,
+    },
+    {
+      key: "/spreadsheet",
+      icon: <TableOutlined />,
+      label: "Spreadsheet",
+      noChevron: true,
+    },
+    {
+      key: "/projects",
+      icon: <AppstoreOutlined />,
+      label: "Projects",
+      noChevron: true,
+    },
+
+
+    {
       key: "/settings",
       icon: <SettingOutlined />,
       label: "Settings",
@@ -429,6 +505,14 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
         {
           key: "/settings/tax-rates",
           label: "Tax Rates",
+        },
+        {
+          key: "/settings/tables",
+          label: "Tables",
+        },
+        {
+          key: "/settings/modifier",
+          label: "Modifier",
         },
       ],
     },
@@ -495,6 +579,15 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
     if (pathname.startsWith("/sell")) {
       keys.push("/sell");
     }
+    if (pathname.startsWith("/repair")) {
+      keys.push("/repair");
+    }
+    if (pathname.startsWith("/asset-management")) {
+      keys.push("/asset-management");
+    }
+    if (pathname.startsWith("/manufacturing")) {
+      keys.push("/manufacturing");
+    }
     if (pathname.startsWith("/stock-transfers")) {
       keys.push("/stock-transfers");
     }
@@ -516,6 +609,24 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
     if (pathname.startsWith("/reports")) {
       keys.push("/reports");
     }
+    if (pathname.startsWith("/notification-templates")) {
+      keys.push("/notification-templates");
+    }
+    if (pathname.startsWith("/cms")) {
+      keys.push("/cms");
+    }
+    if (pathname.startsWith("/kitchen")) {
+      keys.push("/kitchen");
+    }
+    if (pathname.startsWith("/hms")) {
+      keys.push("/hms");
+    }
+    if (pathname.startsWith("/woocommerce")) {
+      keys.push("/woocommerce");
+    }
+    if (pathname.startsWith("/product-catalogue")) {
+      keys.push("/product-catalogue/qr");
+    }
     if (pathname.startsWith("/settings")) {
       keys.push("/settings");
     }
@@ -524,7 +635,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
   }, [location.pathname]);
 
   const selectedKeys = getSelectedKeys();
-  
+
   // Update openKeys when route changes
   React.useEffect(() => {
     const keys = getOpenKeys();
@@ -535,10 +646,10 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
     <>
 
       {/* Scrollable Content Area */}
-      <div 
-        style={{ 
+      <div
+        style={{
           flex: 1,
-          overflowY: "auto", 
+          overflowY: "auto",
           overflowX: "hidden",
           minHeight: 0,
           maxHeight: "100%",
@@ -617,10 +728,10 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
           onOpenChange={(keys) => {
             // Get the current route's parent menu keys
             const currentOpenKeys = getOpenKeys();
-            
+
             // Always keep the active route's parent menu open
             const newKeys = [...new Set([...keys, ...currentOpenKeys])];
-            
+
             setOpenKeys(newKeys);
           }}
           items={menuItems}
@@ -651,95 +762,95 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
               borderTop: isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid #f0f0f0",
             }}
           >
-          <Card
-            style={{
-              background: isDark ? "rgba(255,255,255,0.05)" : "#f5f5f5",
-              border: isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid #e8e8e8",
-              borderRadius: "8px",
-            }}
-            styles={{ body: { padding: "16px" } }}
-          >
-            <div style={{ textAlign: "center", marginBottom: "12px" }}>
-              <div
-                style={{
-                  display: "inline-flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: "4px",
-                }}
-              >
+            <Card
+              style={{
+                background: isDark ? "rgba(255,255,255,0.05)" : "#f5f5f5",
+                border: isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid #e8e8e8",
+                borderRadius: "8px",
+              }}
+              styles={{ body: { padding: "16px" } }}
+            >
+              <div style={{ textAlign: "center", marginBottom: "12px" }}>
                 <div
                   style={{
-                    width: "20px",
-                    height: "20px",
-                    border: `2px solid ${isDark ? "rgba(255,255,255,0.85)" : "#1890ff"}`,
-                    borderRadius: "50%",
-                    display: "flex",
+                    display: "inline-flex",
+                    flexDirection: "column",
                     alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: "4px",
+                    gap: "4px",
                   }}
                 >
                   <div
                     style={{
-                      width: "0",
-                      height: "0",
-                      borderLeft: "4px solid transparent",
-                      borderRight: "4px solid transparent",
-                      borderBottom: `6px solid ${isDark ? "rgba(255,255,255,0.85)" : "#1890ff"}`,
+                      width: "20px",
+                      height: "20px",
+                      border: `2px solid ${isDark ? "rgba(255,255,255,0.85)" : "#1890ff"}`,
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "0",
+                        height: "0",
+                        borderLeft: "4px solid transparent",
+                        borderRight: "4px solid transparent",
+                        borderBottom: `6px solid ${isDark ? "rgba(255,255,255,0.85)" : "#1890ff"}`,
+                      }}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      width: "24px",
+                      height: "1px",
+                      background: isDark ? "rgba(255,255,255,0.85)" : "#1890ff",
                     }}
                   />
                 </div>
-                <div
-                  style={{
-                    width: "24px",
-                    height: "1px",
-                    background: isDark ? "rgba(255,255,255,0.85)" : "#1890ff",
-                  }}
-                />
               </div>
-            </div>
-            <Typography.Text
-              strong
-              style={{
-                fontSize: "12px",
-                color: isDark ? "rgba(255,255,255,0.85)" : "#1f1f1f",
-                display: "block",
-                textAlign: "center",
-                marginBottom: "8px",
-                fontWeight: 600,
-              }}
-            >
-              Downloading Center
-            </Typography.Text>
-            <Typography.Text
-              style={{
-                fontSize: "11px",
-                color: isDark ? "rgba(255,255,255,0.85)" : "#595959",
-                display: "block",
-                textAlign: "center",
-                marginBottom: "12px",
-                lineHeight: "1.4",
-              }}
-            >
-              BabaErp Pro is a production ready ERP to get started up and running easily.
-            </Typography.Text>
-            <Button
-              type="primary"
-              block
-              style={{
-                background: "#1890ff",
-                border: "none",
-                borderRadius: "6px",
-                height: "32px",
-                fontSize: "12px",
-                fontWeight: 500,
-              }}
-            >
-              DOWNLOAD NOW
-            </Button>
-          </Card>
-        </div>
+              <Typography.Text
+                strong
+                style={{
+                  fontSize: "12px",
+                  color: isDark ? "rgba(255,255,255,0.85)" : "#1f1f1f",
+                  display: "block",
+                  textAlign: "center",
+                  marginBottom: "8px",
+                  fontWeight: 600,
+                }}
+              >
+                Downloading Center
+              </Typography.Text>
+              <Typography.Text
+                style={{
+                  fontSize: "11px",
+                  color: isDark ? "rgba(255,255,255,0.85)" : "#595959",
+                  display: "block",
+                  textAlign: "center",
+                  marginBottom: "12px",
+                  lineHeight: "1.4",
+                }}
+              >
+                BabaErp Pro is a production ready ERP to get started up and running easily.
+              </Typography.Text>
+              <Button
+                type="primary"
+                block
+                style={{
+                  background: "#1890ff",
+                  border: "none",
+                  borderRadius: "6px",
+                  height: "32px",
+                  fontSize: "12px",
+                  fontWeight: 500,
+                }}
+              >
+                DOWNLOAD NOW
+              </Button>
+            </Card>
+          </div>
         )}
       </div>
     </>

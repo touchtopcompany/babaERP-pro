@@ -6,6 +6,7 @@ import NotFound from "@/pages/NotFound";
 import PublicRoutes from "./PublicRoutes";
 import AuthenticatedRoutes from "./AuthenticatedRoutes";
 import Loading from "../pages/Loading";
+import LeavePage from "@/features/dashboard/pages/HMS/Leave";
 
 // Lazy load components
 const Home = lazy(() => import("@/pages/landing/Home"));
@@ -32,7 +33,6 @@ const ImportOpeningStockPage = lazy(() => import("@/features/dashboard/pages/pro
 const PriceGroupPage = lazy(() => import("@/features/dashboard/pages/products/PriceGroupPage"));
 const UnitsPage = lazy(() => import("@/features/dashboard/pages/products/UnitsPage"));
 const CategoriesPage = lazy(() => import("@/features/dashboard/pages/products/CategoriesPage"));
-const BrandsPage = lazy(() => import("@/features/dashboard/pages/products/BrandsPage"));
 const WarrantiesPage = lazy(() => import("@/features/dashboard/pages/products/WarrantiesPage"));
 const ListPurchasesPage = lazy(() => import("@/features/dashboard/pages/purchases/ListPurchasesPage"));
 const AddPurchasePage = lazy(() => import("@/features/dashboard/pages/purchases/AddPurchasePage"));
@@ -90,7 +90,31 @@ const ExpenseReportPage = lazy(() => import("../features/dashboard/pages/reports
 const RegisterReportPage = lazy(() => import("../features/dashboard/pages/reports/RegisterReportPage"));
 const SalesRepresentativeReportPage = lazy(() => import("../features/dashboard/pages/reports/SalesRepresentativeReportPage"));
 const ActivityLogPage = lazy(() => import("../features/dashboard/pages/reports/ActivityLogPage"));
-const NotificationTemplatesPage = lazy(() => import("../features/dashboard/pages/notification-templates/NotificationTemplatesPage"));
+const JobSheetsPage = lazy(() => import("../features/dashboard/pages/repair/JobSheetsPage"));
+const AddJobSheetPage = lazy(() => import("../features/dashboard/pages/repair/AddJobSheetPage"));
+const BrandsPage = lazy(() => import("../features/dashboard/pages/repair/BrandsPage"));
+const ListInvoicesPage = lazy(() => import("../features/dashboard/pages/repair/ListInvoicesPage"));
+const AddInvoicePage = lazy(() => import("../features/dashboard/pages/repair/AddInvoicePage"));
+const RepairPage = lazy(() => import("../features/dashboard/pages/repair/RepairPage"));
+const RepairSettingPage = lazy(() => import("../features/dashboard/pages/repair/SettingPage"));
+const AssetManagementPage = lazy(() => import("../features/dashboard/pages/Asset-management/AssetManagementPage"));
+const AssetPage = lazy(() => import("../features/dashboard/pages/Asset-management/AssetPage"));
+const AssetAllocatedPage = lazy(() => import("../features/dashboard/pages/Asset-management/AssetAllocatedPage"));
+const AssetRevokedPage = lazy(() => import("../features/dashboard/pages/Asset-management/AssetRevokedpage"));
+const AssetMaintainancePage = lazy(() => import("../features/dashboard/pages/Asset-management/AssetMaintainancePge"));
+const AssetCategoresPage = lazy(() => import("../features/dashboard/pages/Asset-management/AssetCategoresPage"));
+const AssetSettingsPage = lazy(() => import("../features/dashboard/pages/Asset-management/Settings.Page"));
+const NotificationTemplatesPage = lazy(() => import("@/features/dashboard/pages/notification-templates/NotificationTemplatesPage"));
+const CMSPage = lazy(() => import("@/features/dashboard/pages/CMS/CMSPage"));
+const ManufacturingPage = lazy(() => import("@/features/dashboard/pages/Manufacturing/ManufacturingPage"));
+const ProductionPage = lazy(() => import("@/features/dashboard/pages/Manufacturing/ProductionPage"));
+const ManufacturingSettingsPage = lazy(() => import("@/features/dashboard/pages/Manufacturing/SettingsPage"));
+const ManufacturingReportPage = lazy(() => import("@/features/dashboard/pages/Manufacturing/ManufacturingreportPage"));
+const PagesPage = lazy(() => import("@/features/dashboard/pages/CMS/PagesPage"));
+const BlogPage = lazy(() => import("@/features/dashboard/pages/CMS/BlogPage"));
+const SiteDetailsPage = lazy(() => import("@/features/dashboard/pages/CMS/SiteDetailsPage"));
+const TestimonialPage = lazy(() => import("@/features/dashboard/pages/CMS/TestimonialPage"));
+const CatalogueQRPage = lazy(() => import("@/features/dashboard/pages/Product-catalogue/CatalogueQRPage"));
 const BusinessSettingsPage = lazy(() => import("../features/dashboard/pages/settings/BusinessSettingsPage"));
 const BusinessLocationsPage = lazy(() => import("../features/dashboard/pages/settings/BusinessLocationsPage"));
 const InvoiceSettingsPage = lazy(() => import("../features/dashboard/pages/settings/InvoiceSettingsPage"));
@@ -101,6 +125,34 @@ const SubdomainManagement = lazy(() => import("@/pages/dashboard/components/Subd
 const UserManagement = lazy(() => import("@/pages/dashboard/components/User Management"));
 const Analytics = lazy(() => import("@/pages/dashboard/components/Analytics"));
 const Dashboard = lazy(() => import("@/pages/dashboard/Dashboard"));
+const KitchenPage = lazy(() => import("../features/dashboard/pages/Kitchen/KitchenPage"));
+const HMSPage = lazy(() => import("../features/dashboard/pages/HMS/HMSPage"));
+const LeaveTypePage = lazy(() => import("../features/dashboard/pages/HMS/leaveType"));
+const AttendancePage = lazy(() => import("../features/dashboard/pages/HMS/Attendance"));
+const PayrollPage = lazy(() => import("../features/dashboard/pages/HMS/PayrollPage"));
+const HolidayPage = lazy(() => import("../features/dashboard/pages/HMS/HolidayPage"));
+const DepartmentPage = lazy(() => import("../features/dashboard/pages/HMS/Department"));
+const DesignationPage = lazy(() => import("../features/dashboard/pages/HMS/DesignationPage"));
+const SalesTargetsPage = lazy(() => import("../features/dashboard/pages/HMS/SalesTargetsPage"));
+const HMSSettingsPage = lazy(() => import("../features/dashboard/pages/HMS/SettingsPage"));
+const WoocommercePage = lazy(() => import("../features/dashboard/pages/Woocommerce/WoocommercePage"));
+const ToDoPage = lazy(() => import("../features/dashboard/pages/Essentials/ToDoPage"));
+const MemoPage = lazy(() => import("../features/dashboard/pages/Essentials/MemoPage"));
+const ReminderPage = lazy(() => import("../features/dashboard/pages/Essentials/ReminderPage"));
+const MessagesPage = lazy(() => import("../features/dashboard/pages/Essentials/Messages"));
+const SpreadsheetPage = lazy(() => import("../features/dashboard/pages/Spreedsheet/SpreadsheetPage"));
+const TablesPage = lazy(() => import("../features/dashboard/pages/settings/TablesPage"));
+const ProjectsPage = lazy(() => import("../features/dashboard/pages/Projects/ProjectsPage"));
+const MyTasksPage = lazy(() => import("../features/dashboard/pages/Projects/MyTaskspage"));
+const ProjectsReportsPage = lazy(() => import("../features/dashboard/pages/Projects/ProjectsReportsPage"));
+const ProjectCategoriesPage = lazy(() => import("../features/dashboard/pages/Projects/ProjectCategoriesPage"));
+const ModifierPage = lazy(() => import("../features/dashboard/pages/settings/ModifierPage"));
+
+
+
+
+
+
 
 /**
  * This is Root Route initializer for the application
@@ -127,14 +179,22 @@ export const AppRoutes: FC = () => {
 
         {/* Authenticated Routes - require login */}
         <Route element={<AuthenticatedRoutes />}>
+
+          {/* DASHBOARD */}
           <Route path="/dashboard" element={<DashboardPage />} />
+
+          {/* USER MANAGEMENT */}
           <Route path="/user-management/users" element={<UsersPage />} />
           <Route path="/user-management/roles" element={<RolesPage />} />
           <Route path="/user-management/sales-commission-agents" element={<SalesCommissionAgentsPage />} />
+
+          {/* CONTACTS */}
           <Route path="/contacts/suppliers" element={<SuppliersPage />} />
           <Route path="/contacts/customers" element={<CustomersPage />} />
           <Route path="/contacts/customer-groups" element={<CustomerGroupsPage />} />
           <Route path="/contacts/import-contacts" element={<ImportContactsPage />} />
+
+          {/* PRODUCTS */}
           <Route path="/products/list-products" element={<ListProductsPage />} />
           <Route path="/products/add-product" element={<AddProductPage />} />
           <Route path="/products/update-price" element={<UpdatePricePage />} />
@@ -147,10 +207,14 @@ export const AppRoutes: FC = () => {
           <Route path="/products/categories" element={<CategoriesPage />} />
           <Route path="/products/brands" element={<BrandsPage />} />
           <Route path="/products/warranties" element={<WarrantiesPage />} />
+
+          {/* PURCHASE */}
           <Route path="/purchases/list-purchases" element={<ListPurchasesPage />} />
           <Route path="/purchases/add-purchase" element={<AddPurchasePage />} />
           <Route path="/purchases/purchase-return" element={<PurchaseReturnPage />} />
           <Route path="/purchases/add-purchase-return" element={<AddPurchaseReturnPage />} />
+
+          {/* SELL */}
           <Route path="/sell/all-sales" element={<AllSalesPage />} />
           <Route path="/sell/add-sale" element={<AddSalePage />} />
           <Route path="/sell/list-pos" element={<ListPOSPage />} />
@@ -164,19 +228,31 @@ export const AppRoutes: FC = () => {
           <Route path="/sell/discounts" element={<DiscountsPage />} />
           <Route path="/sell/import-sales" element={<ImportSalesPage />} />
           <Route path="/sell/sales-void" element={<SalesVoidPage />} />
+
+          {/* STOCK TRANSFER */}
           <Route path="/stock-transfers/list-stock-transfers" element={<ListStockTransfersPage />} />
           <Route path="/stock-transfers/add-stock-transfer" element={<AddStockTransferPage />} />
+
+          {/* STOCK ADJUSTMENT */}
           <Route path="/stock-adjustment/list-stock-adjustments" element={<ListStockAdjustmentsPage />} />
           <Route path="/stock-adjustment/add-stock-adjustment" element={<AddStockAdjustmentPage />} />
+
+          {/* STOCKTAKING */}
           <Route path="/stock-taking" element={<StockTakingPage />} />
+
+          {/* EXPENSE */}
           <Route path="/expenses/list-expenses" element={<ListExpensesPage />} />
           <Route path="/expenses/add-expense" element={<AddExpensePage />} />
           <Route path="/expenses/expense-categories" element={<ExpenseCategoriesPage />} />
+
+          {/* PAYMENT ACCOUNT */}
           <Route path="/payment-accounts/list-accounts" element={<ListAccountsPage />} />
           <Route path="/payment-accounts/payment-account-report" element={<PaymentAccountReportPage />} />
           <Route path="/payment-accounts/balance-sheet" element={<BalanceSheetPage />} />
           <Route path="/payment-accounts/trial-balance" element={<TrialBalancePage />} />
           <Route path="/payment-accounts/cash-flow" element={<CashFlowPage />} />
+
+          {/* ACCOUNTING */}
           <Route path="/accounting" element={<AccountingPage />} />
           <Route path="/accounting/chart-of-accounts" element={<ChartOfAccountsPage />} />
           <Route path="/accounting/journal-entry" element={<JournalEntryPage />} />
@@ -185,6 +261,8 @@ export const AppRoutes: FC = () => {
           <Route path="/accounting/budget" element={<BudgetPage />} />
           <Route path="/accounting/reports" element={<ReportsPage />} />
           <Route path="/accounting/settings" element={<SettingsPage />} />
+
+          {/* REPORT */}
           <Route path="/reports/profit-loss-report" element={<ProfitLossReportPage />} />
           <Route path="/reports/purchase-sale" element={<PurchaseSaleReportPage />} />
           <Route path="/reports/tax-report" element={<TaxReportPage />} />
@@ -203,13 +281,91 @@ export const AppRoutes: FC = () => {
           <Route path="/reports/register-report" element={<RegisterReportPage />} />
           <Route path="/reports/sales-representative-report" element={<SalesRepresentativeReportPage />} />
           <Route path="/reports/activity-log" element={<ActivityLogPage />} />
+
+          {/* REPAIR */}
+          <Route path="/repair" element={<RepairPage />} />
+          <Route path="/repair/job-sheets" element={<JobSheetsPage />} />
+          <Route path="/repair/add-job-sheet" element={<AddJobSheetPage />} />
+          <Route path="/repair/brands" element={<BrandsPage />} />
+          <Route path="/repair/invoices" element={<ListInvoicesPage />} />
+          <Route path="/repair/add-invoice" element={<AddInvoicePage />} />
+          <Route path="/repair/settings" element={<RepairSettingPage />} />
+
+          {/* ASSETS */}
+          <Route path="/asset-management" element={<AssetManagementPage />} />
+          <Route path="/asset-management/assets" element={<AssetPage />} />
+          <Route path="/asset-management/asset-allocated" element={<AssetAllocatedPage />} />
+          <Route path="/asset-management/asset-revoked" element={<AssetRevokedPage />} />
+          <Route path="/asset-management/asset-maintenance" element={<AssetMaintainancePage />} />
+          <Route path="/asset-management/asset-categories" element={<AssetCategoresPage />} />
+          <Route path="/asset-management/settings" element={<AssetSettingsPage />} />
+
+          {/* NOTIFICATION */}
           <Route path="/notification-templates" element={<NotificationTemplatesPage />} />
+
+          {/* MANUFACTURNG */}
+          <Route path="/manufacturing" element={<ManufacturingPage />} />
+          <Route path="/manufacturing/production" element={<ProductionPage />} />
+          <Route path="/manufacturing/settings" element={<ManufacturingSettingsPage />} />
+          <Route path="/manufacturing/reports" element={<ManufacturingReportPage />} />
+
+          {/* CMS */}
+          <Route path="/cms" element={<CMSPage />} />
+          <Route path="/cms/pages" element={<PagesPage />} />
+          <Route path="/cms/blog" element={<BlogPage />} />
+          <Route path="/cms/site-details" element={<SiteDetailsPage />} />
+          <Route path="/cms/testimonials" element={<TestimonialPage />} />
+          <Route path="/product-catalogue/qr" element={<CatalogueQRPage />} />
+          <Route path="/kitchen" element={<KitchenPage />} />
+
+          {/* HMS */}
+          <Route path="/hms" element={<HMSPage />} />
+          <Route path="/hms/leave-type" element={<LeaveTypePage />} />
+          <Route path="/hms/leave" element={<LeavePage />} />
+          <Route path="/hms/attendance" element={<AttendancePage />} />
+          <Route path="/hms/payroll" element={<PayrollPage />} />
+          <Route path="/hms/holiday" element={<HolidayPage />} />
+          <Route path="/hms/departments" element={<DepartmentPage />} />
+          <Route path="/hms/designations" element={<DesignationPage />} />
+          <Route path="/hms/sales-targets" element={<SalesTargetsPage />} />
+          <Route path="/hms/settings" element={<HMSSettingsPage />} />
+
+          {/* Projects */}
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects/my-tasks" element={<MyTasksPage />} />
+          <Route path="/projects/reports" element={<ProjectsReportsPage />} />
+          <Route path="/projects/project-categories" element={<ProjectCategoriesPage />} />
+
+
+
+          {/* KITCHEN */}
+          <Route path="/kitchen" element={<KitchenPage />} />
+
+          {/* HRM */}
+          <Route path="/hrm/settings" element={<HMSSettingsPage />} />
+
+          {/* essentials */}
+          <Route path="/essentials" element={<ToDoPage />} />
+          <Route path="/essentials/memos" element={<MemoPage />} />
+          <Route path="/essentials/reminders" element={<ReminderPage />} />
+          <Route path="/essentials/messages" element={<MessagesPage />} />
+
+          {/* Spreadsheet */}
+          <Route path="/spreadsheet" element={<SpreadsheetPage />} />
+
+          {/* woocommerce */}
+          <Route path="/woocommerce" element={<WoocommercePage />} />
+
+          {/* settings */}
           <Route path="/settings/business-settings" element={<BusinessSettingsPage />} />
           <Route path="/settings/business-locations" element={<BusinessLocationsPage />} />
           <Route path="/settings/invoice-settings" element={<InvoiceSettingsPage />} />
           <Route path="/settings/barcode-settings" element={<BarcodeSettingsPage />} />
           <Route path="/settings/receipt-printers" element={<PrintersPage />} />
           <Route path="/settings/tax-rates" element={<TaxRatesPage />} />
+          <Route path="/settings/tables" element={<TablesPage />} />
+          <Route path="/settings/modifier" element={<ModifierPage />} />
+
         </Route>
 
         {/* Dashboard Routes - Accessible without authentication for local development */}
