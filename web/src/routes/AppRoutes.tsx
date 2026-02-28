@@ -141,6 +141,7 @@ const MemoPage = lazy(() => import("../features/dashboard/pages/Essentials/MemoP
 const ReminderPage = lazy(() => import("../features/dashboard/pages/Essentials/ReminderPage"));
 const MessagesPage = lazy(() => import("../features/dashboard/pages/Essentials/Messages"));
 const SpreadsheetPage = lazy(() => import("../features/dashboard/pages/Spreedsheet/SpreadsheetPage"));
+const TablesPage = lazy(() => import("../features/dashboard/pages/settings/TablesPage"));
 
 
 
@@ -341,7 +342,8 @@ export const AppRoutes: FC = () => {
           {/* Spreadsheet */}
           <Route path="/spreadsheet" element={<SpreadsheetPage />} />
 
-
+          {/* woocommerce */}
+          <Route path="/woocommerce" element={<WoocommercePage />} />
 
           {/* settings */}
           <Route path="/settings/business-settings" element={<BusinessSettingsPage />} />
@@ -350,7 +352,8 @@ export const AppRoutes: FC = () => {
           <Route path="/settings/barcode-settings" element={<BarcodeSettingsPage />} />
           <Route path="/settings/receipt-printers" element={<PrintersPage />} />
           <Route path="/settings/tax-rates" element={<TaxRatesPage />} />
-          <Route path="/woocommerce" element={<WoocommercePage />} />
+          <Route path="/settings/tables" element={<TablesPage />} />
+          
         </Route>
 
         {/* Dashboard Routes - Accessible without authentication for local development */}

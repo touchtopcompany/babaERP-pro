@@ -499,6 +499,10 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
           key: "/settings/tax-rates",
           label: "Tax Rates",
         },
+        {
+          key: "/settings/tables",
+          label: "Tables",
+        },
       ],
     },
   ].map((item: any) => {
