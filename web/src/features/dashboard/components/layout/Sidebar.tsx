@@ -27,6 +27,7 @@ import {
   ExperimentOutlined,
   FireOutlined,
   ShoppingOutlined,
+  TableOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 
@@ -460,6 +461,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
       key: "/essentials",
       icon: <FileTextOutlined />,
       label: "Essentials",
+      noChevron: true,
+    },
+    {
+      key: "/spreadsheet",
+      icon: <TableOutlined />,
+      label: "Spreadsheet",
       noChevron: true,
     },
 

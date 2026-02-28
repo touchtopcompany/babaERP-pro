@@ -140,6 +140,7 @@ const ToDoPage = lazy(() => import("../features/dashboard/pages/Essentials/ToDoP
 const MemoPage = lazy(() => import("../features/dashboard/pages/Essentials/MemoPage"));
 const ReminderPage = lazy(() => import("../features/dashboard/pages/Essentials/ReminderPage"));
 const MessagesPage = lazy(() => import("../features/dashboard/pages/Essentials/Messages"));
+const SpreadsheetPage = lazy(() => import("../features/dashboard/pages/Spreedsheet/SpreadsheetPage"));
 
 
 
@@ -336,6 +337,9 @@ export const AppRoutes: FC = () => {
           <Route path="/essentials/memos" element={<MemoPage />} />
           <Route path="/essentials/reminders" element={<ReminderPage />} />
           <Route path="/essentials/messages" element={<MessagesPage />} />
+
+          {/* Spreadsheet */}
+          <Route path="/spreadsheet" element={<SpreadsheetPage />} />
 
 
 
