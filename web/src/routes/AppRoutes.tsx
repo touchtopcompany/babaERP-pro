@@ -146,6 +146,7 @@ const ProjectsPage = lazy(() => import("../features/dashboard/pages/Projects/Pro
 const MyTasksPage = lazy(() => import("../features/dashboard/pages/Projects/MyTaskspage"));
 const ProjectsReportsPage = lazy(() => import("../features/dashboard/pages/Projects/ProjectsReportsPage"));
 const ProjectCategoriesPage = lazy(() => import("../features/dashboard/pages/Projects/ProjectCategoriesPage"));
+const ModifierPage = lazy(() => import("../features/dashboard/pages/settings/ModifierPage"));
 
 
 
@@ -363,6 +364,7 @@ export const AppRoutes: FC = () => {
           <Route path="/settings/receipt-printers" element={<PrintersPage />} />
           <Route path="/settings/tax-rates" element={<TaxRatesPage />} />
           <Route path="/settings/tables" element={<TablesPage />} />
+          <Route path="/settings/modifier" element={<ModifierPage />} />
 
         </Route>
 

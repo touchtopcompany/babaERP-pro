@@ -510,6 +510,10 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
           key: "/settings/tables",
           label: "Tables",
         },
+        {
+          key: "/settings/modifier",
+          label: "Modifier",
+        },
       ],
     },
   ].map((item: any) => {
