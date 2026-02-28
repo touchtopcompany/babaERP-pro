@@ -457,6 +457,13 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile = false }) => {
       noChevron: true,
     },
     {
+      key: "/essentials",
+      icon: <FileTextOutlined />,
+      label: "Essentials",
+      noChevron: true,
+    },
+
+    {
       key: "/settings",
       icon: <SettingOutlined />,
       label: "Settings",

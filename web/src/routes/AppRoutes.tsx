@@ -136,6 +136,11 @@ const DesignationPage = lazy(() => import("../features/dashboard/pages/HMS/Desig
 const SalesTargetsPage = lazy(() => import("../features/dashboard/pages/HMS/SalesTargetsPage"));
 const HMSSettingsPage = lazy(() => import("../features/dashboard/pages/HMS/SettingsPage"));
 const WoocommercePage = lazy(() => import("../features/dashboard/pages/Woocommerce/WoocommercePage"));
+const ToDoPage = lazy(() => import("../features/dashboard/pages/Essentials/ToDoPage"));
+const MemoPage = lazy(() => import("../features/dashboard/pages/Essentials/MemoPage"));
+const ReminderPage = lazy(() => import("../features/dashboard/pages/Essentials/ReminderPage"));
+const MessagesPage = lazy(() => import("../features/dashboard/pages/Essentials/Messages"));
+
 
 
 
@@ -322,6 +327,17 @@ export const AppRoutes: FC = () => {
 
           {/* KITCHEN */}
           <Route path="/kitchen" element={<KitchenPage />} />
+
+          {/* HRM */}
+          <Route path="/hrm/settings" element={<HMSSettingsPage />} />
+
+          {/* essentials */}
+          <Route path="/essentials" element={<ToDoPage />} />
+          <Route path="/essentials/memos" element={<MemoPage />} />
+          <Route path="/essentials/reminders" element={<ReminderPage />} />
+          <Route path="/essentials/messages" element={<MessagesPage />} />
+
+
 
           {/* settings */}
           <Route path="/settings/business-settings" element={<BusinessSettingsPage />} />
